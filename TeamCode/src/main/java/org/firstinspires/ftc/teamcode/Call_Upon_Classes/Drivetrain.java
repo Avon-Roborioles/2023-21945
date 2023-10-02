@@ -7,7 +7,6 @@ Top Right Motor => "fr"
 Bottom Left Motor => "bl"
 Bottom Right Motor => "br"
  */
-
 //importing important classes
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
