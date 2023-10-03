@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+
 /*
 Useful methods to help alert drivers during matches
     - Alert drivers on endgame start
@@ -9,13 +10,18 @@ Useful methods to help alert drivers during matches
  */
 public class Haptic_Feedback {
 
-    public void endGame_Timer(Gamepad gamepad1, Gamepad gampad2){
+    public void endGame_Alert(Gamepad gamepad1, Gamepad gamepad2){
         //starts timer for engame
         //few seconds before engame, vibrate gamepads 3 times
+        gamepad1.rumble(5000);
+        gamepad2.rumble(5000);
+
     }
 
     public void alert(Gamepad gamepad1, Gamepad gamepad2){
-        //alert vibration for general use
+        gamepad1.rumble(2000);
+        gamepad2.rumble(2000);
+
     }
 
     public void getTouchpad(Gamepad gamepad){
