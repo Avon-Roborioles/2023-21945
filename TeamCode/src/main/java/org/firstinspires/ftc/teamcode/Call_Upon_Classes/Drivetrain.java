@@ -78,7 +78,7 @@ public class Drivetrain {
 
 
 
-    public void run_drive_motors(Gamepad gamepad1, Telemetry telemetry){
+    public void run_drive_motors(Gamepad gamepad1){
         ly= gamepad1.left_stick_y;
         rx= gamepad1.right_stick_x;
         rt = (gamepad1.right_trigger*.75);
@@ -130,7 +130,7 @@ public class Drivetrain {
             bl.setPower(rt);
             br.setPower(-rt);
         }
-        getTelemetry(telemetry);
+       // getTelemetry(telemetry);
 
 
     }
