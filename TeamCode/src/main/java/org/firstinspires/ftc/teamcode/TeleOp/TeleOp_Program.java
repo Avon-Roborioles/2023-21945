@@ -14,6 +14,7 @@ public class TeleOp_Program extends LinearOpMode {
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
+    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
 
 
     //updates telemetry for all robot functions
@@ -30,7 +31,10 @@ public class TeleOp_Program extends LinearOpMode {
         claw.init_claw(hardwareMap, "claw", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm(hardwareMap, "arm");
+        vision.init_cameras(hardwareMap, "Webcam1", "Webcam2", "None");
+
         setTelemetry();
+
         Timing.Timer engameTimer = new Timing.Timer(2, TimeUnit.MINUTES);
 
         waitForStart();
@@ -43,7 +47,7 @@ public class TeleOp_Program extends LinearOpMode {
             setTelemetry();
             telemetry.update(); //updates telemetry for all robot functions
 
-            if (engameTimer.remainingTime() == 0.5) { //alerts drivers of engame starting
+            if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
                 feedback.endGame_Alert(gamepad1, gamepad2);
             }
         }

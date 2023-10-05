@@ -3,9 +3,6 @@ Example Code from Oscar Chevalier on Github:
 https://github.com/Froze-N-Milk/mercurialftcsample/blob/testing/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/ColourMassDetectionProcessor.java
 */
 package org.firstinspires.ftc.teamcode.Tests;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -106,6 +103,7 @@ public class Auto_Marker_Test extends OpMode {
                 // code to do if we saw the prop on the left
                 break;
             case UNFOUND: // we can also just add the unfound case here to do fallthrough intstead of the overriding method above, whatever you prefer!
+                break;
             case MIDDLE:
                 // code to do if we saw the prop on the middle
                 break;
