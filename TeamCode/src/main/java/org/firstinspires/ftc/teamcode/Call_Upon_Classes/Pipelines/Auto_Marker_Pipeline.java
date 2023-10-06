@@ -40,6 +40,7 @@ public class Auto_Marker_Pipeline implements VisionProcessor {
     private double largestContourX;
     private double largestContourY;
     private double largestContourArea;
+
     private MatOfPoint largestContour;
     private PropPositions previousPropPosition;
     private PropPositions recordedPropPosition = PropPositions.UNFOUND;
@@ -137,7 +138,7 @@ public class Auto_Marker_Pipeline implements VisionProcessor {
         // it stores the contour as our largest contour and the area as our largest area
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
-            if (area > largestContourArea && area > minArea) {
+            if (area > largestContourArea && area > minArea) { //switched > to <
                 largestContour = contour;
                 largestContourArea = area;
             }

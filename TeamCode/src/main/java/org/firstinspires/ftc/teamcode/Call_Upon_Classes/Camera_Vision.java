@@ -25,10 +25,10 @@ public class Camera_Vision {
         webcam1 = hardwareMap.get(WebcamName.class, name1);
         webcam2 = hardwareMap.get(WebcamName.class, name2);
 
-        switch (Processor){
-            case "None":
-                break;
-        }
+//        switch (Processor){
+//            case "None":
+//                break;
+//        }
     }
 
     public String getPropPosition(){ //runs Auto_Marker Pipeline and returns position as a string

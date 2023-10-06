@@ -3,6 +3,7 @@ Example Code from Oscar Chevalier on Github:
 https://github.com/Froze-N-Milk/mercurialftcsample/blob/testing/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/ColourMassDetectionProcessor.java
 */
 package org.firstinspires.ftc.teamcode.Tests;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Scalar;
 
 //@Disabled // remove this line to have this show up on your robot
+@Config
 @TeleOp
 public class Auto_Marker_Test extends OpMode {
     private VisionPortal visionPortal;
