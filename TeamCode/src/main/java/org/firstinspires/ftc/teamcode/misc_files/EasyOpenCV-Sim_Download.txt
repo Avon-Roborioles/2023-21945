@@ -1,0 +1,5 @@
+Link to Download EasyOpenCV Simulator
+
+(Note: Need to Download Java SDK - https://www.oracle.com/java/technologies/downloads/)
+
+Link to Download (First Link in Assets) - https://github.com/deltacv/EOCV-Sim/releases/tag/v3.5.2
