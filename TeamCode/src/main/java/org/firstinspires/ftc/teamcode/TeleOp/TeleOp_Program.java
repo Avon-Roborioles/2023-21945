@@ -31,7 +31,7 @@ public class TeleOp_Program extends LinearOpMode {
         claw.init_claw(hardwareMap, "claw", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm(hardwareMap, "arm");
-        vision.init_cameras(hardwareMap, "Webcam1", "Webcam2", "None");
+        vision.init_cameras(hardwareMap, "Webcam1", "Webcam2");
 
         setTelemetry();
 

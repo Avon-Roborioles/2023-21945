@@ -3,7 +3,7 @@ Example Code from Oscar Chevalier on Github:
 https://github.com/Froze-N-Milk/mercurialftcsample/blob/testing/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/ColourMassDetectionProcessor.java
 */
 
-package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Pipelines;
+package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

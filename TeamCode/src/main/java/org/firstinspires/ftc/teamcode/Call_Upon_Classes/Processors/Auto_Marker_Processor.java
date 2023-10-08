@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Pipelines;
+package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.function.DoubleSupplier;
 
-public class Auto_Marker_Pipeline implements VisionProcessor{
+public class Auto_Marker_Processor implements VisionProcessor{
     private  DoubleSupplier minArea = null;
     private  DoubleSupplier left = null;
     private  DoubleSupplier right = null;
@@ -50,7 +50,7 @@ public class Auto_Marker_Pipeline implements VisionProcessor{
      * @param right   the diving point for the prop to be on the right
      */
 
-    public Auto_Marker_Pipeline(@NonNull Scalar lower, @NonNull Scalar upper, DoubleSupplier minArea, DoubleSupplier left, DoubleSupplier right) {
+    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, DoubleSupplier minArea, DoubleSupplier left, DoubleSupplier right) {
         this.contours = new ArrayList<>();
         this.lower = lower;
         this.upper = upper;
