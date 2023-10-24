@@ -138,7 +138,7 @@ public class Auto_Marker_PipelineOLD implements VisionProcessor {
         // it stores the contour as our largest contour and the area as our largest area
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
-            if (area > largestContourArea && area > minArea) { //switched > to <
+            if (area < largestContourArea && area > minArea) { //switched > to <
                 largestContour = contour;
                 largestContourArea = area;
             }

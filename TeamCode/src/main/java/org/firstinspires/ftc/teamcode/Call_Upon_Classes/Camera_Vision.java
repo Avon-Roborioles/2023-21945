@@ -9,6 +9,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
+import org.opencv.core.Scalar;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,9 +37,37 @@ public class Camera_Vision {
          webcam2 = hardwareMap.get(WebcamName.class, name2);
     }
 
-    public String getPropPosition(){ //runs Auto_Marker Pipeline and returns position as a string
-         String position = "";
+    private WebcamName getCameraName(int camera){
+        if(camera == 1){
+            return webcam1;
+        } else {
+            return webcam2;
+        }
+    } //TODO Remove if not used
 
+    public String getPropPosition(HardwareMap hardwareMap){ //runs Auto_Marker Pipeline and returns position as a string
+         String position = "";
+         Auto_Marker_Processor markerProcessor;
+        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+        double minArea = 100; // the minimum area for the detection to consider for your prop
+        WebcamName webcam1 = getCameraName(1);
+        WebcamName webcam2 = getCameraName(2);
+
+        markerProcessor = new Auto_Marker_Processor(
+                lower,
+                upper,
+                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 213, // the left dividing line, in this case the left third of the frame
+                () -> 426 // the left dividing line, in this case the right third of the frame
+        );
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "webcam1")) //name of camera you will use
+                .addProcessor(markerProcessor)
+                .build();
+
+        //gets the recorded prop position
+        //TODO figure out this issue
          return position;
     }
 
@@ -108,7 +138,7 @@ public class Camera_Vision {
 
     public void detect_stacked_pixels(){
         visionPortal = VisionPortal.easyCreateWithDefaults(webcam2);
-    }
+    } //TODO
 
     public void close(){ //turns off camera
         visionPortal.stopStreaming();
