@@ -1,23 +1,18 @@
-/*
-Example Code from Oscar Chevalier on Github:
-https://github.com/Froze-N-Milk/mercurialftcsample/blob/testing/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/ColourMassDetectionProcessor.java
-*/
 package org.firstinspires.ftc.teamcode.Tests;
-import com.acmerobotics.dashboard.config.Config;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_PipelineOLD;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Scalar;
 
-//@Disabled // remove this line to have this show up on your robot
-@Config
 @TeleOp
 public class Auto_Marker_Test extends OpMode {
     private VisionPortal visionPortal;
-    private Auto_Marker_PipelineOLD Auto_Marker_Processor;
+    private Auto_Marker_PipelineOLD colourMassDetectionProcessor;
 
     /**
      * User-defined init method
@@ -36,7 +31,7 @@ public class Auto_Marker_Test extends OpMode {
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
         double minArea = 100; // the minimum area for the detection to consider for your prop
 
-        Auto_Marker_Processor = new Auto_Marker_PipelineOLD(
+        colourMassDetectionProcessor = new Auto_Marker_PipelineOLD(
                 lower,
                 upper,
                 () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
@@ -45,7 +40,7 @@ public class Auto_Marker_Test extends OpMode {
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .addProcessor(Auto_Marker_Processor)
+                .addProcessor(colourMassDetectionProcessor)
                 .build();
 
         // you may also want to take a look at some of the examples for instructions on
@@ -66,10 +61,10 @@ public class Auto_Marker_Test extends OpMode {
      */
     @Override
     public void init_loop() {
-        telemetry.addData("Currently Recorded Position", Auto_Marker_Processor.getRecordedPropPosition());
+        telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
         telemetry.addData("Camera State", visionPortal.getCameraState());
-        telemetry.addData("Currently Detected Mass Center", "x: " + Auto_Marker_Processor.getLargestContourX() + ", y: " + Auto_Marker_Processor.getLargestContourY());
-        telemetry.addData("Currently Detected Mass Area", Auto_Marker_Processor.getLargestContourArea());
+        telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
+        telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
     }
 
     /**
@@ -90,7 +85,7 @@ public class Auto_Marker_Test extends OpMode {
         }
 
         // gets the recorded prop position
-        Auto_Marker_PipelineOLD.PropPositions recordedPropPosition = Auto_Marker_Processor.getRecordedPropPosition();
+        Auto_Marker_PipelineOLD.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
@@ -98,14 +93,12 @@ public class Auto_Marker_Test extends OpMode {
             recordedPropPosition = Auto_Marker_PipelineOLD.PropPositions.MIDDLE;
         }
 
-
         // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
         switch (recordedPropPosition) {
             case LEFT:
                 // code to do if we saw the prop on the left
                 break;
             case UNFOUND: // we can also just add the unfound case here to do fallthrough intstead of the overriding method above, whatever you prefer!
-                break;
             case MIDDLE:
                 // code to do if we saw the prop on the middle
                 break;
@@ -138,7 +131,7 @@ public class Auto_Marker_Test extends OpMode {
     @Override
     public void stop() {
         // this closes down the portal when we stop the code, its good practice!
-        Auto_Marker_Processor.close();
+        colourMassDetectionProcessor.close();
         visionPortal.close();
     }
 }
