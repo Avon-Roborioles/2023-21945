@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -30,12 +28,12 @@ public class Final_Marker_Test extends OpMode {
         // and experiment to fine tune it for blue
         Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 100; // the minimum area for the detection to consider for your prop
+        double minArea = 1000; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new Auto_Marker_Processor(
                 lower,
                 upper,
-                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                100.0, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
                 () -> 213, // the left dividing line, in this case the left third of the frame
                 () -> 426 // the left dividing line, in this case the right third of the frame
         );
@@ -64,8 +62,8 @@ public class Final_Marker_Test extends OpMode {
     public void init_loop() {
         telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
         telemetry.addData("Camera State", visionPortal.getCameraState());
-        telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
-        telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
+        telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getSmallestContourX() + ", y: " + colourMassDetectionProcessor.getSmallestContourY());
+        telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getSmallestContourArea());
     }
 
     /**
@@ -79,7 +77,6 @@ public class Final_Marker_Test extends OpMode {
      */
     @Override
     public void start() {
-        // shuts down the camera once the match starts, we dont need to look any more
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
@@ -117,7 +114,33 @@ public class Final_Marker_Test extends OpMode {
      */
     @Override
     public void loop() {
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            visionPortal.stopLiveView();
+            visionPortal.stopStreaming();
+        }
 
+        // gets the recorded prop position
+        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
+        }
+
+        // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
+        switch (recordedPropPosition) {
+            case LEFT:
+                // code to do if we saw the prop on the left
+                break;
+            case UNFOUND: // we can also just add the unfound case here to do fallthrough intstead of the overriding method above, whatever you prefer!
+            case MIDDLE:
+                // code to do if we saw the prop on the middle
+                break;
+            case RIGHT:
+                // code to do if we saw the prop on the right
+                break;
+        }
     }
 
     /**

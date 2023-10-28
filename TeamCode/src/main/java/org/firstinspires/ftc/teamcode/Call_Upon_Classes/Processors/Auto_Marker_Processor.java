@@ -5,6 +5,7 @@
 
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors;
 
+import com.arcrobotics.ftclib.util.Timing;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,20 +26,22 @@ import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.function.DoubleSupplier;
 
 public class Auto_Marker_Processor implements VisionProcessor {
-    private final DoubleSupplier minArea, left, right;
+    private final DoubleSupplier left, right;
     private final Scalar upper; // lower bounds for masking
     private final Scalar lower; // upper bounds for masking
     private final TextPaint textPaint;
     private final Paint linePaint;
     private final ArrayList<MatOfPoint> contours;
     private final Mat hierarchy = new Mat();
-    private double largestContourX;
-    private double largestContourY;
-    private double largestContourArea;
-    private MatOfPoint largestContour;
+    private double smallestContourX;
+    private double smallestContourY;
+    private double smallestContourArea;
+    private double minArea;
+    private MatOfPoint smallestContour;
     private PropPositions previousPropPosition;
     private PropPositions recordedPropPosition = PropPositions.UNFOUND;
 
@@ -51,7 +54,7 @@ public class Auto_Marker_Processor implements VisionProcessor {
      * @param left    the dividing point for the prop to be on the left
      * @param right   the diving point for the prop to be on the right
      */
-    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, DoubleSupplier minArea, DoubleSupplier left, DoubleSupplier right) {
+    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, Double minArea, DoubleSupplier left, DoubleSupplier right) {
         this.contours = new ArrayList<>();
         this.lower = lower;
         this.upper = upper;
@@ -84,22 +87,22 @@ public class Auto_Marker_Processor implements VisionProcessor {
     /**
      * @return the x position of the currently found largest contour in the range [0, camera width], or -1 if no largest contour has been determined
      */
-    public double getLargestContourX() {
-        return largestContourX;
+    public double getSmallestContourX() {
+        return smallestContourX;
     }
 
     /**
      * @return the y position of the currently found largest contour in the range [0, camera height], or -1 if no largest contour has been determined
      */
-    public double getLargestContourY() {
-        return largestContourY;
+    public double getSmallestContourY() {
+        return smallestContourY;
     }
 
     /**
      * @return the area of the currently found largest contour, or -1 if no largest contour has been determined
      */
-    public double getLargestContourArea() {
-        return largestContourArea;
+    public double getSmallestContourArea() {
+        return smallestContourArea;
     }
 
     @Override
@@ -122,52 +125,69 @@ public class Auto_Marker_Processor implements VisionProcessor {
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         // this sets up our largest contour area to be 0
-        largestContourArea = -1;
+       // smallestContourArea = -1; //Done Changed to first contour found - replace to -1
         // and our currently found largest contour to be null
-        largestContour = null;
+        smallestContour = null; //Done change to null
 
         // gets the current minimum area from min area
-        double minArea = this.minArea.getAsDouble();
+        //double minArea = this.minArea.getAsDouble();
 
         // finds the largest contour!
         // for each contour we found before we loop over them, calculate their area,
         // and then if our area is larger than our minimum area, and our currently found largest area
         // it stores the contour as our largest contour and the area as our largest area
+
 //        for (MatOfPoint contour : contours) {
 //            double area = Imgproc.contourArea(contour);
-//            if (area < largestContourArea && area > minArea) {
+//            if (area < largestContourArea) {
 //                largestContour = contour;
 //                largestContourArea = area;
 //            }
 //        }
-        for (MatOfPoint contour : contours) {
-            double area = Imgproc.contourArea(contour);
-            if (area < largestContourArea) {
-                largestContour = contour;
-                largestContourArea = area;
+
+       // double maxVal = 0;
+//        double firstArea = Imgproc.contourArea(contours.get(0));
+//        for (int i = 0; i < contours.size(); i++) {
+//            double contourArea = Imgproc.contourArea(contours.get(i));
+//            if (maxVal < contourArea)
+//            {
+//                maxVal = contourArea;
+//                largestContour = contours.get(i);
+//            }
+//        }
+        //ArrayList<Double> areas = new ArrayList<Double>();
+
+        double smallestContourArea = 2000; //random large number to start off the loop
+        for(MatOfPoint contour : contours){
+            double currentArea = Imgproc.contourArea(contour);
+            if(currentArea < smallestContourArea && currentArea > minArea){
+                smallestContourArea = currentArea;
+                smallestContour = contour;
             }
         }
 
 
+
+
         // sets up the center points of our largest contour to be -1 (offscreen)
 
-        largestContourX = largestContourY = -1;
+        smallestContourX = smallestContourY = -1;
 
         // if we found it, calculates the actual centers
-        if (largestContour != null) {
-            Moments moment = Imgproc.moments(largestContour);
-            largestContourX = (moment.m10 / moment.m00);
-            largestContourY = (moment.m01 / moment.m00);
+        if (smallestContour != null) {
+            Moments moment = Imgproc.moments(smallestContour);
+            smallestContourX = (moment.m10 / moment.m00);
+            smallestContourY = (moment.m01 / moment.m00);
         }
 
         // determines the current prop position, using the left and right dividers we gave earlier
         // if we didn't find any contours which were large enough, sets it to be unfound
         PropPositions propPosition;
-        if (largestContour == null) {
+        if (smallestContour == null) {
             propPosition = PropPositions.UNFOUND;
-        } else if (largestContourX < left.getAsDouble()) {
+        } else if (smallestContourX < left.getAsDouble()) {
             propPosition = PropPositions.LEFT;
-        } else if (largestContourX > right.getAsDouble()) {
+        } else if (smallestContourX > right.getAsDouble()) {
             propPosition = PropPositions.RIGHT;
         } else {
             propPosition = PropPositions.MIDDLE;
@@ -200,8 +220,8 @@ public class Auto_Marker_Processor implements VisionProcessor {
 //		}
 
         // if the contour exists, draw a rectangle around it and put its position in the middle of the rectangle
-        if (largestContour != null) {
-            Rect rect = Imgproc.boundingRect(largestContour);
+        if (smallestContour != null) {
+            Rect rect = Imgproc.boundingRect(smallestContour);
 
             float[] points = {rect.x * scaleBmpPxToCanvasPx, rect.y * scaleBmpPxToCanvasPx, (rect.x + rect.width) * scaleBmpPxToCanvasPx, (rect.y + rect.height) * scaleBmpPxToCanvasPx};
 
@@ -213,7 +233,7 @@ public class Auto_Marker_Processor implements VisionProcessor {
 
             String text = String.format(Locale.ENGLISH, "%s", recordedPropPosition.toString());
 
-            canvas.drawText(text, (float) largestContourX * scaleBmpPxToCanvasPx, (float) largestContourY * scaleBmpPxToCanvasPx, textPaint);
+            canvas.drawText(text, (float) smallestContourX * scaleBmpPxToCanvasPx, (float) smallestContourY * scaleBmpPxToCanvasPx, textPaint);
         }
     }
 
@@ -225,8 +245,8 @@ public class Auto_Marker_Processor implements VisionProcessor {
     }
 
     // returns the largest contour if you want to get information about it
-    public MatOfPoint getLargestContour() {
-        return largestContour;
+    public MatOfPoint getSmallestContour() {
+        return smallestContour;
     }
 
     public void close() {

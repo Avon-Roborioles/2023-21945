@@ -78,7 +78,6 @@ public class Auto_Marker_Test extends OpMode {
      */
     @Override
     public void start() {
-        // shuts down the camera once the match starts, we dont need to look any more
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
@@ -116,7 +115,33 @@ public class Auto_Marker_Test extends OpMode {
      */
     @Override
     public void loop() {
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            visionPortal.stopLiveView();
+            visionPortal.stopStreaming();
+        }
 
+        // gets the recorded prop position
+        Auto_Marker_PipelineOLD.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (recordedPropPosition == Auto_Marker_PipelineOLD.PropPositions.UNFOUND) {
+            recordedPropPosition = Auto_Marker_PipelineOLD.PropPositions.MIDDLE;
+        }
+
+        // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
+        switch (recordedPropPosition) {
+            case LEFT:
+                // code to do if we saw the prop on the left
+                break;
+            case UNFOUND: // we can also just add the unfound case here to do fallthrough intstead of the overriding method above, whatever you prefer!
+            case MIDDLE:
+                // code to do if we saw the prop on the middle
+                break;
+            case RIGHT:
+                // code to do if we saw the prop on the right
+                break;
+        }
     }
 
     /**

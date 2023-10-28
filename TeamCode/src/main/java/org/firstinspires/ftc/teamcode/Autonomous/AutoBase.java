@@ -3,8 +3,18 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Disabled
 @Autonomous
-public class AutoBase {
+public class AutoBase extends OpMode {
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void loop() {
+
+    }
 }
