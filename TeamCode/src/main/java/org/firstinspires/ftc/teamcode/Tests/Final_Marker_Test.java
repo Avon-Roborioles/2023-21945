@@ -26,7 +26,7 @@ public class Final_Marker_Test extends OpMode {
         // the domains are: ([0, 180], [0, 255], [0, 255])
         // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
         // and experiment to fine tune it for blue
-        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
+        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
         double minArea = 1000; // the minimum area for the detection to consider for your prop
 
@@ -34,8 +34,8 @@ public class Final_Marker_Test extends OpMode {
                 lower,
                 upper,
                 100.0, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426 // the left dividing line, in this case the right third of the frame
+                () -> 190, // the left dividing line, in this case the left third of the frame
+                () -> 450 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default

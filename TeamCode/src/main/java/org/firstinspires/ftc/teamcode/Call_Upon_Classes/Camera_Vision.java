@@ -62,7 +62,7 @@ public class Camera_Vision {
                 () -> 426 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "webcam1")) //name of camera you will use
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) //name of camera you will use
                 .addProcessor(markerProcessor)
                 .build();
 
