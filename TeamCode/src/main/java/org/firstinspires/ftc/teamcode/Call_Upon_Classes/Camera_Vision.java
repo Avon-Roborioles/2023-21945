@@ -73,11 +73,11 @@ public class Camera_Vision {
 
 
     //returns the correct Target AprilTag ID based on the team prop position
-    public int get_Apriltag_id(String propPostion, String alliance) {
+    public int get_Apriltag_id(String propPosition, String alliance) {
         int tag_id = 0;
 
         if(Objects.equals(alliance, "BLUE")) {
-            switch (propPostion) {
+            switch (propPosition) {
                 case "LEFT":
                     tag_id = 1;
                     break;
@@ -90,7 +90,7 @@ public class Camera_Vision {
             }
 
         } else if (Objects.equals(alliance, "RED")){
-            switch (propPostion) {
+            switch (propPosition) {
                 case "LEFT":
                     tag_id = 4;
                     break;
@@ -108,10 +108,10 @@ public class Camera_Vision {
     /*
     * returns target AprilTag pose -
     * Simple algorithm to align robot with tag:
-    *   - reduce baring to zero (rotate),
+    *   - reduce bearing to zero (rotate),
     *   - reduce yaw to zero (strafe sideways),
     *   - reduce range to zero (drive forward)
-     */
+     */ //TODO Change pose[0] to index 1 to fix outofBounds error
     public double[] get_Apriltag_pose(int tag){
         double[] pose = {}; //structure - {range, bearing, yaw, roll, pitch, elevation, x, y, z}
         AprilTagProcessor aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();

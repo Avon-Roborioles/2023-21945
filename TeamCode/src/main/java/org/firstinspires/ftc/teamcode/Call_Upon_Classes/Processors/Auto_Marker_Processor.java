@@ -156,7 +156,16 @@ public class Auto_Marker_Processor implements VisionProcessor {
 //            }
 //        }
         //ArrayList<Double> areas = new ArrayList<Double>();
+        /*
+        TODO Suggested Improved Algorithm:
+        1) Only save contours that are at least 100 pixels ( Will only save tape markers)
+        2) Cycle through contours:
+        3) If contour has similar X or Y center value with another contour, group them together to get new center
+        * if grouped Center has least X Value - Prop is on left
+        * if grouped center has highest Y value - Prop is on middle
+        * if grouped Center has highest X Value - Prop is on left
 
+         */
         double smallestContourArea = 2000; //random large number to start off the loop
         for(MatOfPoint contour : contours){
             double currentArea = Imgproc.contourArea(contour);
