@@ -9,6 +9,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
+import org.opencv.core.Scalar;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,19 +37,51 @@ public class Camera_Vision {
          webcam2 = hardwareMap.get(WebcamName.class, name2);
     }
 
-    public String getPropPosition(){ //runs Auto_Marker Pipeline and returns position as a string
-         String position = "";
+    private WebcamName getCameraName(int camera){
+        if(camera == 1){
+            return webcam1;
+        } else {
+            return webcam2;
+        }
+    } //TODO Remove if not used
 
+    public String getPropPosition(HardwareMap hardwareMap){ //runs Auto_Marker Pipeline and returns position as a string
+        Auto_Marker_Processor colourMassDetectionProcessor;
+
+        // the current range set by lower and upper is the full range
+        // HSV takes the form: (HUE, SATURATION, VALUE)
+        // which means to select our colour, only need to change HUE
+        // the domains are: ([0, 180], [0, 255], [0, 255])
+        // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
+        // and experiment to fine tune it for blue
+        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
+        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+        double minArea = 1000; // the minimum area for the detection to consider for your prop
+
+        colourMassDetectionProcessor = new Auto_Marker_Processor (
+                lower,
+                upper,
+                100.0,
+                () -> 190, // the left dividing line, in this case the left third-ish of the frame
+                () -> 450 // the left dividing line, in this case the right third-ish of the frame
+        );
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .addProcessor(colourMassDetectionProcessor)
+                .build();
+
+
+        String position = String.valueOf(colourMassDetectionProcessor.getRecordedPropPosition()); //returns the position
          return position;
     }
 
 
     //returns the correct Target AprilTag ID based on the team prop position
-    public int get_Apriltag_id(String propPostion, String alliance) {
+    public int get_Apriltag_id(String propPosition, String alliance) {
         int tag_id = 0;
 
         if(Objects.equals(alliance, "BLUE")) {
-            switch (propPostion) {
+            switch (propPosition) {
                 case "LEFT":
                     tag_id = 1;
                     break;
@@ -60,7 +94,7 @@ public class Camera_Vision {
             }
 
         } else if (Objects.equals(alliance, "RED")){
-            switch (propPostion) {
+            switch (propPosition) {
                 case "LEFT":
                     tag_id = 4;
                     break;
@@ -78,10 +112,10 @@ public class Camera_Vision {
     /*
     * returns target AprilTag pose -
     * Simple algorithm to align robot with tag:
-    *   - reduce baring to zero (rotate),
+    *   - reduce bearing to zero (rotate),
     *   - reduce yaw to zero (strafe sideways),
     *   - reduce range to zero (drive forward)
-     */
+     */ //TODO Change pose[0] to index 1 to fix outofBounds error
     public double[] get_Apriltag_pose(int tag){
         double[] pose = {}; //structure - {range, bearing, yaw, roll, pitch, elevation, x, y, z}
         AprilTagProcessor aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
@@ -108,7 +142,7 @@ public class Camera_Vision {
 
     public void detect_stacked_pixels(){
         visionPortal = VisionPortal.easyCreateWithDefaults(webcam2);
-    }
+    } //TODO
 
     public void close(){ //turns off camera
         visionPortal.stopStreaming();

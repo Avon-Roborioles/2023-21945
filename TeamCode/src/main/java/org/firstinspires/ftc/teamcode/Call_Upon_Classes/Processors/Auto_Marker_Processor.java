@@ -1,5 +1,11 @@
+/*
+ * Finds the largest Contour - Not what we need!
+ * Good reference though
+ */
+
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors;
 
+import com.arcrobotics.ftclib.util.Timing;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,25 +26,24 @@ import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.function.DoubleSupplier;
 
-public class Auto_Marker_Processor implements VisionProcessor{
-    private  DoubleSupplier minArea = null;
-    private  DoubleSupplier left = null;
-    private  DoubleSupplier right = null;
-    private  Scalar upper = null; // lower bounds for masking
-    private  Scalar lower = null; // upper bounds for masking
-    private  TextPaint textPaint = null;
-    private  Paint linePaint = null;
-    private  ArrayList<MatOfPoint> contours = null;
-    private  Mat hierarchy = new Mat();
+public class Auto_Marker_Processor implements VisionProcessor {
+    private final DoubleSupplier left, right;
+    private final Scalar upper; // lower bounds for masking
+    private final Scalar lower; // upper bounds for masking
+    private final TextPaint textPaint;
+    private final Paint linePaint;
+    private final ArrayList<MatOfPoint> contours;
+    private final Mat hierarchy = new Mat();
     private double smallestContourX;
     private double smallestContourY;
     private double smallestContourArea;
-
+    private double minArea;
     private MatOfPoint smallestContour;
-    private Auto_Marker_PipelineOLD.PropPositions previousPropPosition;
-    private Auto_Marker_PipelineOLD.PropPositions recordedPropPosition = Auto_Marker_PipelineOLD.PropPositions.UNFOUND;
+    private PropPositions previousPropPosition;
+    private PropPositions recordedPropPosition = PropPositions.UNFOUND;
 
     /**
      * Uses HSVs for the scalars
@@ -49,8 +54,7 @@ public class Auto_Marker_Processor implements VisionProcessor{
      * @param left    the dividing point for the prop to be on the left
      * @param right   the diving point for the prop to be on the right
      */
-
-    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, DoubleSupplier minArea, DoubleSupplier left, DoubleSupplier right) {
+    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, Double minArea, DoubleSupplier left, DoubleSupplier right) {
         this.contours = new ArrayList<>();
         this.lower = lower;
         this.upper = upper;
@@ -81,7 +85,7 @@ public class Auto_Marker_Processor implements VisionProcessor{
     }
 
     /**
-     * @return the x position of the currently found smallest contour in the range [0, camera width], or -1 if no smallest contour has been determined
+     * @return the x position of the currently found largest contour in the range [0, camera width], or -1 if no largest contour has been determined
      */
     public double getSmallestContourX() {
         return smallestContourX;
@@ -90,17 +94,16 @@ public class Auto_Marker_Processor implements VisionProcessor{
     /**
      * @return the y position of the currently found largest contour in the range [0, camera height], or -1 if no largest contour has been determined
      */
-    public double getLargestContourY() {
+    public double getSmallestContourY() {
         return smallestContourY;
     }
 
     /**
      * @return the area of the currently found largest contour, or -1 if no largest contour has been determined
      */
-    public double getLargestContourArea() {
+    public double getSmallestContourArea() {
         return smallestContourArea;
     }
-
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
@@ -121,27 +124,62 @@ public class Auto_Marker_Processor implements VisionProcessor{
         // this basically helps us to find all the shapes/outlines of objects that exist within our colour range
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
-        // this sets up our smallest contour area to be 0
-        smallestContourArea = -1;
-        // and our currently found smallest contour to be null
-        smallestContour = null;
+        // this sets up our largest contour area to be 0
+       // smallestContourArea = -1; //Done Changed to first contour found - replace to -1
+        // and our currently found largest contour to be null
+        smallestContour = null; //Done change to null
 
         // gets the current minimum area from min area
-        double minArea = this.minArea.getAsDouble();
+        //double minArea = this.minArea.getAsDouble();
 
-        // finds the smallest contour!
+        // finds the largest contour!
         // for each contour we found before we loop over them, calculate their area,
         // and then if our area is larger than our minimum area, and our currently found largest area
         // it stores the contour as our largest contour and the area as our largest area
-        for (MatOfPoint contour : contours) {
-            double area = Imgproc.contourArea(contour);
-            if (area < smallestContourArea && area > minArea) { //TODO switched > to < for area and smallestContour Area
+
+//        for (MatOfPoint contour : contours) {
+//            double area = Imgproc.contourArea(contour);
+//            if (area < largestContourArea) {
+//                largestContour = contour;
+//                largestContourArea = area;
+//            }
+//        }
+
+       // double maxVal = 0;
+//        double firstArea = Imgproc.contourArea(contours.get(0));
+//        for (int i = 0; i < contours.size(); i++) {
+//            double contourArea = Imgproc.contourArea(contours.get(i));
+//            if (maxVal < contourArea)
+//            {
+//                maxVal = contourArea;
+//                largestContour = contours.get(i);
+//            }
+//        }
+        //ArrayList<Double> areas = new ArrayList<Double>();
+        /*
+        TODO Suggested Improved Algorithm:
+        1) Only save contours that are at least 100 pixels ( Will only save tape markers)
+        2) Cycle through contours:
+        3) If contour has similar X or Y center value with another contour, group them together to get new center
+        * if grouped Center has least X Value - Prop is on left
+        * if grouped center has highest Y value - Prop is on middle
+        * if grouped Center has highest X Value - Prop is on left
+
+         */
+        double smallestContourArea = 2000; //random large number to start off the loop
+        for(MatOfPoint contour : contours){
+            double currentArea = Imgproc.contourArea(contour);
+            if(currentArea < smallestContourArea && currentArea > minArea){
+                smallestContourArea = currentArea;
                 smallestContour = contour;
-                smallestContourArea = area;
             }
         }
 
+
+
+
         // sets up the center points of our largest contour to be -1 (offscreen)
+
         smallestContourX = smallestContourY = -1;
 
         // if we found it, calculates the actual centers
@@ -153,21 +191,21 @@ public class Auto_Marker_Processor implements VisionProcessor{
 
         // determines the current prop position, using the left and right dividers we gave earlier
         // if we didn't find any contours which were large enough, sets it to be unfound
-        Auto_Marker_PipelineOLD.PropPositions propPosition;
+        PropPositions propPosition;
         if (smallestContour == null) {
-            propPosition = Auto_Marker_PipelineOLD.PropPositions.UNFOUND;
+            propPosition = PropPositions.UNFOUND;
         } else if (smallestContourX < left.getAsDouble()) {
-            propPosition = Auto_Marker_PipelineOLD.PropPositions.LEFT;
+            propPosition = PropPositions.LEFT;
         } else if (smallestContourX > right.getAsDouble()) {
-            propPosition = Auto_Marker_PipelineOLD.PropPositions.RIGHT;
+            propPosition = PropPositions.RIGHT;
         } else {
-            propPosition = Auto_Marker_PipelineOLD.PropPositions.MIDDLE;
+            propPosition = PropPositions.MIDDLE;
         }
 
         // if we have found a new prop position, and it is not unfound, updates the recorded position,
         // this makes sure that if our camera is playing up, we only need to see the prop in the correct position
         // and we will hold onto it
-        if (propPosition != previousPropPosition && propPosition != Auto_Marker_PipelineOLD.PropPositions.UNFOUND) {
+        if (propPosition != previousPropPosition && propPosition != PropPositions.UNFOUND) {
             recordedPropPosition = propPosition;
         }
 
@@ -208,4 +246,27 @@ public class Auto_Marker_Processor implements VisionProcessor{
         }
     }
 
+    /**
+     * @return the last found prop position, if none have been found, returns {@link PropPositions#UNFOUND}
+     */
+    public PropPositions getRecordedPropPosition() {
+        return recordedPropPosition;
+    }
+
+    // returns the largest contour if you want to get information about it
+    public MatOfPoint getSmallestContour() {
+        return smallestContour;
+    }
+
+    public void close() {
+        hierarchy.release();
+    }
+
+    // the enum that stores the 4 possible prop positions
+    public enum PropPositions {
+        LEFT,
+        MIDDLE,
+        RIGHT,
+        UNFOUND;
+    }
 }

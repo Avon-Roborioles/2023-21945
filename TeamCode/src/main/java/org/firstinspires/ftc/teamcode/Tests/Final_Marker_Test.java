@@ -4,15 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_PipelineOLD;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Scalar;
 
 @TeleOp
-public class Auto_Marker_Test extends OpMode {
+public class Final_Marker_Test extends OpMode {
     private VisionPortal visionPortal;
-    private Auto_Marker_PipelineOLD colourMassDetectionProcessor;
+    private Auto_Marker_Processor colourMassDetectionProcessor;
 
     /**
      * User-defined init method
@@ -27,16 +26,16 @@ public class Auto_Marker_Test extends OpMode {
         // the domains are: ([0, 180], [0, 255], [0, 255])
         // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
         // and experiment to fine tune it for blue
-        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
+        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 100; // the minimum area for the detection to consider for your prop
+        double minArea = 1000; // the minimum area for the detection to consider for your prop
 
-        colourMassDetectionProcessor = new Auto_Marker_PipelineOLD(
+        colourMassDetectionProcessor = new Auto_Marker_Processor (
                 lower,
                 upper,
-                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426 // the left dividing line, in this case the right third of the frame
+                100.0, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 190, // the left dividing line, in this case the left third of the frame
+                () -> 450 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
@@ -63,8 +62,8 @@ public class Auto_Marker_Test extends OpMode {
     public void init_loop() {
         telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
         telemetry.addData("Camera State", visionPortal.getCameraState());
-        telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
-        telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
+        telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getSmallestContourX() + ", y: " + colourMassDetectionProcessor.getSmallestContourY());
+        telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getSmallestContourArea());
     }
 
     /**
@@ -84,12 +83,12 @@ public class Auto_Marker_Test extends OpMode {
         }
 
         // gets the recorded prop position
-        Auto_Marker_PipelineOLD.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (recordedPropPosition == Auto_Marker_PipelineOLD.PropPositions.UNFOUND) {
-            recordedPropPosition = Auto_Marker_PipelineOLD.PropPositions.MIDDLE;
+        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
         }
 
         // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
@@ -121,12 +120,12 @@ public class Auto_Marker_Test extends OpMode {
         }
 
         // gets the recorded prop position
-        Auto_Marker_PipelineOLD.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (recordedPropPosition == Auto_Marker_PipelineOLD.PropPositions.UNFOUND) {
-            recordedPropPosition = Auto_Marker_PipelineOLD.PropPositions.MIDDLE;
+        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
         }
 
         // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels

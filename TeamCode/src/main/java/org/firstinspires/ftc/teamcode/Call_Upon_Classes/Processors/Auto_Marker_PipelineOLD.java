@@ -1,7 +1,7 @@
 /*
-Example Code from Oscar Chevalier on Github:
-https://github.com/Froze-N-Milk/mercurialftcsample/blob/testing/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/vision/ColourMassDetectionProcessor.java
-*/
+ * Finds the largest Contour - Not what we need!
+ * Good reference though
+ */
 
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors;
 
@@ -28,19 +28,16 @@ import java.util.Locale;
 import java.util.function.DoubleSupplier;
 
 public class Auto_Marker_PipelineOLD implements VisionProcessor {
-    private  DoubleSupplier minArea = null;
-    private  DoubleSupplier left = null;
-    private  DoubleSupplier right = null;
-    private  Scalar upper = null; // lower bounds for masking
-    private  Scalar lower = null; // upper bounds for masking
-    private  TextPaint textPaint = null;
-    private  Paint linePaint = null;
-    private  ArrayList<MatOfPoint> contours = null;
-    private  Mat hierarchy = new Mat();
+    private final DoubleSupplier minArea, left, right;
+    private final Scalar upper; // lower bounds for masking
+    private final Scalar lower; // upper bounds for masking
+    private final TextPaint textPaint;
+    private final Paint linePaint;
+    private final ArrayList<MatOfPoint> contours;
+    private final Mat hierarchy = new Mat();
     private double largestContourX;
     private double largestContourY;
     private double largestContourArea;
-
     private MatOfPoint largestContour;
     private PropPositions previousPropPosition;
     private PropPositions recordedPropPosition = PropPositions.UNFOUND;
@@ -138,7 +135,7 @@ public class Auto_Marker_PipelineOLD implements VisionProcessor {
         // it stores the contour as our largest contour and the area as our largest area
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
-            if (area > largestContourArea && area > minArea) { //switched > to <
+            if (area > largestContourArea && area > minArea) {
                 largestContour = contour;
                 largestContourArea = area;
             }

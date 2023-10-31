@@ -41,9 +41,9 @@ public class Drivetrain {
     private DcMotor bl = null;
     private DcMotor fr = null;
     private DcMotor br = null;
-    private DcMotor frontEncoder = null;
-    private DcMotor leftEncoder = null;
-    private DcMotor rightEncoder = null;
+//    private DcMotor frontEncoder = null;
+//    private DcMotor leftEncoder = null;
+//    private DcMotor rightEncoder = null;
 
     /**
      *
@@ -65,9 +65,9 @@ public class Drivetrain {
         fr = hardwareMap.get(DcMotor.class, frontRightName);
         bl = hardwareMap.get(DcMotor.class, backLeftName);
         br = hardwareMap.get(DcMotor.class, backLRightName);
-        frontEncoder = hardwareMap.get(DcMotor.class, "frontEncoder");
-        leftEncoder = hardwareMap.get(DcMotor.class, "leftEncoder");
-        rightEncoder = hardwareMap.get(DcMotor.class, "rightEncoder");
+//        frontEncoder = hardwareMap.get(DcMotor.class, "frontEncoder");
+//        leftEncoder = hardwareMap.get(DcMotor.class, "leftEncoder");
+//        rightEncoder = hardwareMap.get(DcMotor.class, "rightEncoder");
         bl.setDirection(DcMotor.Direction.REVERSE);
         fl.setDirection(DcMotor.Direction.REVERSE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
