@@ -13,7 +13,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 //import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
-
 public class Distance_Sensor {
     //add in constructor class when needed
 //    public Distance_Sensor(String sensor_name){
