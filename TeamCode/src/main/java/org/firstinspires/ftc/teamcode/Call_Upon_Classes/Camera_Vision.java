@@ -46,28 +46,32 @@ public class Camera_Vision {
     } //TODO Remove if not used
 
     public String getPropPosition(HardwareMap hardwareMap){ //runs Auto_Marker Pipeline and returns position as a string
-         String position = "";
-         Auto_Marker_Processor markerProcessor;
-        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 100; // the minimum area for the detection to consider for your prop
-        WebcamName webcam1 = getCameraName(1);
-        WebcamName webcam2 = getCameraName(2);
+        Auto_Marker_Processor colourMassDetectionProcessor;
 
-        markerProcessor = new Auto_Marker_Processor(
+        // the current range set by lower and upper is the full range
+        // HSV takes the form: (HUE, SATURATION, VALUE)
+        // which means to select our colour, only need to change HUE
+        // the domains are: ([0, 180], [0, 255], [0, 255])
+        // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
+        // and experiment to fine tune it for blue
+        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
+        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+        double minArea = 1000; // the minimum area for the detection to consider for your prop
+
+        colourMassDetectionProcessor = new Auto_Marker_Processor (
                 lower,
                 upper,
-                minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426 // the left dividing line, in this case the right third of the frame
+                100.0,
+                () -> 190, // the left dividing line, in this case the left third-ish of the frame
+                () -> 450 // the left dividing line, in this case the right third-ish of the frame
         );
         visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) //name of camera you will use
-                .addProcessor(markerProcessor)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .addProcessor(colourMassDetectionProcessor)
                 .build();
 
-        //gets the recorded prop position
-        //TODO figure out this issue
+
+        String position = String.valueOf(colourMassDetectionProcessor.getRecordedPropPosition()); //returns the position
          return position;
     }
 

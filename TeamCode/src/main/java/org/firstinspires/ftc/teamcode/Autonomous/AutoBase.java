@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 public class AutoBase extends OpMode {
     @Override
     public void init() {
-
+        
     }
 
     @Override

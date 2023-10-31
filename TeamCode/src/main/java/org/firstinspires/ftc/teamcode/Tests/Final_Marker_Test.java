@@ -30,7 +30,7 @@ public class Final_Marker_Test extends OpMode {
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
         double minArea = 1000; // the minimum area for the detection to consider for your prop
 
-        colourMassDetectionProcessor = new Auto_Marker_Processor(
+        colourMassDetectionProcessor = new Auto_Marker_Processor (
                 lower,
                 upper,
                 100.0, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
