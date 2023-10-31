@@ -29,16 +29,20 @@ public class MeepMeepTesting {
 //                                .turn(Math.toRadians(90))
 //                                .build()
 //                );
-        // ----------------
-        // BLUE
-        // ----------------
+
+// ==============================================================================
+// ==============================================================================
+
+// ----------------
+// BLUE
+// ----------------
 
         // -------
         // PARK
         // -------
 
-        // Left
-        RoadRunnerBotEntity bleftpark = new DefaultBotBuilder(meepMeep)
+        // Right
+        RoadRunnerBotEntity brightpark = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -47,8 +51,8 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        // Right
-        RoadRunnerBotEntity brightpark = new DefaultBotBuilder(meepMeep)
+        // Left
+        RoadRunnerBotEntity bleftpark = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -62,11 +66,14 @@ public class MeepMeepTesting {
         // PARK
         // -------
 
-        // -------
-        // NEUTRAL
-        // -------
+// ==============================================================================
+// ==============================================================================
 
-        RoadRunnerBotEntity bleft1 = new DefaultBotBuilder(meepMeep)
+        // ---------
+        // RIGHT
+        // ---------
+
+        RoadRunnerBotEntity bright1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -76,7 +83,7 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(49,10,Math.toRadians(0)))
                                 .build()
                 );
-        RoadRunnerBotEntity bleft2 = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity bright2 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -86,7 +93,7 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(49,10,Math.toRadians(0)))
                                 .build()
                 );
-        RoadRunnerBotEntity bleft3 = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity bright3 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -100,14 +107,18 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        // -------
-        // NEUTRAL
-        // -------
+        // ---------
+        // RIGHT
+        // ---------
+
+// ==============================================================================
+// ==============================================================================
 
         // -------
-        // TOP
+        // LEFT
         // -------
 
+        /// TOP ///
         RoadRunnerBotEntity bleft1_top = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
@@ -151,17 +162,9 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(49, 60,Math.toRadians(0)))
                                 .build()
                 );
+        /// TOP ///
 
-
-
-        // -------
-        // TOP
-        // -------
-
-        // -------
-        // BOTTOM
-        // -------
-
+        /// BOTTOM ///
         RoadRunnerBotEntity bleft1_bottom = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
@@ -200,16 +203,23 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(49, 60, Math.toRadians(0)))
                                 .build()
                 );
+        ]/// BOTTOM ///
 
         // -------
-        // BOTTOM
+        // LEFT
         // -------
 
+// ----------------
+// BLUE
+// ----------------
 
+// ==============================================================================
+// ==============================================================================
 
-        // ----------------
-        // RED
-        // ----------------
+// ----------------
+// RED
+// ----------------
+        
         RoadRunnerBotEntity rrightpark = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
@@ -345,7 +355,7 @@ public class MeepMeepTesting {
                 //.addEntity(brightpark)
                 //.addEntity(rrightpark)
                // .addEntity(rleftpark)
-                .addEntity(bleft3_bottom)
+                .addEntity(bleft1)
                 .start();
     }
 }
