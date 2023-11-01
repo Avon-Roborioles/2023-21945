@@ -12,12 +12,12 @@ public class Mecanum_Drive extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drivetrain.init_drive_motors(hardwareMap, "fl", "fr", "bl", "br");
+        drivetrain.init_drive_motors(hardwareMap);
 
         waitForStart();
 
         while(opModeIsActive()){
-            drivetrain.run_drive_motors(gamepad1);
+            drivetrain.run_drive_motors_15(gamepad1, telemetry);
         }
     }
 }

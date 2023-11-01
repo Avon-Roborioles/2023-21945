@@ -110,6 +110,29 @@ public class Auto_Marker_Processor implements VisionProcessor {
         // this method processes the image (frame) taken by the camera, and tries to find a suitable prop
         // you dont need to call it
 
+        //----------------------------------------------------------------
+//        //image dimensions
+//        int frameWidth = frame.width();
+//        int frameHeight = frame.height();
+//
+//        //height range for middle frame
+//        int top = frameHeight / 3;
+//        int bottom = 2 * frameHeight / 3;
+//
+//        //creates the mask for middle horizontal frame
+//        Mat mask = Mat.zeros(frame.size(), frame.type());
+//        Rect rol = new Rect(0, top, frameWidth, bottom - top);
+//        Mat rolMask = new Mat(mask, rol);
+//        rolMask.setTo(new Scalar(255, 255, 255));
+//
+//        //apply mask to original frame
+//        Mat result = new Mat();
+//        Core.bitwise_and(frame, frame, result, mask);
+        //----------------------------------------------------------------
+
+
+
+
         // this converts the frame from RGB to HSV, which is supposed to be better for doing colour blob detection
         Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2HSV);
         // thats why you need to give your scalar upper and lower bounds as HSV values

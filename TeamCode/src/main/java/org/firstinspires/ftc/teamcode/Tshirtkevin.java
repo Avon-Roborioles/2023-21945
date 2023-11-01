@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp
+@Disabled
 public class Tshirtkevin extends LinearOpMode{
     //Drive Motors
     private DcMotor frontright = null;
