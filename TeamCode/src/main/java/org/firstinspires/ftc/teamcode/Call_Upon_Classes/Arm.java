@@ -7,7 +7,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Arm {
-
+    //TODO Code PID Controller in arm
     private Motor arm = null;
     private double speed = 0.0;
 

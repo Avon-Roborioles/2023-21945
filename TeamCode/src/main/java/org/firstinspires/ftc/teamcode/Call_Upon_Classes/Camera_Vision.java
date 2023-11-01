@@ -37,6 +37,10 @@ public class Camera_Vision {
          webcam2 = hardwareMap.get(WebcamName.class, name2);
     }
 
+    public void init_camera(HardwareMap hardwareMap, String name1){
+        webcam1 = hardwareMap.get(WebcamName.class, name1);
+    }
+
     private WebcamName getCameraName(int camera){
         if(camera == 1){
             return webcam1;
