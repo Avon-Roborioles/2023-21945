@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class TeleOp_Program extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(false);
-    private final Claw claw = new Claw();
+    private final Intake intake = new Intake();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
@@ -20,7 +20,7 @@ public class TeleOp_Program extends LinearOpMode {
     //updates telemetry for all robot functions
     public void setTelemetry(){
         drivetrain.getTelemetry(telemetry);
-        claw.getTelemetry(telemetry);
+        intake.getTelemetry(telemetry);
         launcher.getTelemetry(telemetry);
         arm.getTelemetry(telemetry);
     }
@@ -28,7 +28,7 @@ public class TeleOp_Program extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain.init_drive_motors(hardwareMap);
-        claw.init_claw(hardwareMap, "claw", "wrist");
+        intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm(hardwareMap, "arm");
         vision.init_cameras(hardwareMap, "Webcam1", "Webcam2");
@@ -41,9 +41,9 @@ public class TeleOp_Program extends LinearOpMode {
 
         while(opModeIsActive()) { //robot loop
             drivetrain.run_drive_motors(gamepad1, telemetry);
-            claw.run_claw(gamepad2);
+            intake.run_intake(gamepad2);
             launcher.run_Launcher(gamepad1);
-            arm.run_arm(gamepad2);
+            arm.run_arm_manual(gamepad2);
             setTelemetry();
             telemetry.update(); //updates telemetry for all robot functions
 
