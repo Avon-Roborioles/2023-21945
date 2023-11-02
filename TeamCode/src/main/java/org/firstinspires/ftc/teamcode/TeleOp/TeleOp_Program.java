@@ -11,17 +11,17 @@ public class TeleOp_Program extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(false);
     private final Intake intake = new Intake();
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
+    //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
+    //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
+    //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
 
 
     //updates telemetry for all robot functions
     public void setTelemetry(){
         drivetrain.getTelemetry(telemetry);
         intake.getTelemetry(telemetry);
-        launcher.getTelemetry(telemetry);
+        //launcher.getTelemetry(telemetry);
         arm.getTelemetry(telemetry);
     }
 
@@ -29,9 +29,9 @@ public class TeleOp_Program extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         drivetrain.init_drive_motors(hardwareMap);
         intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
-        launcher.init_Launcher(hardwareMap, "launcher");
+        //launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm(hardwareMap, "leftMotor", "rightMotor");
-        vision.init_cameras(hardwareMap, "Webcam1", "Webcam2");
+        //vision.init_cameras(hardwareMap, "Webcam1", "Webcam2");
 
         setTelemetry();
 
@@ -45,13 +45,13 @@ public class TeleOp_Program extends LinearOpMode {
             //arm.run_arm_manual(gamepad2);
             arm.run_arm(gamepad2);
             intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
-            launcher.run_Launcher(gamepad1);
+            //launcher.run_Launcher(gamepad1);
             setTelemetry();
             telemetry.update(); //updates te telemetry for all robot functions
 
-            if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
-                feedback.endGame_Alert(gamepad1, gamepad2);
-            }
+//            if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
+//                feedback.endGame_Alert(gamepad1, gamepad2);
+//            }
         }
     }
 }

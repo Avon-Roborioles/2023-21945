@@ -30,6 +30,7 @@ public class Intake {
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
     }
 
+
     public void run_intake(Gamepad gamepad2, armCommands armStatus){
         //wrist control
         speed = gamepad2.right_stick_y;
