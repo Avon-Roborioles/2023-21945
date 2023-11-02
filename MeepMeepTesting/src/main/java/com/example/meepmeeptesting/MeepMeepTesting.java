@@ -260,14 +260,11 @@ public class MeepMeepTesting {
 // RED
 // ----------------
 
-<<<<<<< Updated upstream
-=======
         // ---------
         // PARK
         // ---------
 
         // Right
->>>>>>> Stashed changes
         RoadRunnerBotEntity rrightpark = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
@@ -295,9 +292,9 @@ public class MeepMeepTesting {
 // ==============================================================================
 // ==============================================================================
 
-        // ---------
+        // --------------
         // RIGHT
-        // ---------
+        // --------------
 
         /// TOP ///
         RoadRunnerBotEntity rright1_top = new DefaultBotBuilder(meepMeep)
@@ -334,6 +331,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
         /// TOP ///
+
 
         /// BOTTOM ///
         RoadRunnerBotEntity rright1_bottom = new DefaultBotBuilder(meepMeep)
@@ -382,8 +380,12 @@ public class MeepMeepTesting {
         // LEFT
         // ---------
 
-        /// TOP ///
-        RoadRunnerBotEntity rleft1_top = new DefaultBotBuilder(meepMeep)
+        /// ---
+        // TOP
+        /// ---
+
+        /// PATH 1 ///
+        RoadRunnerBotEntity rleft1_top_1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -398,7 +400,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        RoadRunnerBotEntity rleft2_top = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity rleft2_top_1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -413,7 +415,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        RoadRunnerBotEntity rleft3_top = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity rleft3_top_1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -427,11 +429,61 @@ public class MeepMeepTesting {
                                 .lineToConstantHeading(new Vector2d(49, -60))
                                 .build()
                 );
+        /// PATH 1 ///
 
-        /// TOP ///
+        /// PATH 2 ///
+        RoadRunnerBotEntity rleft1_top_2 = new DefaultBotBuilder(meepMeep)
+                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -62, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-36,-32, Math.toRadians(180)))
+                                .lineToConstantHeading(new Vector2d(-36, -13))
+                                .lineToConstantHeading(new Vector2d(14, -13))
+                                .lineToLinearHeading(new Pose2d(49,-13, Math.toRadians(0)))
+                                .lineToConstantHeading(new Vector2d(49, -34))
+                                .lineToConstantHeading(new Vector2d(49, -13))
+                                .build()
+                );
 
-        /// BOTTOM ///
-        RoadRunnerBotEntity rleft1_bottom = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity rleft2_top_2 = new DefaultBotBuilder(meepMeep)
+                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -62, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(-36,-34))
+                                .lineToLinearHeading(new Pose2d(-36, -10, Math.toRadians(0)))
+                                .lineToConstantHeading(new Vector2d(49,-10))
+                                .lineToConstantHeading(new Vector2d(49, -33))
+                                .lineToLinearHeading(new Pose2d(49, -13,Math.toRadians(0)))
+                                .build()
+                );
+
+        RoadRunnerBotEntity rleft3_top_2 = new DefaultBotBuilder(meepMeep)
+                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -62, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-36,-32, Math.toRadians(0)))
+                                .lineToConstantHeading(new Vector2d(-36, -13))
+                                .lineToConstantHeading(new Vector2d(14, -13))
+                                .lineToLinearHeading(new Pose2d(49,-13, Math.toRadians(0)))
+                                .lineToConstantHeading(new Vector2d(49, -34))
+                                .lineToConstantHeading(new Vector2d(49, -13))
+                                .build()
+                );
+        /// PATH 2 ///
+
+        /// ---
+        // TOP
+        /// ---
+
+        /// ---
+        // BOTTOM
+        /// ---
+
+        /// PATH 1 ///
+        RoadRunnerBotEntity rleft1_bottom_1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -444,7 +496,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        RoadRunnerBotEntity rleft2_bottom = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity rleft2_bottom_1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -457,7 +509,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        RoadRunnerBotEntity rleft3_bottom = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity rleft3_bottom_1 = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -469,8 +521,55 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(49, -60, Math.toRadians(0)))
                                 .build()
                 );
+        /// PATH 1 ///
 
-        /// BOTTOM ///
+        /// PATH 2 ///
+        RoadRunnerBotEntity rleft1_bottom_2 = new DefaultBotBuilder(meepMeep)
+                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -62, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-36,-32, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(-36,-59, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49, -60, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49,-32, Math.toRadians(0)))
+                                .waitSeconds(0.3)
+                                .lineToLinearHeading(new Pose2d(49, -13, Math.toRadians(0)))
+                                .build()
+                );
+
+        RoadRunnerBotEntity rleft2_bottom_2 = new DefaultBotBuilder(meepMeep)
+                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -62, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-36,-34, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-36,-59, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49, -60, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49,-32, Math.toRadians(0)))
+                                .waitSeconds(0.3)
+                                .lineToLinearHeading(new Pose2d(49, -13, Math.toRadians(0)))
+                                .build()
+                );
+
+        RoadRunnerBotEntity rleft3_bottom_2 = new DefaultBotBuilder(meepMeep)
+                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -62, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-36,-34, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(-36,-59, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49, -60, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49,-32, Math.toRadians(0)))
+                                .waitSeconds(0.3)
+                                .lineToLinearHeading(new Pose2d(49, -13, Math.toRadians(0)))
+                                .build()
+                );
+        /// PATH 2 ///
+
+        /// ---
+        // BOTTOM
+        /// ---
 
         // ---------
         // LEFT
@@ -483,20 +582,9 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-<<<<<<< Updated upstream
-                //.addEntity(bleftpark)
-                //.addEntity(brightpark)
-                //.addEntity(rrightpark)
-                // .addEntity(rleftpark)
-                .addEntity(bleft1_top)
-=======
-                .addEntity(bleft2_bottom)
-                .addEntity(bright2_top)
-                .addEntity(rleft2_bottom)
-                .addEntity(rright2_top)
 
+                .addEntity(rleft3_bottom_2)
 
->>>>>>> Stashed changes
                 .start();
     }
 }
