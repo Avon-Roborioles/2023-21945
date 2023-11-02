@@ -41,9 +41,9 @@ public class TeleOp_Program extends LinearOpMode {
 
         while(opModeIsActive()) { //robot loop
             drivetrain.run_drive_motors(gamepad1, telemetry);
-            intake.run_intake(gamepad2);
-            launcher.run_Launcher(gamepad1);
             arm.run_arm_manual(gamepad2);
+            intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
+            launcher.run_Launcher(gamepad1);
             setTelemetry();
             telemetry.update(); //updates telemetry for all robot functions
 

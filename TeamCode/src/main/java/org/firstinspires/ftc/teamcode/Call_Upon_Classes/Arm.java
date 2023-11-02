@@ -10,13 +10,26 @@ public class Arm {
     //TODO Code PID Controller in arm
     private Motor arm = null;
     private double speed = 0.0;
-    private boolean armIsDown = true;
+    public enum armCommands {
+        GROUND,
+        SCORE,
+        MANUAL,
+        PIXEL5,
+        PIXEL4,
+        PIXEL3,
+        PIXEL2,
+        PIXEL1;
+    }
+    private armCommands armStatus = armCommands.GROUND;
     private double pixel5Height = 5;
     private double pixel4Height = 4;
     private double pixel3Height = 3;
     private double pixel2Height = 2;
     private double pixel1Height = 1;
 
+    /**
+     * easy to use commands to refer to arm status
+     */
 
     public void init_arm(HardwareMap hardwareMap, String armName){
         arm = new Motor(hardwareMap, armName);
@@ -28,8 +41,10 @@ public class Arm {
         // Limits
         if (arm.getCurrentPosition() >= 180 && speed > 0) {
             speed = 0;
+            armStatus = armCommands.SCORE;
         } else if (arm.getCurrentPosition() <= 0 && speed < 0) {
             speed = 0;
+            armStatus = armCommands.GROUND;
         }
 
         arm.set(speed);
@@ -39,21 +54,21 @@ public class Arm {
 
     } //TODO ideal arm control wit PID Control
 
-    public boolean getArmStatus(){
-        return armIsDown;
+    public armCommands getArmStatus(){
+        return armStatus;
     }
 
     //auto arm functions
     public void setArmPostition(double position){
-
-    } //TODO - moves arm to exact position
+    armStatus = armCommands.MANUAL;
+    } //TODO - moves arm to an exact position
 
     public void setArmDown(){
-        armIsDown = true;
+        armStatus = armCommands.GROUND;
     } //TODO - moves the arm down to pickup position
 
     public void setArmUp(){
-        armIsDown = false;
+        armStatus = armCommands.SCORE;
     }//TODO - sets arm to position for scoring
 
 

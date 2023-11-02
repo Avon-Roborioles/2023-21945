@@ -5,7 +5,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm.armCommands;
 
 //FTCLib Library
 import com.arcrobotics.ftclib.hardware.motors.*;
@@ -30,7 +30,7 @@ public class Intake {
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
     }
 
-    public void run_intake(Gamepad gamepad2){
+    public void run_intake(Gamepad gamepad2, armCommands armStatus){
         //wrist control
         speed = gamepad2.right_stick_y;
         wrist.set(speed);
