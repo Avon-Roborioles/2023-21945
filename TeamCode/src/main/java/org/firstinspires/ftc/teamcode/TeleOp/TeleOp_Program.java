@@ -30,7 +30,7 @@ public class TeleOp_Program extends LinearOpMode {
         drivetrain.init_drive_motors(hardwareMap);
         intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm(hardwareMap, "arm");
+        arm.init_arm(hardwareMap, "leftMotor", "rightMotor");
         vision.init_cameras(hardwareMap, "Webcam1", "Webcam2");
 
         setTelemetry();
