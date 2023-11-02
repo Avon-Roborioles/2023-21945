@@ -21,7 +21,7 @@ public class Arm {
         PIXEL1;
     }
     private armCommands armStatus = armCommands.GROUND;
-    private double pixel5Height = 5;
+    private double pixel5Height = 5; //TODO Change these values to actual height
     private double pixel4Height = 4;
     private double pixel3Height = 3;
     private double pixel2Height = 2;
@@ -63,14 +63,33 @@ public class Arm {
     armStatus = armCommands.MANUAL;
     } //TODO - moves arm to an exact position
 
-    public void setArmDown(){
+    public void setToGround(){
         armStatus = armCommands.GROUND;
     } //TODO - moves the arm down to pickup position
 
-    public void setArmUp(){
+    public void setToScore(){
         armStatus = armCommands.SCORE;
     }//TODO - sets arm to position for scoring
 
+    public void setToPreset(armCommands command){
+        switch(command){
+            case PIXEL1:
+                armStatus = armCommands.PIXEL1;
+                break;
+            case PIXEL2:
+                armStatus = armCommands.PIXEL2;
+                break;
+            case PIXEL3:
+                armStatus = armCommands.PIXEL3;
+                break;
+            case PIXEL4:
+                armStatus = armCommands.PIXEL4;
+                break;
+            case PIXEL5:
+                armStatus = armCommands.PIXEL5;
+                break;
+        }
+    } //TODO - sets arm to preset for stackedCone
 
 
     public void getTelemetry(Telemetry telemetry){

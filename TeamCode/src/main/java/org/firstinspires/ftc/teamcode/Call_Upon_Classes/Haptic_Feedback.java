@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.arcrobotics.ftclib.util.Timing.Timer;
 
+import java.util.concurrent.TimeUnit;
 
 /*
 Useful methods to help alert drivers during matches
@@ -23,6 +26,10 @@ public class Haptic_Feedback {
         gamepad2.rumble(2000);
 
     }
+
+    public void countdown(Gamepad gamepad, int seconds){
+
+    } //TODO - add countdown rumble effect
 
     public void getTouchpad(Gamepad gamepad){
         //returns swipe combo name a driver did to their gamepad
