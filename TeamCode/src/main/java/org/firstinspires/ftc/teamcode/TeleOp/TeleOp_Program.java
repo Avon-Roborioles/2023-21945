@@ -40,13 +40,14 @@ public class TeleOp_Program extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) { //robot loop
+
             drivetrain.run_drive_motors(gamepad1, telemetry);
             //arm.run_arm_manual(gamepad2);
             arm.run_arm(gamepad2);
             intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
             launcher.run_Launcher(gamepad1);
             setTelemetry();
-            telemetry.update(); //updates telemetry for all robot functions
+            telemetry.update(); //updates te telemetry for all robot functions
 
             if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
                 feedback.endGame_Alert(gamepad1, gamepad2);
