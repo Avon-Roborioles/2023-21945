@@ -8,7 +8,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Arm {
     //TODO Code PID Controller in arm
-    private Motor arm = null;
+    private Motor leftMotor = null;
+    private Motor rightMotor = null;
     private double speed = 0.0;
     public enum armCommands {
         GROUND,
@@ -31,23 +32,25 @@ public class Arm {
      * easy to use commands to refer to arm status
      */
 
-    public void init_arm(HardwareMap hardwareMap, String armName){
-        arm = new Motor(hardwareMap, armName);
+    public void init_arm(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
+        leftMotor = new Motor(hardwareMap, leftMotorName);
+        rightMotor = new Motor(hardwareMap, rightMotorName);
     }
 
     public void run_arm_manual(Gamepad gamepad2){
         speed = gamepad2.left_stick_y;
 
         // Limits
-        if (arm.getCurrentPosition() >= 180 && speed > 0) {
+        if (leftMotor.getCurrentPosition() >= 180 && speed > 0) {
             speed = 0;
             armStatus = armCommands.SCORE;
-        } else if (arm.getCurrentPosition() <= 0 && speed < 0) {
+        } else if (leftMotor.getCurrentPosition() <= 0 && speed < 0) {
             speed = 0;
             armStatus = armCommands.GROUND;
         }
 
-        arm.set(speed);
+        leftMotor.set(speed);
+        rightMotor.set(-speed);
     } //basic arm control - just controls speed
 
     public void run_arm(Gamepad gamepad2){

@@ -32,28 +32,33 @@ public class PID_Arm_Config extends OpMode {
 
     private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
 
-    private DcMotorEx armMotor;
+    private DcMotorEx leftMotor;
+    private DcMotorEx rightMotor;
 
     @Override
     public void init() {
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        armMotor = hardwareMap.get(DcMotorEx.class, "arm");
+        leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
+        rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
     }
 
     @Override
     public void loop() {
         controller.setPID(p, i, d);
-        int armPos = armMotor.getCurrentPosition();
-        double pid = controller.calculate(armPos, target);
+        int leftArmPos = leftMotor.getCurrentPosition();
+        int rightArmPos = rightMotor.getCurrentPosition();
+        double pid = controller.calculate(leftArmPos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
 
-        armMotor.setPower(power);
+        leftMotor.setPower(power);
+        rightMotor.setPower(-power);
 
-        telemetry.addData("Current Position: ", armPos);
+        telemetry.addData("Left Arm Position: ", leftArmPos);
+        telemetry.addData("Right Arm Position: ", rightArmPos);
         telemetry.addData("Target Position: ", target);
         telemetry.update();
     }
