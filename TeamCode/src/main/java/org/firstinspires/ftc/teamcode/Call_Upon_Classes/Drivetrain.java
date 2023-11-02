@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -46,8 +48,8 @@ public class Drivetrain {
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
 //        x_encoder = hardwareMap.get(DcMotor.class, "x");
-        bl.setDirection(DcMotor.Direction.REVERSE);
-        fl.setDirection(DcMotor.Direction.REVERSE);
+        bl.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        fl.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -92,7 +94,13 @@ public class Drivetrain {
     }
 
 
-    public void getTelemetry (Telemetry telemetry){
+    public void auto_forward (double inch) {
+//        while () {
+//
+//        }
+    }
+
+    public void getTelemetry (@NonNull Telemetry telemetry){
         telemetry.addData("fl power: ",fl.getPower());
         telemetry.addData("fr power: ",fr.getPower());
         telemetry.addData("bl power: ",bl.getPower());
@@ -103,3 +111,4 @@ public class Drivetrain {
     }
 
 }
+
