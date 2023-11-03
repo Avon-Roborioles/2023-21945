@@ -54,7 +54,7 @@ public class Intake {
 
     //init intake code to test claw + wrist without pixelHolder
     public void init_intake_demo(HardwareMap hardwareMap, String clawName, String wristName){
-        
+
     }
 
     //autonomous methods
