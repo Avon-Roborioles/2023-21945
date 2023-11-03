@@ -31,7 +31,7 @@ public class Intake {
     private ServoEx pixelHolder = null;
     private DcMotorEx wristMotor = null;
     private double rightY = 0.0;
-    private double defaultSpeed = 0.7;
+    //private double defaultSpeed = 0.7;
 
     public enum wristCommands {
         WRIST_UP,
@@ -52,10 +52,16 @@ public class Intake {
         wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
     }
 
+    //init intake code to test claw + wrist without pixelHolder
+    public void init_intake_demo(HardwareMap hardwareMap, String clawName, String wristName){
+        
+    }
+
     //autonomous methods
 
     public wristCommands getWristStatus(){
-    } //TODO
+        return wristStatus;
+    } //Done
 
     public boolean getClawStatus(){
         return clawIsOpen;
@@ -95,6 +101,7 @@ public class Intake {
         }
         if(clock.done()){
             moveWrist(wristCommands.WRIST_DOWN);
+            //TODO close pixelHolder
         }
     } //Done - wrist up, claw open, wrist down
 
@@ -162,14 +169,11 @@ public class Intake {
 
         wristMotor.setPower(power);
 
-        if(button_a){
-
-        } else if(button_x){
-
-        } else if(button_y){
-
-        } else if(button_b){
-
+        //easy to use controls to store and retrieve pixel on bot
+        if(button_y){
+            storePixel();
+        } else if(button_a){
+            retrievePixel();
         }
 
 
