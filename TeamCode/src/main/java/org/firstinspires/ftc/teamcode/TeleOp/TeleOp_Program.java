@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 @TeleOp
 public class TeleOp_Program extends LinearOpMode {
     //creating objects for robot functions
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(false);
+    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(true); //change to false if driving still isn't fixed
     private final Intake intake = new Intake();
     //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
@@ -42,7 +42,6 @@ public class TeleOp_Program extends LinearOpMode {
         while(opModeIsActive()) { //robot loop
 
             drivetrain.run_drive_motors(gamepad1, telemetry);
-            //arm.run_arm_manual(gamepad2);
             arm.run_arm(gamepad2);
             intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
             //launcher.run_Launcher(gamepad1);

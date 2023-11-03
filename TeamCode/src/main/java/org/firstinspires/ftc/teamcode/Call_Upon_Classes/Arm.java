@@ -26,6 +26,7 @@ public class Arm {
         PIXEL1;
     }
     private armCommands armStatus = armCommands.GROUND;
+    private int scoreHeight = 600;
     private int pixel5Height = 500; //TODO Change these values to actual height
     private int pixel4Height = 400;
     private int pixel3Height = 300;
@@ -64,18 +65,37 @@ public class Arm {
 
         leftMotor.setPower(speed);
         rightMotor.setPower(-speed);
-    } //basic arm control - just controls speed
+    } //Done - just controls speed - test
 
     //Done ideal arm control wit PID Control
     public void run_arm(Gamepad gamepad2){
         armStatus = armCommands.MANUAL;
+
         double leftY = gamepad2.left_stick_y;
+        boolean dpadLeft = gamepad2.dpad_left;
+        boolean dpadUp = gamepad2.dpad_up;
+        boolean dpadRight = gamepad2.dpad_right;
+        boolean dpadDown = gamepad2.dpad_down;
+
+        //limits
+        if(target > 180){
+            target = 180;
+        } else if(target < 0){
+            target = 0;
+        }
 
         //driver control
         if(leftY > 0){ //left joystick up
             target += 10; //TODO - test code to adjust
         } else if (leftY < 0){
             target-= 10;
+        }
+        if(dpadUp){ //score height
+            armStatus = armCommands.SCORE;
+            target = scoreHeight;
+        } else if (dpadDown){
+            armStatus = armCommands.GROUND;
+            target = 0;
         }
 
         //PID control
@@ -89,7 +109,7 @@ public class Arm {
 
         leftMotor.setPower(power);
         rightMotor.setPower(-power);
-    } //TODO - PID Control - test
+    } //Done - PID Control - test
 
     //quick method to get armStatus (returns armCommands result)
     public armCommands getArmStatus(){
@@ -113,50 +133,22 @@ public class Arm {
 
         leftMotor.setPower(power);
         rightMotor.setPower(-power);
-    }
-
-    //Done - moves the arm down to pickup position
-    public void setToGround(){
-        armStatus = armCommands.GROUND;
-
-        target = 0;
-
-        controller.setPID(p, i, d);
-        int leftArmPos = leftMotor.getCurrentPosition();
-        int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(leftArmPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-
-        leftMotor.setPower(power);
-        rightMotor.setPower(-power);
-
-    }
-
-    //Done - sets arm to position for scoring - test
-    public void setToScore(){
-        armStatus = armCommands.SCORE;
-
-        target = 180;
-
-        controller.setPID(p, i, d);
-        int leftArmPos = leftMotor.getCurrentPosition();
-        int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(leftArmPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-
-        leftMotor.setPower(power);
-        rightMotor.setPower(-power);
-
-    }
+    } //done - test
 
     //Done - sets arm to preset for stackedCone
     public void setToPreset(armCommands command){
         switch(command){
             //sets the target position based on the armCommands
+            case GROUND:
+                armStatus = armCommands.GROUND;
+                target = 0;
+                break;
+
+            case SCORE:
+                armStatus = armCommands.SCORE;
+                target = scoreHeight;
+                break;
+
             case PIXEL1:
                 armStatus = armCommands.PIXEL1;
                 target = pixel1Height;
@@ -181,7 +173,7 @@ public class Arm {
                 armStatus = armCommands.PIXEL5;
                 target = pixel5Height;
                 break;
-        }
+        } //sets the target based on the Arm Command
 
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
@@ -198,7 +190,10 @@ public class Arm {
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);
-        telemetry.addData("Arm Speed", speed);
+        telemetry.addData("Current Arm Target", target);
+        telemetry.addData("Left Arm Motor Position", leftMotor.getCurrentPosition());
+        telemetry.addData("Right Arm Motor Position", rightMotor.getCurrentPosition());
+        telemetry.addData("Current Arm Status", armStatus);
     }
 }
 
