@@ -27,7 +27,10 @@ public class TeleOp_Program extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drivetrain.init_drive_motors(hardwareMap);
+        //drivetrain.init_drive_motors(hardwareMap);
+
+        drivetrain.init_main(gamepad1);
+
         intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
         //launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm(hardwareMap, "leftMotor", "rightMotor");
@@ -41,7 +44,10 @@ public class TeleOp_Program extends LinearOpMode {
 
         while(opModeIsActive()) { //robot loop
 
-            drivetrain.run_drive_motors(gamepad1, telemetry);
+            //drivetrain.run_drive_motors(gamepad1, telemetry);
+
+            drivetrain.run_drivetrain();
+
             arm.run_arm(gamepad2);
             intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
             //launcher.run_Launcher(gamepad1);

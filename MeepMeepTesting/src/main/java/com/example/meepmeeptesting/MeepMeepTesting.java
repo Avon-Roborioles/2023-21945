@@ -15,7 +15,7 @@ public class MeepMeepTesting {
         // 1 Bot:   - 2985
         // 36 Bots: - 2559
 
-        MeepMeep meepMeep = new MeepMeep(200);
+        MeepMeep meepMeep = new MeepMeep(2559);
 
 //        RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
 //                // We set this bot to be blue

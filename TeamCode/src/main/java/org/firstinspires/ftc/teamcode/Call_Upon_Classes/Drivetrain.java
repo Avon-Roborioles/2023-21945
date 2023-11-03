@@ -1,11 +1,16 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+
 import androidx.annotation.NonNull;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -27,6 +32,30 @@ public class Drivetrain {
     private DcMotor fr = null;
     private DcMotor br = null;
     private DcMotor x_encoder = null;
+
+    /// new library stuff ///
+
+    private Motor fL, fR, bL, bR;
+    private MecanumDrive drive;
+    private GamepadEx driverOp;
+
+    public void init_main(Gamepad gamepad1) {
+        drive = new MecanumDrive(fL, fR, bL, bR);
+        driverOp = new GamepadEx(gamepad1);
+    }
+
+    public void run_drivetrain() {
+        drive.driveRobotCentric(
+                driverOp.getLeftX(),
+                driverOp.getLeftY(),
+                driverOp.getRightY()
+        );
+    }
+
+    /// new library stuff ///
+
+
+
 
     /**
      *
@@ -55,6 +84,8 @@ public class Drivetrain {
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
+
 
     //old
     public void run_drive_motors(Gamepad gamepad1, Telemetry telemetry){
