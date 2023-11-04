@@ -39,7 +39,7 @@ public class Drivetrain {
     private MecanumDrive drive;
     private GamepadEx driverOp;
 
-    public void init_main(Gamepad gamepad1) {
+    public void init_main() {
         drive = new MecanumDrive(fL, fR, bL, bR);
         driverOp = new GamepadEx(gamepad1);
     }
@@ -104,8 +104,8 @@ public class Drivetrain {
     }
 
     public void run_drive_motors_15(Gamepad gamepad1, Telemetry telemetry){
-        ly=gamepad1.left_stick_y;
-        lx=gamepad1.left_stick_x;
+        ly=gamepad1.left_stick_x; //swtiched with x
+        lx=gamepad1.left_stick_y; //switched with y
         rx=gamepad1.right_stick_x;
 
         if (Math.abs(lx)>Math.abs(ly)) {//x power only

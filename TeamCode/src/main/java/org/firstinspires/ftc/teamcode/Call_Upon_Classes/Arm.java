@@ -55,13 +55,13 @@ public class Arm {
         speed = gamepad2.left_stick_y;
 
         // Limits
-        if (leftMotor.getCurrentPosition() >= 180 && speed > 0) {
-            speed = 0;
-            armStatus = armCommands.SCORE;
-        } else if (leftMotor.getCurrentPosition() <= 0 && speed < 0) {
-            speed = 0;
-            armStatus = armCommands.GROUND;
-        }
+//        if (leftMotor.getCurrentPosition() >= 180 && speed > 0) {
+//            speed = 0;
+//            armStatus = armCommands.SCORE;
+//        } else if (leftMotor.getCurrentPosition() <= 0 && speed < 0) {
+//            speed = 0;
+//            armStatus = armCommands.GROUND;
+//        }
 
         leftMotor.setPower(speed);
         rightMotor.setPower(-speed);

@@ -179,6 +179,32 @@ public class Intake {
 
     }
 
+    public void run_intake_manual(Gamepad gamepad2){
+        boolean leftBumper = gamepad2.left_bumper;
+        boolean rightBumper = gamepad2.right_bumper;
+        float rightY = gamepad2.right_stick_y;
+        boolean button_a = gamepad2.a;
+        boolean button_x = gamepad2.x;
+        boolean button_y = gamepad2.y;
+        boolean button_b = gamepad2.b;
+
+        if(leftBumper){
+            openClaw(true);
+        } else if(rightBumper){
+            openClaw(false);
+        }
+
+        if(rightY > 0){
+            wristMotor.setPower(-0.2);
+        } else if(rightY < 0){
+            wristMotor.setPower(0.2);
+        } else{
+            wristMotor.setPower(0);
+        }
+
+
+    }
+
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);

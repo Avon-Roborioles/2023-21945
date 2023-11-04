@@ -27,9 +27,9 @@ public class TeleOp_Program extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        //drivetrain.init_drive_motors(hardwareMap);
+        drivetrain.init_drive_motors(hardwareMap);
 
-        drivetrain.init_main(gamepad1);
+        //drivetrain.init_main();
 
         intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
         //launcher.init_Launcher(hardwareMap, "launcher");
@@ -44,15 +44,17 @@ public class TeleOp_Program extends LinearOpMode {
 
         while(opModeIsActive()) { //robot loop
 
-            //drivetrain.run_drive_motors(gamepad1, telemetry);
+            drivetrain.run_drive_motors_15(gamepad1, telemetry);
 
-            drivetrain.run_drivetrain();
+            //drivetrain.run_drivetrain();
 
-            arm.run_arm(gamepad2);
-            intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
+            //arm.run_arm(gamepad2);
+            arm.run_arm_manual(gamepad2);
+            //intake.run_intake(gamepad2, arm.getArmStatus()); //takes in armStatus for future use
+            intake.run_intake_manual(gamepad2);
             //launcher.run_Launcher(gamepad1);
             setTelemetry();
-            telemetry.update(); //updates te telemetry for all robot functions
+            //telemetry.update(); //updates te telemetry for all robot functions
 
 //            if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
 //                feedback.endGame_Alert(gamepad1, gamepad2);
