@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.util.Timing;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -24,13 +25,15 @@ public class Intake {
     public static double p = 0, i = 0, d = 0; //PID variables needed
     public static double f = 0; //feed forward variable
 
-    public static int target = 0; //the variable team drivers will control to move the wrist
+    public static int wristTarget = 0; //the variable team drivers will control to move the wrist
     private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
 
     private ServoEx claw = null;
     private ServoEx pixelHolder = null;
     private DcMotorEx wristMotor = null;
     private double rightY = 0.0;
+    private int maxWristPosition = 1000;
+    private int wristPosition = 0;
     //private double defaultSpeed = 0.7;
 
     public enum wristCommands {
@@ -52,9 +55,18 @@ public class Intake {
         wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
     }
 
-    //init intake code to test claw + wrist without pixelHolder
-    public void init_intake_demo(HardwareMap hardwareMap, String clawName, String wristName){
+    //main intake method
+    public void init_intake_main(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
+        claw = new SimpleServo(hardwareMap, clawName, 0, 180);
+        pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
+        wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
 
+        //used to set start position to 0
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        wristMotor.setTargetPosition(0);
+
+        wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     //autonomous methods
@@ -69,14 +81,14 @@ public class Intake {
 
     public void moveWrist(wristCommands command){
         if(command == wristCommands.WRIST_UP){
-            target = 100;
+            wristTarget = 100;
         } else if(command == wristCommands.WRIST_DOWN){
-            target = 0;
+            wristTarget = 0;
         }
         controller.setPID(p, i, d);
         int wristPos = wristMotor.getCurrentPosition();
-        double pid = controller.calculate(wristPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+        double pid = controller.calculate(wristPos, wristTarget);
+        double ff = Math.cos(Math.toRadians(wristTarget / ticks_in_degree)) * f;
 
         double power = pid + ff;
 
@@ -90,6 +102,30 @@ public class Intake {
             claw.setPosition(180);
         }
     } //Done - test
+
+    public void openPixelHolder(boolean open){
+        if(open){
+            pixelHolder.setPosition(60);
+        } else {
+            pixelHolder.setPosition(0);
+        }
+    }
+
+    //manages the pixelHolder based on certain conditions
+    public void runAutoPixelHolder(boolean override){
+        if(override){ //if we need pixelHolder closed
+            //close pixelHolder
+            openPixelHolder(false);
+        } else {
+            if (wristTarget <= 200) {
+                //open pixelHolder
+                openPixelHolder(true);
+            } else {
+                //close pixelHolder
+                openPixelHolder(false);
+            }
+        }
+    }
 
     public void storePixel(){
         openClaw(false);
@@ -109,7 +145,7 @@ public class Intake {
 
 
 
-    public void run_intake(Gamepad gamepad2, armCommands armStatus){
+    public void run_intake_PID(Gamepad gamepad2, armCommands armStatus){
 //        //wrist control
 //        rightY = gamepad2.right_stick_y;
 //        wrist.set(rightY);
@@ -148,22 +184,22 @@ public class Intake {
 
         //claw control
         if(leftBumper){ //open claw
-            claw.setPosition(0);
+            openClaw(true);
         } else if(rightBumper){ //close claw
-            claw.setPosition(180);
+            openClaw(false);
         }
 
         //manual wrist control
         //PID control
         if(rightY > 0){
-            target += 1;
+            wristTarget += 1;
         } else if(rightY < 0){
-            target -= 1;
+            wristTarget -= 1;
         }
         controller.setPID(p, i, d);
         int wristPos = wristMotor.getCurrentPosition();
-        double pid = controller.calculate(wristPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+        double pid = controller.calculate(wristPos, wristTarget);
+        double ff = Math.cos(Math.toRadians(wristTarget / ticks_in_degree)) * f;
 
         double power = pid + ff;
 
@@ -195,9 +231,9 @@ public class Intake {
         }
 
         if(rightY > 0){
-            wristMotor.setPower(-0.2);
+            wristMotor.setPower(-0.4);
         } else if(rightY < 0){
-            wristMotor.setPower(0.2);
+            wristMotor.setPower(0.4);
         } else{
             wristMotor.setPower(0);
         }
@@ -205,6 +241,49 @@ public class Intake {
 
     }
 
+    public void run_intake_main(Gamepad gamepad2, int armTarget){
+        boolean leftBumper = gamepad2.left_bumper;
+        boolean rightBumper = gamepad2.right_bumper;
+        float rightY = gamepad2.right_stick_y;
+        boolean button_a = gamepad2.a;
+        boolean button_x = gamepad2.x;
+        boolean button_y = gamepad2.y;
+        boolean button_b = gamepad2.b;
+
+        //driver control
+        if(leftBumper){ //claw control
+            openClaw(true);
+        } else if(rightBumper){
+            openClaw(false);
+        }
+
+        if(rightY > 0){//wrist control
+            wristTarget += 10;
+            wristMotor.setTargetPosition(wristTarget);
+        } else if(rightY < 0){
+            wristTarget -= 10;
+            wristMotor.setTargetPosition(wristTarget);
+        }
+
+        //limits for wrist
+        if(wristTarget > maxWristPosition){
+            wristTarget = maxWristPosition;
+        } else if(wristTarget < 0){
+            wristTarget = 0;
+        }
+
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //BE CAREFUL WITH POWER VALUE!!!!!
+        wristMotor.setPower(0.4);//40% power
+
+        //auto PixelHolder Control - change arm value as needed
+        if(armTarget > 2000 ){ //keeps pixel stored if arm is backwards - keeps pixel from falling
+            runAutoPixelHolder(true);
+        } else {
+            runAutoPixelHolder(false);
+        }
+    }
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);

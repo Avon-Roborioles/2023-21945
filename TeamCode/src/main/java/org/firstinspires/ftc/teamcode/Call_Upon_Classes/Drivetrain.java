@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,9 +21,10 @@ public class Drivetrain {
     //right == 1
     //left  == -1
     private double denominator;
-    private double ly;
     private double lx;
+    private double ly;
     private double rx;
+    private double ry;
     private double lt;
     private double rt;
     private DcMotor fl = null;
@@ -33,30 +33,25 @@ public class Drivetrain {
     private DcMotor br = null;
     private DcMotor x_encoder = null;
 
-    /// new library stuff ///
-
-    private Motor fL, fR, bL, bR;
-    private MecanumDrive drive;
-    private GamepadEx driverOp;
-
-    public void init_main() {
-        drive = new MecanumDrive(fL, fR, bL, bR);
-        driverOp = new GamepadEx(gamepad1);
-    }
-
-    public void run_drivetrain() {
-        drive.driveRobotCentric(
-                driverOp.getLeftX(),
-                driverOp.getLeftY(),
-                driverOp.getRightY()
-        );
-    }
-
-    /// new library stuff ///
-
-
-
-
+//
+//    /// new library stuff ///
+//
+//    private Motor fL, fR, bL, bR;
+//    private MecanumDrive drive;
+//    private GamepadEx driverOp;
+//
+//    public void init_main() {
+//        drive = new MecanumDrive(fL, fR, bL, bR);
+//        driverOp = new GamepadEx(gamepad1);
+//    }
+//
+//    public void run_drivetrain() {
+//        drive.driveRobotCentric(
+//                driverOp.getLeftX(),
+//                driverOp.getLeftY(),
+//                driverOp.getRightY()
+//        );
+//    }
     /**
      *
      * @param right_strafe if you want right strafe set true, left set false
@@ -69,7 +64,6 @@ public class Drivetrain {
             strafe_set = -1;
 
     }
-
 
     public void init_drive_motors(HardwareMap hardwareMap) {
         fl = hardwareMap.get(DcMotor.class, "fl");
@@ -85,51 +79,73 @@ public class Drivetrain {
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-
-
-    //old
+    //Old method running Drivetrain
     public void run_drive_motors(Gamepad gamepad1, Telemetry telemetry){
-        ly=-1 * gamepad1.left_stick_y; //switched left_stick y with left stick x
-        lx=gamepad1.left_stick_x;
+        lx =-1 * gamepad1.left_stick_y; //switched left_stick y with left stick x
+        ly =gamepad1.left_stick_x;
         rx=gamepad1.right_stick_x;
-        denominator = Math.max(Math.abs(ly)+Math.abs(lx)+Math.abs(rx), 1);
+        denominator = Math.max(Math.abs(lx)+Math.abs(ly)+Math.abs(rx), 1);
 
-        fl.setPower((ly+lx+rx)/denominator);
-        bl.setPower((ly+lx* strafe_set -rx* strafe_set )/denominator);
-        fr.setPower((ly-lx-rx)/denominator);
-        br.setPower((ly-lx* strafe_set +rx* strafe_set )/denominator);
+        fl.setPower((lx + ly +rx)/denominator);
+        bl.setPower((lx + ly * strafe_set -rx* strafe_set )/denominator);
+        fr.setPower((lx - ly -rx)/denominator);
+        br.setPower((lx - ly * strafe_set +rx* strafe_set )/denominator);
 
         getTelemetry(telemetry);
 
     }
 
-    public void run_drive_motors_15(Gamepad gamepad1, Telemetry telemetry){
-        ly=gamepad1.left_stick_x; //swtiched with x
-        lx=gamepad1.left_stick_y; //switched with y
+    public void run_mecanum_drive(Gamepad gamepad1, Telemetry telemetry){
+        lx =gamepad1.left_stick_x; //swtiched with x
+        ly =gamepad1.left_stick_y; //switched with y
         rx=gamepad1.right_stick_x;
 
-        if (Math.abs(lx)>Math.abs(ly)) {//x power only
-            fl.setPower(lx+rx);
-            fr.setPower(-lx-rx);
-            br.setPower(lx-rx);
-            bl.setPower(-lx+rx);
+        if (Math.abs(ly)>Math.abs(lx)) {//x power only
+            fl.setPower(ly +rx);
+            fr.setPower(-ly -rx);
+            br.setPower(ly -rx);
+            bl.setPower(-ly +rx);
 
         }else{//y power only
-            fl.setPower(-ly+rx);
-            fr.setPower(-ly-rx);
-            bl.setPower(-ly+rx);
-            br.setPower(-ly-rx);
+            fl.setPower(-lx +rx);
+            fr.setPower(-lx -rx);
+            bl.setPower(-lx +rx);
+            br.setPower(-lx -rx);
         }
 
         getTelemetry(telemetry);
     }
 
+    //tank drive
+    public void run_tank_drive(Gamepad gamepad1, Telemetry telemetry){
+        lx =gamepad1.left_stick_x; //swtiched with x
+        ly =gamepad1.left_stick_y; //switched with y
+        ry = gamepad1.right_stick_y;
+        rx=gamepad1.right_stick_x;
 
-    public void auto_forward (double inch) {
-//        while () {
-//
-//        }
+        if(ly > 0){
+            fl.setPower(ly);
+            bl.setPower(ly);
+        } else if(ly < 0){
+            fl.setPower(-ly);
+            bl.setPower(-ly);
+        } else {
+            fl.setPower(0);
+            bl.setPower(0);
+        }
+
+        if(ry > 0){
+            fr.setPower(ry);
+            br.setPower(ry);
+        } else if(ry < 0){
+            fr.setPower(-ry);
+            br.setPower(-ry);
+        } else {
+            fr.setPower(0);
+            br.setPower(0);
+        }
     }
+
 
     public void getTelemetry (@NonNull Telemetry telemetry){
         telemetry.addData("fl power: ",fl.getPower());

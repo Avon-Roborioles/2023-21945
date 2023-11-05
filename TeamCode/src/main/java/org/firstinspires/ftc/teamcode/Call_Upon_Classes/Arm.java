@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -17,6 +16,7 @@ public class Arm {
     private double speed = 0.0;
     public enum armCommands {
         GROUND,
+        MAX,
         SCORE,
         MANUAL,
         PIXEL5,
@@ -32,6 +32,9 @@ public class Arm {
     private int pixel3Height = 300;
     private int pixel2Height = 200;
     private int pixel1Height = 100;
+    private double leftMotorPosition = 0;
+    private double rightMotorPosition = 0;
+    private int maxPosition = 4000; //TODO find max value
     private PIDController controller;
 
     public static double p = 0, i = 0, d = 0; //PID variables needed
@@ -45,16 +48,48 @@ public class Arm {
      * easy to use commands to refer to arm status
      */
 
-    public void init_arm(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
+    //old method that can be used any time
+    //just manual control with no position holding
+    public void init_arm_manual(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
+        leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
+        rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
+    }
+
+    //experimental arm position control with PID Controller --> FTCLib
+    public void init_arm_PID(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
     }
 
-    public void run_arm_manual(Gamepad gamepad2){
-        speed = gamepad2.left_stick_y;
+    //normal arm control with .setTargetPostion() and .setMode(DcMotor.RunMode.RUN_TO_POSITION)
+    //if PID control doesn't work or can't figure out, we'll use this
+    public void init_arm_main(HardwareMap hardwareMap, String leftMotorName, String rightMotorName, boolean autoProgram){
+        leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
+        rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
 
-        // Limits
+        //right motor should be in reverse to work with leftMotor
+        rightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //auto programs need motors to be reset to initial position
+        if(autoProgram){
+            leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
+        //sets motors 0 - ground position
+        leftMotor.setTargetPosition(0);
+        rightMotor.setTargetPosition(0);
+
+        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+    public void run_arm_manual(Gamepad gamepad2) {
+        double leftY = gamepad2.left_stick_y;
+        float rightTrigger = gamepad2.right_trigger;
+
+//        // Limits
 //        if (leftMotor.getCurrentPosition() >= 180 && speed > 0) {
 //            speed = 0;
 //            armStatus = armCommands.SCORE;
@@ -63,12 +98,25 @@ public class Arm {
 //            armStatus = armCommands.GROUND;
 //        }
 
-        leftMotor.setPower(speed);
-        rightMotor.setPower(-speed);
+        if (leftY > 0) {
+            leftMotor.setPower(0.3);
+            rightMotor.setPower(-0.3);
+        }  else if(leftY < 0 && rightTrigger > 0.8) {
+            leftMotor.setPower(-1);
+            leftMotor.setPower(1);
+        }else if (leftY < 0) {
+            leftMotor.setPower(-0.3);
+            rightMotor.setPower(0.3);
+        }else {
+            leftMotor.setPower(0.04); //small bit of power for brakes
+            rightMotor.setPower(0.04);
+        }
+//        leftMotor.setPower(speed);
+//        rightMotor.setPower(-speed);
     } //Done - just controls speed - test
 
     //Done ideal arm control wit PID Control
-    public void run_arm(Gamepad gamepad2){
+    public void run_arm_PID(Gamepad gamepad2){
         armStatus = armCommands.MANUAL;
 
         double leftY = gamepad2.left_stick_y;
@@ -111,29 +159,58 @@ public class Arm {
         rightMotor.setPower(-power);
     } //Done - PID Control - test
 
+    //typical feedback control - will need to adjust target value
+    public void run_arm_main(Gamepad gamepad2, Telemetry telemetry){
+       float leftY = gamepad2.left_stick_y;
+
+       leftMotorPosition = leftMotor.getCurrentPosition();
+       rightMotorPosition = rightMotor.getCurrentPosition();
+
+       //driver control
+       if(leftY > 0){ //arm up
+           target += 10;
+           setArmTargetPosition(target);
+       } else if(leftY < 0){
+           target -= 10;
+           setArmTargetPosition(target);
+       }
+
+       //limits for arm
+        if(target > maxPosition){
+            armStatus = armCommands.MAX;
+            target = maxPosition;
+        } else if (target < 0){
+            armStatus = armCommands.GROUND;
+            target = 0;
+        }
+
+        //final steps to get arm to position
+        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //amount of power to get to position - BE CAREFUL WITH THESE VALUES!!!
+        leftMotor.setPower(0.7); //will start with 70% power
+        rightMotor.setPower(0.7);
+
+        getTelemetry(telemetry);
+    }
+
     //quick method to get armStatus (returns armCommands result)
     public armCommands getArmStatus(){
         return armStatus;
     }
 
-    //auto arm functions
-    //Done - moves arm to an exact position
-    public void setArmPosition(int position){
-    armStatus = armCommands.MANUAL;
+    //gets the current arm target position
+    public  int getArmTargetPositiion(){
+        return target;
+    }
 
-        target = position;
-        //PID control
-        controller.setPID(p, i, d);
-        int leftArmPos = leftMotor.getCurrentPosition();
-        int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(leftArmPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-
-        leftMotor.setPower(power);
-        rightMotor.setPower(-power);
-    } //done - test
+    //auto-internal arm function
+    //sets target positon for both motors at once to save time
+    public void setArmTargetPosition(int position){
+        leftMotor.setTargetPosition(position);
+        rightMotor.setTargetPosition(position);
+    }
 
     //Done - sets arm to preset for stackedCone
     public void setToPreset(armCommands command){
