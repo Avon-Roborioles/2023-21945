@@ -15,7 +15,7 @@ public class MeepMeepTesting {
         // 1 Bot:   - 2985
         // 36 Bots: - 2559
 
-        MeepMeep meepMeep = new MeepMeep(2559);
+        MeepMeep meepMeep = new MeepMeep(600);
 
 //        RoadRunnerBotEntity myFirstBot = new DefaultBotBuilder(meepMeep)
 //                // We set this bot to be blue
@@ -688,52 +688,52 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 
                 .addEntity(bleft1_top_1)
-                .addEntity(bleft2_top_1)
-                .addEntity(bleft3_top_1)
-
-                .addEntity(bleft1_top_2)
-                .addEntity(bleft2_top_2)
-                .addEntity(bleft3_top_2)
-
-                .addEntity(bleft1_bottom_1)
-                .addEntity(bleft2_bottom_1)
-                .addEntity(bleft3_bottom_1)
-
-                .addEntity(bleft1_bottom_2)
-                .addEntity(bleft2_bottom_2)
-                .addEntity(bleft3_bottom_2)
-
-                .addEntity(bright1_bottom)
-                .addEntity(bright2_bottom)
-                .addEntity(bright3_bottom)
-
-                .addEntity(bright1_top)
-                .addEntity(bright2_top)
-                .addEntity(bright3_top)
-
-                .addEntity(rleft1_top_1)
-                .addEntity(rleft2_top_1)
-                .addEntity(rleft3_top_1)
-
-                .addEntity(rleft1_top_2)
-                .addEntity(rleft2_top_2)
-                .addEntity(rleft3_top_2)
-
-                .addEntity(rleft1_bottom_1)
-                .addEntity(rleft2_bottom_1)
-                .addEntity(rleft3_bottom_1)
-
-                .addEntity(rleft1_bottom_2)
-                .addEntity(rleft2_bottom_2)
-                .addEntity(rleft3_bottom_2)
-
-                .addEntity(rright1_bottom)
-                .addEntity(rright2_bottom)
-                .addEntity(rright3_bottom)
-
-                .addEntity(rright1_top)
-                .addEntity(rright2_top)
-                .addEntity(rright3_top)
+//                .addEntity(bleft2_top_1)
+//                .addEntity(bleft3_top_1)
+//
+//                .addEntity(bleft1_top_2)
+//                .addEntity(bleft2_top_2)
+//                .addEntity(bleft3_top_2)
+//
+//                .addEntity(bleft1_bottom_1)
+//                .addEntity(bleft2_bottom_1)
+//                .addEntity(bleft3_bottom_1)
+//
+//                .addEntity(bleft1_bottom_2)
+//                .addEntity(bleft2_bottom_2)
+//                .addEntity(bleft3_bottom_2)
+//
+//                .addEntity(bright1_bottom)
+//                .addEntity(bright2_bottom)
+//                .addEntity(bright3_bottom)
+//
+//                .addEntity(bright1_top)
+//                .addEntity(bright2_top)
+//                .addEntity(bright3_top)
+//
+//                .addEntity(rleft1_top_1)
+//                .addEntity(rleft2_top_1)
+//                .addEntity(rleft3_top_1)
+//
+//                .addEntity(rleft1_top_2)
+//                .addEntity(rleft2_top_2)
+//                .addEntity(rleft3_top_2)
+//
+//                .addEntity(rleft1_bottom_1)
+//                .addEntity(rleft2_bottom_1)
+//                .addEntity(rleft3_bottom_1)
+//
+//                .addEntity(rleft1_bottom_2)
+//                .addEntity(rleft2_bottom_2)
+//                .addEntity(rleft3_bottom_2)
+//
+//                .addEntity(rright1_bottom)
+//                .addEntity(rright2_bottom)
+//                .addEntity(rright3_bottom)
+//
+//                .addEntity(rright1_top)
+//                .addEntity(rright2_top)
+//                .addEntity(rright3_top)
 
 
 
