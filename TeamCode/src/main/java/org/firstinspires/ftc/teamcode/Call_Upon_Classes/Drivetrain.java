@@ -32,6 +32,8 @@ public class Drivetrain {
     private DcMotor fr = null;
     private DcMotor br = null;
     private DcMotor x_encoder = null;
+    private MecanumDrive drive;
+    private GamepadEx driverOp;
 
 //
 //    /// new library stuff ///
@@ -77,6 +79,24 @@ public class Drivetrain {
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+    public void init_ftc_drive(HardwareMap hardwareMap, Gamepad gamepad1){
+        MecanumDrive drive = new MecanumDrive(
+                new Motor(hardwareMap, "fl", Motor.GoBILDA.RPM_435),
+                new Motor(hardwareMap, "fr", Motor.GoBILDA.RPM_435),
+                new Motor(hardwareMap, "bl", Motor.GoBILDA.RPM_435),
+                new Motor(hardwareMap, "br", Motor.GoBILDA.RPM_435)
+        );
+        driverOp = new GamepadEx(gamepad1);
+    }
+
+    public void run_ftc_drive(Gamepad gamepad1, Telemetry telemetry){
+        drive.driveRobotCentric(
+                driverOp.getLeftX(),
+                driverOp.getLeftY(),
+                driverOp.getRightY()
+        );
     }
 
     //Old method running Drivetrain

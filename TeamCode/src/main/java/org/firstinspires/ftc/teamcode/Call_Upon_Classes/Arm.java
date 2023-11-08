@@ -68,8 +68,8 @@ public class Arm {
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
 
-        //right motor should be in reverse to work with leftMotor
-        rightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //left motor should be in reverse to work with rightMotor
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //auto programs need motors to be reset to initial position
         if(autoProgram){

@@ -268,8 +268,10 @@ public class Intake {
         //limits for wrist
         if(wristTarget > maxWristPosition){
             wristTarget = maxWristPosition;
+            wristMotor.setTargetPosition(wristTarget);
         } else if(wristTarget < 0){
             wristTarget = 0;
+            wristMotor.setTargetPosition(wristTarget);
         }
 
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

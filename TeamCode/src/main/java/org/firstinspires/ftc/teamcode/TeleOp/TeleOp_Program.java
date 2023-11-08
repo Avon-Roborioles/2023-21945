@@ -24,13 +24,17 @@ public class TeleOp_Program extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drivetrain.init_drive_motors(hardwareMap);
-
+        drivetrain.init_ftc_drive(hardwareMap, gamepad1);
         //drivetrain.init_main();
 
         intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
+        //intake.init_intake_main(hardwareMap, "claw", "wrist", "pixelHolder");
+
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", false);
+
+        //arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", false);
+        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+
         //vision.init_cameras(hardwareMap, "Webcam1", "Webcam2");
 
         setTelemetry();
@@ -42,15 +46,20 @@ public class TeleOp_Program extends LinearOpMode {
         while(opModeIsActive()) { //robot loop
 
             //Driver 1 Controls - Primary
-            drivetrain.run_mecanum_drive(gamepad1, telemetry);
+            //drivetrain.run_mecanum_drive(gamepad1, telemetry);
+            drivetrain.run_ftc_drive(gamepad1, telemetry);
             launcher.run_Launcher(gamepad1);
 
-            // arm.run_arm(gamepad2);
-            //intake.run_intake_manual(gamepad2);
+
             //Driver 2 Controls - Secondary
-            arm.run_arm_main(gamepad2, telemetry);
-            int armTarget = arm.getArmTargetPositiion();
-            intake.run_intake_main(gamepad2, armTarget);
+            //arm.run_arm_main(gamepad2, telemetry);
+            arm.run_arm_manual(gamepad2);
+            // arm.run_arm(gamepad2);
+
+            //int armTarget = arm.getArmTargetPositiion();
+            //intake.run_intake_main(gamepad2, armTarget);
+            //intake.run_intake_manual(gamepad2);
+            intake.run_intake_manual(gamepad2);
 
             setTelemetry();
 
