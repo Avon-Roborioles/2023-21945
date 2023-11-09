@@ -47,7 +47,6 @@ public class TeleOp_Program extends LinearOpMode {
         while(opModeIsActive()) { //robot loop
 
             //Driver 1 Controls - Primary
-            //drivetrain.run_mecanum_drive(gamepad1, telemetry);
             drivetrain.run_mecanum_drive(gamepad1, telemetry);
             launcher.run_Launcher(gamepad1);
 

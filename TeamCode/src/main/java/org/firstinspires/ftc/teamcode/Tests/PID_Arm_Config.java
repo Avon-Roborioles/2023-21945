@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @Config
-@TeleOp
+@TeleOp(name="PID Arm Config", group = "Tests")
 public class PID_Arm_Config extends OpMode {
     private PIDController controller;
 

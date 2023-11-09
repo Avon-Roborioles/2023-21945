@@ -30,11 +30,11 @@ public class DroneLauncher {
     public void run_Launcher(Gamepad gamepad1){
         //if the driver hold left bumper,
         if(gamepad1.left_bumper && gamepad1.right_bumper && gamepad1.b){
-            launcherServo.setPosition(180);
+            launcherServo.setPosition(90); //before - 180
             hasLaunched = true;
 
         } else {
-            launcherServo.setPosition(launcherServo.getPosition());
+            launcherServo.setPosition(0);
         }
 
 
@@ -43,6 +43,7 @@ public class DroneLauncher {
 
     public void getTelemetry(Telemetry telemetry){
         telemetry.addData("Drone Launched: ", hasLaunched);
+        telemetry.addData("Launcher Position", launcherServo.getPosition());
     }
 
 }

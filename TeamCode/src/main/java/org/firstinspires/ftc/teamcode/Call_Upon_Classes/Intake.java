@@ -289,7 +289,9 @@ public class Intake {
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);
-        telemetry.addData("Intake Speed", rightY);
+        telemetry.addData("Claw Position", claw.getPosition());
+        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
+        telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
     }
 
 }
