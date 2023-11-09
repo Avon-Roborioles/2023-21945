@@ -121,7 +121,7 @@ public class Drivetrain {
 
     }
 
-    public void run_ftclib_drive(Gamepad gamepad, HardwareMap hardwareMap) {
+    public void run_ftclib_drive(HardwareMap hardwareMap, Gamepad gamepad) {
         MecanumDrive drive = new MecanumDrive(
                 new Motor(hardwareMap, "fl", Motor.GoBILDA.RPM_435),
                 new Motor(hardwareMap, "fr", Motor.GoBILDA.RPM_435),
