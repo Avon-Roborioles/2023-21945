@@ -53,6 +53,7 @@ public class Intake {
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
         controller = new PIDController(p, i, d);
         wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
+
     }
 
     //main intake method

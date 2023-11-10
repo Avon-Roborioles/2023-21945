@@ -33,5 +33,6 @@ public class Robot_Telemetry extends OpMode {
     @Override
     public void loop() {
         setTelemetry();
+        telemetry.update();
     }
 }

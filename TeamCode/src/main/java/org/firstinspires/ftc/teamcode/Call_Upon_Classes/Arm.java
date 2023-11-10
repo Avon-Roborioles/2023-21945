@@ -53,6 +53,8 @@ public class Arm {
     public void init_arm_manual(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     //experimental arm position control with PID Controller --> FTCLib
@@ -60,6 +62,8 @@ public class Arm {
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     //normal arm control with .setTargetPostion() and .setMode(DcMotor.RunMode.RUN_TO_POSITION)
@@ -97,19 +101,39 @@ public class Arm {
 //            speed = 0;
 //            armStatus = armCommands.GROUND;
 //        }
+        if(rightMotor.getCurrentPosition() < 1600) {
+            if (leftY < 0) {
+                leftMotor.setPower(-0.5);
+                rightMotor.setPower(0.5);
+            } else if (leftY > 0 && rightTrigger > 0.8) {
+                leftMotor.setPower(-1);
+                leftMotor.setPower(1);
+            } else if (leftY > 0) {
+                leftMotor.setPower(0.3);
+                rightMotor.setPower(-0.3);
+            } else {
+                leftMotor.setPower(-0.04); //small bit of power for brakes
+                rightMotor.setPower(0.04);
+            }
+        } else {
+            if (leftY > 0) {
+//                leftMotor.setPower(-0.3);
+//                rightMotor.setPower(0.3);
+                leftMotor.setPower(0.5);
+                rightMotor.setPower(-0.5);
+            } else if (leftY < 0 && rightTrigger > 0.8) {
+                leftMotor.setPower(1);
+                leftMotor.setPower(-1);
+            } else if (leftY < 0) {
+//                leftMotor.setPower(0.3);
+//                rightMotor.setPower(-0.3);
+                leftMotor.setPower(-0.3);
+                rightMotor.setPower(0.3);
 
-        if (leftY > 0) {
-            leftMotor.setPower(0.3);
-            rightMotor.setPower(-0.3);
-        }  else if(leftY < 0 && rightTrigger > 0.8) {
-            leftMotor.setPower(-1);
-            leftMotor.setPower(1);
-        }else if (leftY < 0) {
-            leftMotor.setPower(-0.3);
-            rightMotor.setPower(0.3);
-        }else {
-            leftMotor.setPower(0.04); //small bit of power for brakes
-            rightMotor.setPower(0.04);
+            } else {
+                leftMotor.setPower(0.08); //small bit of power for brakes
+                rightMotor.setPower(-0.08);
+            }
         }
 //        leftMotor.setPower(speed);
 //        rightMotor.setPower(-speed);

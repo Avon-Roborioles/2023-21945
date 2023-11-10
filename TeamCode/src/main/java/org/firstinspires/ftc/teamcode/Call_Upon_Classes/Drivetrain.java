@@ -117,7 +117,6 @@ public class Drivetrain {
         RevIMU imu = new RevIMU(hardwareMap);
         imu.init();
 
-        // the extended gamepad object
 
     }
 
@@ -214,10 +213,10 @@ public class Drivetrain {
             bl.setPower(-ly +rx);
 
         }else{//y power only
-            fl.setPower(-lx +rx);
+            fl.setPower(-lx -rx); //+
             fr.setPower(-lx -rx);
             bl.setPower(-lx +rx);
-            br.setPower(-lx -rx);
+            br.setPower(-lx +rx); //-
         }
 
         getTelemetry(telemetry);
