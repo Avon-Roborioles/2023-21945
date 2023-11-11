@@ -206,13 +206,13 @@ public class Drivetrain {
         ly =gamepad1.left_stick_y; //switched with y
         rx=gamepad1.right_stick_x;
 
-        if (Math.abs(ly)>Math.abs(lx)) {//x power only
+        if (Math.abs(ly)>Math.abs(lx)) {//movement
             fl.setPower(ly +rx);
             fr.setPower(-ly -rx);
             br.setPower(ly -rx);
             bl.setPower(-ly +rx);
 
-        }else{//y power only
+        }else{//rotation
             fl.setPower(-lx -rx); //+
             fr.setPower(-lx -rx);
             bl.setPower(-lx +rx);

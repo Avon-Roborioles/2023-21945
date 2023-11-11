@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm.armCommands;
@@ -53,7 +54,8 @@ public class Intake {
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
         controller = new PIDController(p, i, d);
         wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
-
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets initial wrist position to 0
+        wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     //main intake method
@@ -106,7 +108,7 @@ public class Intake {
 
     public void openPixelHolder(boolean open){
         if(open){
-            pixelHolder.setPosition(60);
+            pixelHolder.setPosition(0.25);
         } else {
             pixelHolder.setPosition(0);
         }
@@ -232,13 +234,20 @@ public class Intake {
         }
 
         if(rightY > 0){
-            wristMotor.setPower(-0.4);
+            wristMotor.setPower(-0.6);
         } else if(rightY < 0){
-            wristMotor.setPower(0.4);
+            wristMotor.setPower(0.6);
         } else{
             wristMotor.setPower(0);
         }
 
+        wristPosition = wristMotor.getCurrentPosition();
+
+        if(wristPosition < 90){
+            openPixelHolder(true);
+        } else{
+            openPixelHolder(false);
+        }
 
     }
 
