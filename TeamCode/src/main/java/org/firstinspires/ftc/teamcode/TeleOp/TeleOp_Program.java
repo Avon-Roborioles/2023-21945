@@ -60,7 +60,8 @@ public class TeleOp_Program extends LinearOpMode {
             //int armTarget = arm.getArmTargetPositiion();
             //intake.run_intake_main(gamepad2, armTarget);
             //intake.run_intake_manual(gamepad2);
-            intake.run_intake_manual(gamepad2);
+            double rightArmPosition = arm.getRightMotorPosition();
+            intake.run_intake_manual(gamepad2, rightArmPosition);
 
             setTelemetry();
 

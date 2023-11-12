@@ -236,6 +236,14 @@ public class Arm {
         rightMotor.setTargetPosition(position);
     }
 
+    public double getRightMotorPosition(){
+        return rightMotor.getCurrentPosition();
+    }
+
+    public double getLeftMotorPosition(){
+        return leftMotor.getCurrentPosition();
+    }
+
     //Done - sets arm to preset for stackedCone
     public void setToPreset(armCommands command){
         switch(command){

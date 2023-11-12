@@ -2,14 +2,14 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.*;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.opencv.core.Scalar;
 
 import java.util.List;
@@ -31,6 +31,77 @@ public class Camera_Vision {
     private VisionPortal visionPortal;
     private WebcamName webcam1 = null;
     private WebcamName webcam2 = null;
+
+    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+
+    private AprilTagProcessor aprilTag;
+
+
+    private void initAprilTag() {
+
+        // Create the AprilTag processor.
+        aprilTag = new AprilTagProcessor.Builder()
+
+                // The following default settings are available to un-comment and edit as needed.
+                //.setDrawAxes(false)
+                //.setDrawCubeProjection(false)
+                //.setDrawTagOutline(true)
+                //.setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                //.setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
+                //.setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+
+                // == CAMERA CALIBRATION ==
+                // If you do not manually specify calibration parameters, the SDK will attempt
+                // to load a predefined calibration for your camera.
+                //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+                // ... these parameters are fx, fy, cx, cy.
+
+                .build();
+
+        // Adjust Image Decimation to trade-off detection-range for detection-rate.
+        // eg: Some typical detection data using a Logitech C920 WebCam
+        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
+        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
+        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second (default)
+        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second (default)
+        // Note: Decimation can be changed on-the-fly to adapt during a match.
+        //aprilTag.setDecimation(3);
+
+        // Create the vision portal by using a builder.
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder.setCamera(webcam1);
+        } else {
+            builder.setCamera(BuiltinCameraDirection.BACK);
+        }
+
+        // Choose a camera resolution. Not all cameras support all resolutions.
+        //builder.setCameraResolution(new Size(640, 480));
+
+        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
+        //builder.enableLiveView(true);
+
+        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
+        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+
+        // Choose whether or not LiveView stops if no processors are enabled.
+        // If set "true", monitor shows solid orange screen if no processors enabled.
+        // If set "false", monitor shows camera view without annotations.
+        //builder.setAutoStopLiveView(false);
+
+        // Set and enable the processor.
+        builder.addProcessor(aprilTag);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortal = builder.build();
+
+        // Disable or re-enable the aprilTag processor at any time.
+        //visionPortal.setProcessorEnabled(aprilTag, true);
+
+    }   // end method initAprilTag()
+
 
     public void init_cameras(HardwareMap hardwareMap,String name1, String name2){ //setups up cameras
          webcam1 = hardwareMap.get(WebcamName.class, name1);
@@ -65,7 +136,7 @@ public class Camera_Vision {
         colourMassDetectionProcessor = new Auto_Marker_Processor (
                 lower,
                 upper,
-                100.0,
+                () -> minArea,
                 () -> 190, // the left dividing line, in this case the left third-ish of the frame
                 () -> 450 // the left dividing line, in this case the right third-ish of the frame
         );
@@ -119,28 +190,39 @@ public class Camera_Vision {
     *   - reduce bearing to zero (rotate),
     *   - reduce yaw to zero (strafe sideways),
     *   - reduce range to zero (drive forward)
-     */ //TODO Change pose[0] to index 1 to fix outofBounds error
+     */ //TODO finish code to get pose array
     public double[] get_Apriltag_pose(int tag){
-        double[] pose = {}; //structure - {range, bearing, yaw, roll, pitch, elevation, x, y, z}
-        AprilTagProcessor aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
-        visionPortal = VisionPortal.easyCreateWithDefaults(webcam1, aprilTagProcessor);
+        double[] pose = new double[9];
+//        AprilTagProcessor aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+//        visionPortal = VisionPortal.easyCreateWithDefaults(webcam1, aprilTagProcessor);
+//
+//        List<AprilTagDetection> detections = aprilTagProcessor.getDetections();
+//        for(AprilTagDetection detection : detections){
+//            if(tag == detection.id){
+//                AprilTagPoseFtc tagPose = detection.ftcPose;
+//                pose[0] = tagPose.x;
+//                pose[1] = tagPose.y;
+//                pose[2] = tagPose.z;
+//                pose[3] = tagPose.range;
+//                pose[4] = tagPose.bearing;
+//                pose[5] = tagPose.elevation;
+//            }
+//        }
+        initAprilTag();
 
-        List<AprilTagDetection> detections = aprilTagProcessor.getDetections();
+        List<AprilTagDetection> detections = aprilTag.getDetections();
         for(AprilTagDetection detection : detections){
             if(tag == detection.id){
                 AprilTagPoseFtc tagPose = detection.ftcPose;
-
-                pose[0] = tagPose.range;
-                pose[1] = tagPose.bearing;
-                pose[2] = tagPose.yaw;
-                pose[3] = tagPose.roll;
-                pose[4] = tagPose.pitch;
+                pose[0] = tagPose.x;
+                pose[1] = tagPose.y;
+                pose[2] = tagPose.z;
+                pose[3] = tagPose.range;
+                pose[4] = tagPose.bearing;
                 pose[5] = tagPose.elevation;
-                pose[6] = tagPose.x;
-                pose[7] = tagPose.y;
-                pose[8] = tagPose.z;
             }
         }
+
         return pose;
     }
 

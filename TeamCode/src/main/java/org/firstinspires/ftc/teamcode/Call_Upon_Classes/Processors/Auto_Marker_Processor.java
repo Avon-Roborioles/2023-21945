@@ -5,7 +5,6 @@
 
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors;
 
-import com.arcrobotics.ftclib.util.Timing;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,22 +25,20 @@ import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 import java.util.function.DoubleSupplier;
 
 public class Auto_Marker_Processor implements VisionProcessor {
-    private final DoubleSupplier left, right;
+    private final DoubleSupplier minArea, left, right;
     private final Scalar upper; // lower bounds for masking
     private final Scalar lower; // upper bounds for masking
     private final TextPaint textPaint;
     private final Paint linePaint;
     private final ArrayList<MatOfPoint> contours;
     private final Mat hierarchy = new Mat();
-    private double smallestContourX;
-    private double smallestContourY;
-    private double smallestContourArea;
-    private double minArea;
-    private MatOfPoint smallestContour;
+    private double largestContourX;
+    private double largestContourY;
+    private double largestContourArea;
+    private MatOfPoint largestContour;
     private PropPositions previousPropPosition;
     private PropPositions recordedPropPosition = PropPositions.UNFOUND;
 
@@ -54,7 +51,7 @@ public class Auto_Marker_Processor implements VisionProcessor {
      * @param left    the dividing point for the prop to be on the left
      * @param right   the diving point for the prop to be on the right
      */
-    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, Double minArea, DoubleSupplier left, DoubleSupplier right) {
+    public Auto_Marker_Processor(@NonNull Scalar lower, @NonNull Scalar upper, DoubleSupplier minArea, DoubleSupplier left, DoubleSupplier right) {
         this.contours = new ArrayList<>();
         this.lower = lower;
         this.upper = upper;
@@ -87,51 +84,28 @@ public class Auto_Marker_Processor implements VisionProcessor {
     /**
      * @return the x position of the currently found largest contour in the range [0, camera width], or -1 if no largest contour has been determined
      */
-    public double getSmallestContourX() {
-        return smallestContourX;
+    public double getLargestContourX() {
+        return largestContourX;
     }
 
     /**
      * @return the y position of the currently found largest contour in the range [0, camera height], or -1 if no largest contour has been determined
      */
-    public double getSmallestContourY() {
-        return smallestContourY;
+    public double getLargestContourY() {
+        return largestContourY;
     }
 
     /**
      * @return the area of the currently found largest contour, or -1 if no largest contour has been determined
      */
-    public double getSmallestContourArea() {
-        return smallestContourArea;
+    public double getLargestContourArea() {
+        return largestContourArea;
     }
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         // this method processes the image (frame) taken by the camera, and tries to find a suitable prop
         // you dont need to call it
-
-        //----------------------------------------------------------------
-//        //image dimensions
-//        int frameWidth = frame.width();
-//        int frameHeight = frame.height();
-//
-//        //height range for middle frame
-//        int top = frameHeight / 3;
-//        int bottom = 2 * frameHeight / 3;
-//
-//        //creates the mask for middle horizontal frame
-//        Mat mask = Mat.zeros(frame.size(), frame.type());
-//        Rect rol = new Rect(0, top, frameWidth, bottom - top);
-//        Mat rolMask = new Mat(mask, rol);
-//        rolMask.setTo(new Scalar(255, 255, 255));
-//
-//        //apply mask to original frame
-//        Mat result = new Mat();
-//        Core.bitwise_and(frame, frame, result, mask);
-        //----------------------------------------------------------------
-
-
-
 
         // this converts the frame from RGB to HSV, which is supposed to be better for doing colour blob detection
         Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2HSV);
@@ -148,78 +122,43 @@ public class Auto_Marker_Processor implements VisionProcessor {
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         // this sets up our largest contour area to be 0
-       // smallestContourArea = -1; //Done Changed to first contour found - replace to -1
+        largestContourArea = -1;
         // and our currently found largest contour to be null
-        smallestContour = null; //Done change to null
+        largestContour = null;
 
         // gets the current minimum area from min area
-        //double minArea = this.minArea.getAsDouble();
+        double minArea = this.minArea.getAsDouble();
 
         // finds the largest contour!
         // for each contour we found before we loop over them, calculate their area,
         // and then if our area is larger than our minimum area, and our currently found largest area
         // it stores the contour as our largest contour and the area as our largest area
-
-//        for (MatOfPoint contour : contours) {
-//            double area = Imgproc.contourArea(contour);
-//            if (area < largestContourArea) {
-//                largestContour = contour;
-//                largestContourArea = area;
-//            }
-//        }
-
-       // double maxVal = 0;
-//        double firstArea = Imgproc.contourArea(contours.get(0));
-//        for (int i = 0; i < contours.size(); i++) {
-//            double contourArea = Imgproc.contourArea(contours.get(i));
-//            if (maxVal < contourArea)
-//            {
-//                maxVal = contourArea;
-//                largestContour = contours.get(i);
-//            }
-//        }
-        //ArrayList<Double> areas = new ArrayList<Double>();
-        /*
-        TODO Suggested Improved Algorithm:
-        1) Only save contours that are at least 100 pixels ( Will only save tape markers)
-        2) Cycle through contours:
-        3) If contour has similar X or Y center value with another contour, group them together to get new center
-        * if grouped Center has least X Value - Prop is on left
-        * if grouped center has highest Y value - Prop is on middle
-        * if grouped Center has highest X Value - Prop is on left
-
-         */
-        double smallestContourArea = 2000; //random large number to start off the loop
-        for(MatOfPoint contour : contours){
-            double currentArea = Imgproc.contourArea(contour);
-            if(currentArea < smallestContourArea && currentArea > minArea){
-                smallestContourArea = currentArea;
-                smallestContour = contour;
+        for (MatOfPoint contour : contours) {
+            double area = Imgproc.contourArea(contour);
+            if (area > largestContourArea && area > minArea) {
+                largestContour = contour;
+                largestContourArea = area;
             }
         }
 
-
-
-
         // sets up the center points of our largest contour to be -1 (offscreen)
-
-        smallestContourX = smallestContourY = -1;
+        largestContourX = largestContourY = -1;
 
         // if we found it, calculates the actual centers
-        if (smallestContour != null) {
-            Moments moment = Imgproc.moments(smallestContour);
-            smallestContourX = (moment.m10 / moment.m00);
-            smallestContourY = (moment.m01 / moment.m00);
+        if (largestContour != null) {
+            Moments moment = Imgproc.moments(largestContour);
+            largestContourX = (moment.m10 / moment.m00);
+            largestContourY = (moment.m01 / moment.m00);
         }
 
         // determines the current prop position, using the left and right dividers we gave earlier
         // if we didn't find any contours which were large enough, sets it to be unfound
         PropPositions propPosition;
-        if (smallestContour == null) {
+        if (largestContour == null) {
             propPosition = PropPositions.UNFOUND;
-        } else if (smallestContourX < left.getAsDouble()) {
+        } else if (largestContourX < left.getAsDouble()) {
             propPosition = PropPositions.LEFT;
-        } else if (smallestContourX > right.getAsDouble()) {
+        } else if (largestContourX > right.getAsDouble()) {
             propPosition = PropPositions.RIGHT;
         } else {
             propPosition = PropPositions.MIDDLE;
@@ -252,8 +191,8 @@ public class Auto_Marker_Processor implements VisionProcessor {
 //		}
 
         // if the contour exists, draw a rectangle around it and put its position in the middle of the rectangle
-        if (smallestContour != null) {
-            Rect rect = Imgproc.boundingRect(smallestContour);
+        if (largestContour != null) {
+            Rect rect = Imgproc.boundingRect(largestContour);
 
             float[] points = {rect.x * scaleBmpPxToCanvasPx, rect.y * scaleBmpPxToCanvasPx, (rect.x + rect.width) * scaleBmpPxToCanvasPx, (rect.y + rect.height) * scaleBmpPxToCanvasPx};
 
@@ -265,7 +204,7 @@ public class Auto_Marker_Processor implements VisionProcessor {
 
             String text = String.format(Locale.ENGLISH, "%s", recordedPropPosition.toString());
 
-            canvas.drawText(text, (float) smallestContourX * scaleBmpPxToCanvasPx, (float) smallestContourY * scaleBmpPxToCanvasPx, textPaint);
+            canvas.drawText(text, (float) largestContourX * scaleBmpPxToCanvasPx, (float) largestContourY * scaleBmpPxToCanvasPx, textPaint);
         }
     }
 
@@ -277,8 +216,8 @@ public class Auto_Marker_Processor implements VisionProcessor {
     }
 
     // returns the largest contour if you want to get information about it
-    public MatOfPoint getSmallestContour() {
-        return smallestContour;
+    public MatOfPoint getLargestContour() {
+        return largestContour;
     }
 
     public void close() {

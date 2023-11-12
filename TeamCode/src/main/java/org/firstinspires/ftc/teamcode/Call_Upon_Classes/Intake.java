@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm.armCommands;
+
 import com.arcrobotics.ftclib.util.Timing.Timer;
 
 //FTCLib Library
@@ -218,7 +219,7 @@ public class Intake {
 
     }
 
-    public void run_intake_manual(Gamepad gamepad2){
+    public void run_intake_manual(Gamepad gamepad2, double rightArmPosition) {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
         float rightY = gamepad2.right_stick_y;
@@ -227,28 +228,32 @@ public class Intake {
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
 
-        if(leftBumper){
+        if (leftBumper) {
             openClaw(true);
-        } else if(rightBumper){
+        } else if (rightBumper) {
             openClaw(false);
         }
 
-        if(rightY > 0){
+        if (rightY > 0) {
             wristMotor.setPower(-0.6);
-        } else if(rightY < 0){
-            wristMotor.setPower(0.6);
-        } else{
+        } else if (rightY < 0) {
+            wristMotor.setPower(0.4);
+        } else {
             wristMotor.setPower(0);
         }
 
         wristPosition = wristMotor.getCurrentPosition();
 
-        if(wristPosition < 90){
-            openPixelHolder(true);
-        } else{
+        if (rightArmPosition > 490) {
             openPixelHolder(false);
-        }
+        } else {
+            if (wristPosition < 90) {
+                openPixelHolder(true);
+            } else {
+                openPixelHolder(false);
+            }
 
+        }
     }
 
     public void run_intake_main(Gamepad gamepad2, int armTarget){
