@@ -24,7 +24,7 @@ public class Robot_Telemetry extends OpMode {
     @Override
     public void init() {
         drivetrain.init_drive_motors(hardwareMap);
-        intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
+        intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
         setTelemetry();

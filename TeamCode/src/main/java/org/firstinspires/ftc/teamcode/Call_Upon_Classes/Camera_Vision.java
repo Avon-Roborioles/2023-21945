@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -14,6 +17,8 @@ import org.opencv.core.Scalar;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 /*
 Main Program used by TeleOp and Auto Programs for everything vision
@@ -120,36 +125,32 @@ public class Camera_Vision {
         }
     } //TODO Remove if not used
 
-    public String getPropPosition(HardwareMap hardwareMap){ //runs Auto_Marker Pipeline and returns position as a string
+    //TODO Add Code for Auto_Marker Detection
+    public String getPropPosition(HardwareMap hardwareMap, Telemetry telemetry){ //runs Auto_Marker Pipeline and returns position as a string
+        String position = "";
         Auto_Marker_Processor colourMassDetectionProcessor;
 
-        // the current range set by lower and upper is the full range
-        // HSV takes the form: (HUE, SATURATION, VALUE)
-        // which means to select our colour, only need to change HUE
-        // the domains are: ([0, 180], [0, 255], [0, 255])
-        // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
-        // and experiment to fine tune it for blue
-        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
+        //init Code
+        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 1000; // the minimum area for the detection to consider for your prop
-
-        colourMassDetectionProcessor = new Auto_Marker_Processor (
+        double minArea = 100; // the minimum area for the detection to consider for your prop
+        colourMassDetectionProcessor = new Auto_Marker_Processor(
                 lower,
                 upper,
-                () -> minArea,
-                () -> 190, // the left dividing line, in this case the left third-ish of the frame
-                () -> 450 // the left dividing line, in this case the right third-ish of the frame
+                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 213, // the left dividing line, in this case the left third of the frame
+                () -> 426 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .addProcessor(colourMassDetectionProcessor)
                 .build();
+        Timing.Timer clock = new Timing.Timer(8, TimeUnit.SECONDS); //3 second timer to detect propPosition
 
+            position = colourMassDetectionProcessor.getRecordedPropPosition().name();
 
-        String position = String.valueOf(colourMassDetectionProcessor.getRecordedPropPosition()); //returns the position
-         return position;
+        return position;
     }
-
 
     //returns the correct Target AprilTag ID based on the team prop position
     public int get_Apriltag_id(String propPosition, String alliance) {
