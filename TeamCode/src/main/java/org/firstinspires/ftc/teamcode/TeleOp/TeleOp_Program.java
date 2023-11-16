@@ -28,7 +28,7 @@ public class TeleOp_Program extends LinearOpMode {
         //drivetrain.init_ftclib_drive(hardwareMap, gamepad1);
         //drivetrain.init_main();
 
-        intake.init_intake(hardwareMap, "claw", "wrist", "pixelHolder");
+        intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         //intake.init_intake_main(hardwareMap, "claw", "wrist", "pixelHolder");
 
         launcher.init_Launcher(hardwareMap, "launcher");

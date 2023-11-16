@@ -49,13 +49,14 @@ public class Intake {
     private wristCommands wristStatus = wristCommands.WRIST_START;
     private boolean clawIsOpen = false;
 
-    public void init_intake(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
+    public void init_intake_teleOp(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
         //creates the intake object with its name
         claw = new SimpleServo(hardwareMap, clawName, 0, 180);
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
         controller = new PIDController(p, i, d);
         wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets initial wrist position to 0
+        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -222,28 +223,31 @@ public class Intake {
     public void run_intake_manual(Gamepad gamepad2, double rightArmPosition) {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
-        float rightY = gamepad2.right_stick_y;
+        double rightY = gamepad2.right_stick_y; //was float—
         boolean button_a = gamepad2.a;
         boolean button_x = gamepad2.x;
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
 
-        if (leftBumper) {
-            openClaw(true);
-        } else if (rightBumper) {
-            openClaw(false);
-        }
 
-        if (rightY > 0) {
-            wristMotor.setPower(-0.6);
-        } else if (rightY < 0) {
-            wristMotor.setPower(0.4);
-        } else {
-            wristMotor.setPower(0);
+        if (leftBumper) {
+            openClaw(false);
+        } else if (rightBumper) {
+            openClaw(true);
         }
 
         wristPosition = wristMotor.getCurrentPosition();
 
+        if (rightY > 0) {
+            wristMotor.setPower(0.25);
+        } else if (rightY < 0) {
+            wristMotor.setPower(-0.25);
+        } else {
+            wristMotor.setPower(0);
+        }
+
+
+        //TODO Change pixelHolder behavior to just moving when a button is pressed
         if (rightArmPosition > 490) {
             openPixelHolder(false);
         } else {
