@@ -21,18 +21,23 @@ public class Haptic_Feedback {
 
     }
 
-    public void alert(Gamepad gamepad1, Gamepad gamepad2){
+    public void alert_driver(Gamepad gamepad){
+        gamepad.rumble(2000);
+    }
+
+    public void alert_drivers(Gamepad gamepad1, Gamepad gamepad2){
         gamepad1.rumble(2000);
         gamepad2.rumble(2000);
 
     }
 
+
     public void countdown(Gamepad gamepad, int seconds){
 
     } //TODO - add countdown rumble effect
 
-    public void getTouchpad(Gamepad gamepad){
+    public void get_Touchpad_Combo(Gamepad gamepad){
         //returns swipe combo name a driver did to their gamepad
         //useful for extra robot functions, percise movement, etc
-    }
+    } //TODO - add code for touchpad combo feature
 }

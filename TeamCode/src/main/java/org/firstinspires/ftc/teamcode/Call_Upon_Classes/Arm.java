@@ -36,20 +36,12 @@ public class Arm {
     private double rightMotorPosition = 0;
     private int maxPosition = 4000; //TODO find max value
     private PIDController controller;
-
     public static double p = 0, i = 0, d = 0; //PID variables needed
     public static double f = 0; //feed forward variable
-
     public static int target = 0; //the variable team drivers will control to move arm
-
     private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
 
-    /**
-     * easy to use commands to refer to arm status
-     */
-
-    //old method that can be used any time
-    //just manual control with no position holding
+    //Methods of Arm Initialization
     public void init_arm_manual(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
@@ -57,7 +49,6 @@ public class Arm {
 
     }
 
-    //experimental arm position control with PID Controller --> FTCLib
     public void init_arm_PID(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
@@ -66,8 +57,6 @@ public class Arm {
 
     }
 
-    //normal arm control with .setTargetPostion() and .setMode(DcMotor.RunMode.RUN_TO_POSITION)
-    //if PID control doesn't work or can't figure out, we'll use this
     public void init_arm_main(HardwareMap hardwareMap, String leftMotorName, String rightMotorName, boolean autoProgram){
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
@@ -89,6 +78,7 @@ public class Arm {
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    //Methods of Arm TeleOp control
     public void run_arm_manual(Gamepad gamepad2) {
         double leftY = gamepad2.left_stick_y;
         float rightTrigger = gamepad2.right_trigger;

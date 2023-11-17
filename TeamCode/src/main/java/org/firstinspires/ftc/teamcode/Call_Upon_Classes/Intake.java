@@ -23,21 +23,17 @@ import java.util.concurrent.TimeUnit;
 //Added Default Class for Intake Mechanism
 public class Intake {
     private PIDController controller;
-
     public static double p = 0, i = 0, d = 0; //PID variables needed
     public static double f = 0; //feed forward variable
-
     public static int wristTarget = 0; //the variable team drivers will control to move the wrist
     private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
-
     private ServoEx claw = null;
     private ServoEx pixelHolder = null;
     private DcMotorEx wristMotor = null;
     private double rightY = 0.0;
     private int maxWristPosition = 1000;
     private int wristPosition = 0;
-    //private double defaultSpeed = 0.7;
-
+    private boolean holder_up = true;
     public enum wristCommands {
         WRIST_UP,
         WRIST_DOWN,
@@ -45,9 +41,10 @@ public class Intake {
         WRIST_DOWN_BACK,
         WRIST_START;
     }
-
     private wristCommands wristStatus = wristCommands.WRIST_START;
     private boolean clawIsOpen = false;
+
+    //Methods of intake initialization
 
     public void init_intake_teleOp(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
         //creates the intake object with its name
@@ -60,7 +57,7 @@ public class Intake {
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    //main intake method
+
     public void init_intake_main(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
         claw = new SimpleServo(hardwareMap, clawName, 0, 180);
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
@@ -116,6 +113,8 @@ public class Intake {
         }
     }
 
+
+
     //manages the pixelHolder based on certain conditions
     public void runAutoPixelHolder(boolean override){
         if(override){ //if we need pixelHolder closed
@@ -149,7 +148,7 @@ public class Intake {
     public void retrievePixel(){} //TODO
 
 
-
+    //Methods of TeleOp Intake Control
     public void run_intake_PID(Gamepad gamepad2, armCommands armStatus){
 //        //wrist control
 //        rightY = gamepad2.right_stick_y;
@@ -220,7 +219,7 @@ public class Intake {
 
     }
 
-    public void run_intake_manual(Gamepad gamepad2, double rightArmPosition) {
+    public void run_intake_Power(Gamepad gamepad2, double rightArmPosition) {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
         double rightY = gamepad2.right_stick_y; //was float—
@@ -247,20 +246,27 @@ public class Intake {
         }
 
 
-        //TODO Change pixelHolder behavior to just moving when a button is pressed
-        if (rightArmPosition > 490) {
-            openPixelHolder(false);
-        } else {
-            if (wristPosition < 90) {
-                openPixelHolder(true);
-            } else {
-                openPixelHolder(false);
-            }
+        //TODO - store & retrieve pixel from Holder
+        if(button_y){}
 
+        //TODO - move wrist down
+        if(button_a){}
+
+        //manual pixelHolder function
+        if(button_x){
+            if(holder_up){ //if pixelHolder is already up
+                holder_up = false;
+                openPixelHolder(false);
+            } else{ //if pixelHolder is already down
+                holder_up = true;
+                openPixelHolder(true);
+            }
         }
+
+        //
     }
 
-    public void run_intake_main(Gamepad gamepad2, int armTarget){
+    public void run_intake_TP(Gamepad gamepad2, int armTarget){
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
         float rightY = gamepad2.right_stick_y;
@@ -314,3 +320,16 @@ public class Intake {
     }
 
 }
+
+//----------------Comment Dump-------------
+//Done Change pixelHolder behavior to just moving when a button is pressed
+//        if (rightArmPosition > 490) {
+//            openPixelHolder(false);
+//        } else {
+//            if (wristPosition < 90) {
+//                openPixelHolder(true);
+//            } else {
+//                openPixelHolder(false);
+//            }
+//
+//        }

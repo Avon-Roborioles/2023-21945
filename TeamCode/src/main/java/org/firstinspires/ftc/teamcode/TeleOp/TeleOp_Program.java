@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
+
+import java.util.concurrent.TimeUnit;
 
 @TeleOp
 public class TeleOp_Program extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(true); //change to false if driving still isn't fixed
     private final Intake intake = new Intake();
-    //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
+    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
     //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
@@ -40,7 +43,7 @@ public class TeleOp_Program extends LinearOpMode {
 
         setTelemetry();
 
-        //Timing.Timer engameTimer = new Timing.Timer(2, TimeUnit.MINUTES);
+        Timing.Timer engameTimer = new Timing.Timer(2, TimeUnit.MINUTES);
 
         waitForStart();
 
@@ -61,13 +64,13 @@ public class TeleOp_Program extends LinearOpMode {
             //intake.run_intake_main(gamepad2, armTarget);
             //intake.run_intake_manual(gamepad2);
             double rightArmPosition = arm.getRightMotorPosition();
-            intake.run_intake_manual(gamepad2, rightArmPosition);
+            intake.run_intake_Power(gamepad2, rightArmPosition);
 
             setTelemetry();
 
-//            if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
-//                feedback.endGame_Alert(gamepad1, gamepad2);
-//            }
+            if (engameTimer.remainingTime() == 0.5) { //alerts drivers that endgame is starting
+                feedback.endGame_Alert(gamepad1, gamepad2);
+            }
         }
     }
 }
