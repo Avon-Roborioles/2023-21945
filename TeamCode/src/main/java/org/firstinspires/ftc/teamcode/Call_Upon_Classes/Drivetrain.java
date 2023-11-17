@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-
 import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -28,10 +26,10 @@ public class Drivetrain {
     private double ry;
     private double lt;
     private double rt;
-    private DcMotor fl = null;
-    private DcMotor bl = null;
-    private DcMotor fr = null;
-    private DcMotor br = null;
+    private DcMotor leftFront = null;
+    private DcMotor leftRear = null;
+    private DcMotor rightFront = null;
+    private DcMotor rightRear = null;
     private DcMotor x_encoder = null;
     private MecanumDrive drive;
     private GamepadEx driverOp;
@@ -72,17 +70,17 @@ public class Drivetrain {
     }
 
     public void init_drive_motors(HardwareMap hardwareMap) {
-        fl = hardwareMap.get(DcMotor.class, "fl");
-        fr = hardwareMap.get(DcMotor.class, "fr");
-        bl = hardwareMap.get(DcMotor.class, "bl");
-        br = hardwareMap.get(DcMotor.class, "br");
+        leftFront = hardwareMap.get(DcMotor.class, "fl");
+        rightFront = hardwareMap.get(DcMotor.class, "fr");
+        leftRear = hardwareMap.get(DcMotor.class, "bl");
+        rightRear = hardwareMap.get(DcMotor.class, "br");
 //        x_encoder = hardwareMap.get(DcMotor.class, "x");
-        bl.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
-        fl.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
-        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        leftFront.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void init_ftclib_drive(HardwareMap hardwareMap, Gamepad gamepad1){
@@ -192,10 +190,10 @@ public class Drivetrain {
         rx=gamepad1.right_stick_x;
         denominator = Math.max(Math.abs(lx)+Math.abs(ly)+Math.abs(rx), 1);
 
-        fl.setPower((lx + ly +rx)/denominator);
-        bl.setPower((lx + ly * strafe_set -rx* strafe_set )/denominator);
-        fr.setPower((lx - ly -rx)/denominator);
-        br.setPower((lx - ly * strafe_set +rx* strafe_set )/denominator);
+        leftFront.setPower((lx + ly +rx)/denominator);
+        leftRear.setPower((lx + ly * strafe_set -rx* strafe_set )/denominator);
+        rightFront.setPower((lx - ly -rx)/denominator);
+        rightRear.setPower((lx - ly * strafe_set +rx* strafe_set )/denominator);
 
         getTelemetry(telemetry);
 
@@ -207,16 +205,16 @@ public class Drivetrain {
         rx=gamepad1.right_stick_x;
 
         if (Math.abs(ly)>Math.abs(lx)) {//movement
-            fl.setPower(ly +rx);
-            fr.setPower(-ly -rx);
-            br.setPower(ly -rx);
-            bl.setPower(-ly +rx);
+            leftFront.setPower(ly +rx);
+            rightFront.setPower(-ly -rx);
+            rightRear.setPower(ly -rx);
+            leftRear.setPower(-ly +rx);
 
         }else{//rotation
-            fl.setPower(-lx -rx); //+
-            fr.setPower(-lx -rx);
-            bl.setPower(-lx +rx);
-            br.setPower(-lx +rx); //-
+            leftFront.setPower(-lx -rx); //+
+            rightFront.setPower(-lx -rx);
+            leftRear.setPower(-lx +rx);
+            rightRear.setPower(-lx +rx); //-
         }
 
         getTelemetry(telemetry);
@@ -230,34 +228,34 @@ public class Drivetrain {
         rx=gamepad1.right_stick_x;
 
         if(ly > 0){
-            fl.setPower(ly);
-            bl.setPower(ly);
+            leftFront.setPower(ly);
+            leftRear.setPower(ly);
         } else if(ly < 0){
-            fl.setPower(-ly);
-            bl.setPower(-ly);
+            leftFront.setPower(-ly);
+            leftRear.setPower(-ly);
         } else {
-            fl.setPower(0);
-            bl.setPower(0);
+            leftFront.setPower(0);
+            leftRear.setPower(0);
         }
 
         if(ry > 0){
-            fr.setPower(ry);
-            br.setPower(ry);
+            rightFront.setPower(ry);
+            rightRear.setPower(ry);
         } else if(ry < 0){
-            fr.setPower(-ry);
-            br.setPower(-ry);
+            rightFront.setPower(-ry);
+            rightRear.setPower(-ry);
         } else {
-            fr.setPower(0);
-            br.setPower(0);
+            rightFront.setPower(0);
+            rightRear.setPower(0);
         }
     }
 
 
     public void getTelemetry (@NonNull Telemetry telemetry){
-        telemetry.addData("fl power: ",fl.getPower());
-        telemetry.addData("fr power: ",fr.getPower());
-        telemetry.addData("bl power: ",bl.getPower());
-        telemetry.addData("br power: ",br.getPower());
+        telemetry.addData("fl power: ", leftFront.getPower());
+        telemetry.addData("fr power: ", rightFront.getPower());
+        telemetry.addData("bl power: ", leftRear.getPower());
+        telemetry.addData("br power: ", rightRear.getPower());
 //        telemetry.addData("X Dead Wheel Encoder Value: ",x_encoder.getCurrentPosition());
 
 
