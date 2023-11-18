@@ -24,10 +24,10 @@ public class Drivetrain_Testing extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        leftFront = hardwareMap.get(DcMotor.class, "fl");
-        rightFront = hardwareMap.get(DcMotor.class, "fr");
-        leftRear = hardwareMap.get(DcMotor.class, "bl");
-        rightRear = hardwareMap.get(DcMotor.class, "br");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
 //        x_encoder = hardwareMap.get(DcMotor.class, "x");
         leftRear.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
         leftFront.setDirection(DcMotor.Direction.REVERSE); // maybe reverse

@@ -205,16 +205,16 @@ public class Drivetrain {
         rx=gamepad1.right_stick_x;
 
         if (Math.abs(ly)>Math.abs(lx)) {//movement
-            leftFront.setPower(ly +rx);
-            rightFront.setPower(-ly -rx);
-            rightRear.setPower(ly -rx);
-            leftRear.setPower(-ly +rx);
+            leftFront.setPower(-ly -rx); // -+
+            rightFront.setPower(-ly +rx); // --
+            rightRear.setPower(-ly +rx); // --
+            leftRear.setPower(-ly -rx); // -+
 
         }else{//rotation
-            leftFront.setPower(-lx -rx); //+
+            leftFront.setPower(lx +rx); //+
             rightFront.setPower(-lx -rx);
             leftRear.setPower(-lx +rx);
-            rightRear.setPower(-lx +rx); //-
+            rightRear.setPower(lx -rx); //-
         }
 
         getTelemetry(telemetry);
