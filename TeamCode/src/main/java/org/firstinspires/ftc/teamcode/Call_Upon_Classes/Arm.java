@@ -48,7 +48,6 @@ public class Arm {
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
-
     public void init_arm_PID(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
@@ -56,7 +55,6 @@ public class Arm {
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
-
     public void init_arm_main(HardwareMap hardwareMap, String leftMotorName, String rightMotorName, boolean autoProgram){
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
@@ -77,6 +75,7 @@ public class Arm {
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
 
     //Methods of Arm TeleOp control
     public void run_arm_manual(Gamepad gamepad2) {
@@ -128,8 +127,6 @@ public class Arm {
 //        leftMotor.setPower(speed);
 //        rightMotor.setPower(-speed);
     } //Done - just controls speed - test
-
-    //Done ideal arm control wit PID Control
     public void run_arm_PID(Gamepad gamepad2){
         armStatus = armCommands.MANUAL;
 
@@ -172,8 +169,6 @@ public class Arm {
         leftMotor.setPower(power);
         rightMotor.setPower(-power);
     } //Done - PID Control - test
-
-    //typical feedback control - will need to adjust target value
     public void run_arm_main(Gamepad gamepad2, Telemetry telemetry){
        float leftY = gamepad2.left_stick_y;
 
@@ -209,83 +204,25 @@ public class Arm {
         getTelemetry(telemetry);
     }
 
-    //quick method to get armStatus (returns armCommands result)
+
+    //Auto Methods
     public armCommands getArmStatus(){
         return armStatus;
     }
-
-    //gets the current arm target position
     public  int getArmTargetPositiion(){
         return target;
     }
-
-    //auto-internal arm function
-    //sets target positon for both motors at once to save time
     public void setArmTargetPosition(int position){
         leftMotor.setTargetPosition(position);
         rightMotor.setTargetPosition(position);
     }
-
     public double getRightMotorPosition(){
         return rightMotor.getCurrentPosition();
     }
-
     public double getLeftMotorPosition(){
         return leftMotor.getCurrentPosition();
     }
-
-    //Done - sets arm to preset for stackedCone
-    public void setToPreset(armCommands command){
-        switch(command){
-            //sets the target position based on the armCommands
-            case GROUND:
-                armStatus = armCommands.GROUND;
-                target = 0;
-                break;
-
-            case SCORE:
-                armStatus = armCommands.SCORE;
-                target = scoreHeight;
-                break;
-
-            case PIXEL1:
-                armStatus = armCommands.PIXEL1;
-                target = pixel1Height;
-                break;
-
-            case PIXEL2:
-                armStatus = armCommands.PIXEL2;
-                target = pixel2Height;
-                break;
-
-            case PIXEL3:
-                armStatus = armCommands.PIXEL3;
-                target = pixel3Height;
-                break;
-
-            case PIXEL4:
-                armStatus = armCommands.PIXEL4;
-                target = pixel4Height;
-                break;
-
-            case PIXEL5:
-                armStatus = armCommands.PIXEL5;
-                target = pixel5Height;
-                break;
-        } //sets the target based on the Arm Command
-
-        controller.setPID(p, i, d);
-        int leftArmPos = leftMotor.getCurrentPosition();
-        int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(leftArmPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-
-        leftMotor.setPower(power);
-        rightMotor.setPower(-power);
-    }
-
+    public void setPosition(double position){} //TODO - main auto method to move arm
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);

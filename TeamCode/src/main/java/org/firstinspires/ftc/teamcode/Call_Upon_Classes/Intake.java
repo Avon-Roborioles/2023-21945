@@ -45,7 +45,6 @@ public class Intake {
     private boolean clawIsOpen = false;
 
     //Methods of intake initialization
-
     public void init_intake_teleOp(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
         //creates the intake object with its name
         claw = new SimpleServo(hardwareMap, clawName, 0, 180);
@@ -56,8 +55,6 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-
-
     public void init_intake_main(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
         claw = new SimpleServo(hardwareMap, clawName, 0, 180);
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
@@ -72,15 +69,12 @@ public class Intake {
     }
 
     //autonomous methods
-
     public wristCommands getWristStatus(){
         return wristStatus;
     } //Done
-
     public boolean getClawStatus(){
         return clawIsOpen;
     }
-
     public void moveWrist(wristCommands command){
         if(command == wristCommands.WRIST_UP){
             wristTarget = 100;
@@ -96,7 +90,6 @@ public class Intake {
 
         wristMotor.setPower(power);
     } //Done - test
-
     public void openClaw(boolean open) {
         if(open){
             claw.setPosition(0);
@@ -104,7 +97,6 @@ public class Intake {
             claw.setPosition(180);
         }
     } //Done - test
-
     public void openPixelHolder(boolean open){
         if(open){
             pixelHolder.setPosition(0.25);
@@ -112,7 +104,6 @@ public class Intake {
             pixelHolder.setPosition(0);
         }
     }
-
 
 
     //manages the pixelHolder based on certain conditions
@@ -130,7 +121,6 @@ public class Intake {
             }
         }
     }
-
     public void storePixel(){
         openClaw(false);
         Timing.Timer clock = new Timer(4, TimeUnit.SECONDS);
@@ -144,7 +134,6 @@ public class Intake {
             //TODO close pixelHolder
         }
     } //Done - wrist up, claw open, wrist down
-
     public void retrievePixel(){} //TODO
 
 
@@ -218,7 +207,6 @@ public class Intake {
 
 
     }
-
     public void run_intake_Power(Gamepad gamepad2, double rightArmPosition) {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
@@ -265,7 +253,6 @@ public class Intake {
 
         //
     }
-
     public void run_intake_TP(Gamepad gamepad2, int armTarget){
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;

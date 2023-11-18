@@ -145,7 +145,7 @@ public class Camera_Vision {
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .addProcessor(colourMassDetectionProcessor)
                 .build();
-        Timing.Timer clock = new Timing.Timer(8, TimeUnit.SECONDS); //3 second timer to detect propPosition
+       // Timing.Timer clock = new Timing.Timer(8, TimeUnit.SECONDS); //3 second timer to detect propPosition
 
             position = colourMassDetectionProcessor.getRecordedPropPosition().name();
 
