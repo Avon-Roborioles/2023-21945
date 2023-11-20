@@ -31,16 +31,118 @@ Main Program used by TeleOp and Auto Programs for everything vision
  */
 
 public class Camera_Vision {
-
     //for each camera method, the program creates its own version of a VisionPortal to use
     private VisionPortal visionPortal;
     private WebcamName webcam1 = null;
     private WebcamName webcam2 = null;
-
+    private Auto_Marker_Processor colourMassDetectionProcessor;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-
     private AprilTagProcessor aprilTag;
 
+
+    public void init_cameras(HardwareMap hardwareMap,String name1, String name2){ //setups up cameras
+         webcam1 = hardwareMap.get(WebcamName.class, name1);
+         webcam2 = hardwareMap.get(WebcamName.class, name2);
+    }
+
+    public void init_camera(HardwareMap hardwareMap, String name1){
+        webcam1 = hardwareMap.get(WebcamName.class, name1);
+    }
+
+    public void init_marker_detection(HardwareMap hardwareMap){
+        // the current range set by lower and upper is the full range
+        // HSV takes the form: (HUE, SATURATION, VALUE)
+        // which means to select our colour, only need to change HUE
+        // the domains are: ([0, 180], [0, 255], [0, 255])
+        // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
+        // and experiment to fine tune it for blue
+        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+        double minArea = 100; // the minimum area for the detection to consider for your prop
+
+        colourMassDetectionProcessor = new Auto_Marker_Processor(
+                lower,
+                upper,
+                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 213, // the left dividing line, in this case the left third of the frame
+                () -> 426 // the left dividing line, in this case the right third of the frame
+        );
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .addProcessor(colourMassDetectionProcessor)
+                .build();
+
+        // you may also want to take a look at some of the examples for instructions on
+        // how to have a switchable camera (switch back and forth between two cameras)
+        // or how to manually edit the exposure and gain, to account for different lighting conditions
+        // these may be extra features for you to work on to ensure that your robot performs
+        // consistently, even in different environments
+    }
+
+    public String getPropPosition(){ //runs Auto_Marker Pipeline and returns position as a string
+        String position = "";
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            visionPortal.stopLiveView();
+            visionPortal.stopStreaming();
+        }
+
+        // gets the recorded prop position
+        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
+        }
+
+        // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
+        switch (recordedPropPosition) {
+            case LEFT:
+                position = "LEFT";
+                break;
+            case MIDDLE:
+                position = "MIDDLE";
+                break;
+            case RIGHT:
+                position = "RIGHT";
+                break;
+        }
+
+        //return position;
+        return position;
+    }
+
+    public int get_Apriltag_id(String propPosition, String alliance) {
+        int tag_id = 0;
+
+        if(Objects.equals(alliance, "BLUE")) {
+            switch (propPosition) {
+                case "LEFT":
+                    tag_id = 1;
+                    break;
+                case "MIDDLE": case "NONE": //if no positino is found, just guess middle
+                    tag_id = 2;
+                    break;
+                case "RIGHT":
+                    tag_id = 3;
+                    break;
+            }
+
+        } else if (Objects.equals(alliance, "RED")){
+            switch (propPosition) {
+                case "LEFT":
+                    tag_id = 4;
+                    break;
+                case "MIDDLE": case "NONE": //if no position is found, just guess the middle position
+                    tag_id = 5;
+                    break;
+                case "RIGHT":
+                    tag_id = 6;
+                    break;
+            }
+        }
+        return tag_id;
+    }
 
     private void initAprilTag() {
 
@@ -107,84 +209,6 @@ public class Camera_Vision {
 
     }   // end method initAprilTag()
 
-
-    public void init_cameras(HardwareMap hardwareMap,String name1, String name2){ //setups up cameras
-         webcam1 = hardwareMap.get(WebcamName.class, name1);
-         webcam2 = hardwareMap.get(WebcamName.class, name2);
-    }
-
-    public void init_camera(HardwareMap hardwareMap, String name1){
-        webcam1 = hardwareMap.get(WebcamName.class, name1);
-    }
-
-    private WebcamName getCameraName(int camera){
-        if(camera == 1){
-            return webcam1;
-        } else {
-            return webcam2;
-        }
-    } //TODO Remove if not used
-
-    //TODO Add Code for Auto_Marker Detection
-    public String getPropPosition(HardwareMap hardwareMap, Telemetry telemetry){ //runs Auto_Marker Pipeline and returns position as a string
-        String position = "";
-        Auto_Marker_Processor colourMassDetectionProcessor;
-
-        //init Code
-        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 100; // the minimum area for the detection to consider for your prop
-        colourMassDetectionProcessor = new Auto_Marker_Processor(
-                lower,
-                upper,
-                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426 // the left dividing line, in this case the right third of the frame
-        );
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .addProcessor(colourMassDetectionProcessor)
-                .build();
-       // Timing.Timer clock = new Timing.Timer(8, TimeUnit.SECONDS); //3 second timer to detect propPosition
-
-            position = colourMassDetectionProcessor.getRecordedPropPosition().name();
-
-        return position;
-    }
-
-    //returns the correct Target AprilTag ID based on the team prop position
-    public int get_Apriltag_id(String propPosition, String alliance) {
-        int tag_id = 0;
-
-        if(Objects.equals(alliance, "BLUE")) {
-            switch (propPosition) {
-                case "LEFT":
-                    tag_id = 1;
-                    break;
-                case "MIDDLE": case "NONE": //if no positino is found, just guess middle
-                    tag_id = 2;
-                    break;
-                case "RIGHT":
-                    tag_id = 3;
-                    break;
-            }
-
-        } else if (Objects.equals(alliance, "RED")){
-            switch (propPosition) {
-                case "LEFT":
-                    tag_id = 4;
-                    break;
-                case "MIDDLE": case "NONE": //if no position is found, just guess the middle position
-                    tag_id = 5;
-                    break;
-                case "RIGHT":
-                    tag_id = 6;
-                    break;
-            }
-        }
-        return tag_id;
-    }
-
     /*
     * returns target AprilTag pose -
     * Simple algorithm to align robot with tag:
@@ -227,7 +251,17 @@ public class Camera_Vision {
         return pose;
     }
 
-    public void detect_stacked_pixels(){
+    public void init_pixel_detection(){} //TODO
+
+    public int[] find_nearest_pixel(){
+        int[] pose = {0,0,0};
+
+        return pose;
+    } //TODO a useful function that uses the front camera to find the nearest pixel
+
+    public void init_stacked_pixel_detection(){} //TODO
+
+    public void find_stacked_pixels(){
         visionPortal = VisionPortal.easyCreateWithDefaults(webcam2);
     } //TODO
 
