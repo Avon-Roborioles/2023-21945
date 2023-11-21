@@ -26,6 +26,7 @@ public class BL_Park extends AutoBase {
         //create trajectories for our bot to use
         TrajectorySequence tj1 = bot.trajectorySequenceBuilder(new Pose2d())
                 .waitSeconds(1)
+                .forward(20)
                 .build();
 
         waitForStart();

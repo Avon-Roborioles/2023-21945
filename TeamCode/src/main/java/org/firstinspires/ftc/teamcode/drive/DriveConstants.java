@@ -88,7 +88,9 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
-    public static double MAX_VEL = 47.4845458372762;
+    public static double MAX_VEL = 88.2809332; //90% of Max Velocity from Tuning
+    //Voltage Compensated kF --> 10.08197384373344
+
     public static double MAX_ACCEL = 47.4845458372762;
     public static double MAX_ANG_VEL = Math.toRadians(259.11086367346934);
     public static double MAX_ANG_ACCEL = Math.toRadians(259.11086367346934);

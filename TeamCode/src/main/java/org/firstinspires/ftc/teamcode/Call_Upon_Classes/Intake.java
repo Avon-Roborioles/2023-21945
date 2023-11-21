@@ -241,17 +241,29 @@ public class Intake {
         if(button_a){}
 
         //manual pixelHolder function
-        if(button_x){
-            if(holder_up){ //if pixelHolder is already up
-                holder_up = false;
-                openPixelHolder(false);
-            } else{ //if pixelHolder is already down
-                holder_up = true;
-                openPixelHolder(true);
-            }
-        }
+//        if(button_x){
+//            if(holder_up){ //if pixelHolder is already up
+//                holder_up = false;
+//                openPixelHolder(false);
+//            } else{ //if pixelHolder is already down
+//                holder_up = true;
+//                openPixelHolder(true);
+//            }
+//        }
 
         //
+
+        if (rightArmPosition > 490) {
+            openPixelHolder(false);
+        } else {
+             if (wristPosition < 90) {
+                openPixelHolder(true);
+            } else {
+                openPixelHolder(false);
+            }
+
+        }
+
     }
     public void run_intake_TP(Gamepad gamepad2, int armTarget){
         boolean leftBumper = gamepad2.left_bumper;

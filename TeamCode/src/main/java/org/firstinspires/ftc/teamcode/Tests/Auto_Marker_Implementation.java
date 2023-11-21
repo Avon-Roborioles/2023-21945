@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
 
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name="BL Park", group="Park Programs")
+@Autonomous(name="Auto Marker Implementation", group="Park Programs")
 public class Auto_Marker_Implementation extends AutoBase {
     String propPosition = "";
 
