@@ -52,7 +52,7 @@ public class TeleOp_Program extends LinearOpMode {
             //Driver 1 Controls - Primary
             drivetrain.run_mecanum_drive(gamepad1, telemetry);
             //drivetrain.run_ftclib_drive(hardwareMap,gamepad1);
-            launcher.run_Launcher(gamepad1);
+            //launcher.run_Launcher(gamepad1);
 
 
             //Driver 2 Controls - Secondary

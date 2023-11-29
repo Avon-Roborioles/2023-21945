@@ -54,6 +54,7 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets initial wrist position to 0
         wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        claw.setPosition(0);
     }
     public void init_intake_main(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
         claw = new SimpleServo(hardwareMap, clawName, 0, 180);
@@ -94,7 +95,7 @@ public class Intake {
         if(open){
             claw.setPosition(0);
         } else {
-            claw.setPosition(180);
+            claw.setPosition(.1); //180 - position is set to 0.1 for testing
         }
     } //Done - test
     public void openPixelHolder(boolean open){
@@ -226,19 +227,19 @@ public class Intake {
         wristPosition = wristMotor.getCurrentPosition();
 
         if (rightY > 0) {
-            wristMotor.setPower(0.25);
+            wristMotor.setPower(0.25); //0.25
         } else if (rightY < 0) {
-            wristMotor.setPower(-0.25);
+            wristMotor.setPower(-0.25); //-0.25
         } else {
             wristMotor.setPower(0);
         }
-
-
-        //TODO - store & retrieve pixel from Holder
-        if(button_y){}
-
-        //TODO - move wrist down
-        if(button_a){}
+//
+//
+//        //TODO - store & retrieve pixel from Holder
+//        if(button_y){}
+//
+//        //TODO - move wrist down
+//        if(button_a){}
 
         //manual pixelHolder function
 //        if(button_x){
@@ -261,7 +262,6 @@ public class Intake {
             } else {
                 openPixelHolder(false);
             }
-
         }
 
     }
