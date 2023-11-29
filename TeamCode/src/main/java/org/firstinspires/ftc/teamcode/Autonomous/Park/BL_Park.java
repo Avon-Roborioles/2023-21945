@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous.Park;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.*;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.arcrobotics.ftclib.util.Timing.Timer;
@@ -24,14 +25,14 @@ public class BL_Park extends AutoBase {
         init_classes();
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
         //create trajectories for our bot to use
-        TrajectorySequence tj1 = bot.trajectorySequenceBuilder(new Pose2d())
-                .waitSeconds(1)
-                .forward(20)
+        TrajectorySequence BASIC = bot.trajectorySequenceBuilder(new Pose2d())
+                .waitSeconds(.5)
+                .strafeLeft(20)
                 .build();
 
         waitForStart();
 
         //runs trajectories we create
-        bot.followTrajectorySequence(tj1);
+        bot.followTrajectorySequence(BASIC);
     }
 }
