@@ -83,6 +83,34 @@ public class Drivetrain {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    public void init_red_drive_motors(HardwareMap hardwareMap){
+        leftFront = hardwareMap.get(DcMotor.class, "rightFront"); //leftFront
+        rightFront = hardwareMap.get(DcMotor.class, "rightRear"); //rightFront
+        leftRear = hardwareMap.get(DcMotor.class, "leftFront"); //leftRear
+        rightRear = hardwareMap.get(DcMotor.class, "leftRear"); //rightRear
+//        x_encoder = hardwareMap.get(DcMotor.class, "x");
+        leftRear.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        leftFront.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    } //Done
+
+    public void init_blue_drive_motors(HardwareMap hardwareMap){
+        leftFront = hardwareMap.get(DcMotor.class, "leftRear");
+        rightFront = hardwareMap.get(DcMotor.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotor.class, "rightRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightFront");
+//        x_encoder = hardwareMap.get(DcMotor.class, "x");
+        leftRear.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        leftFront.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    } //TODO
+
     public void init_ftclib_drive(HardwareMap hardwareMap, Gamepad gamepad1){
         // constructor takes in frontLeft, frontRight, backLeft, backRight motors
         // IN THAT ORDER

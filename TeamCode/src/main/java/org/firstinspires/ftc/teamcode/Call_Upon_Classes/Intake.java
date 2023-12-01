@@ -93,16 +93,16 @@ public class Intake {
     } //Done - test
     public void openClaw(boolean open) {
         if(open){
-            claw.setPosition(0);
+            claw.setPosition(0.0);
         } else {
-            claw.setPosition(.1); //180 - position is set to 0.1 for testing
+            claw.setPosition(.5); //180 - position is set to 0.1 for testing
         }
     } //Done - test
     public void openPixelHolder(boolean open){
         if(open){
             pixelHolder.setPosition(0.25);
         } else {
-            pixelHolder.setPosition(0);
+            pixelHolder.setPosition(0.1); //0 pos was stopping claw from
         }
     }
 
@@ -211,6 +211,8 @@ public class Intake {
     public void run_intake_Power(Gamepad gamepad2, double rightArmPosition) {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
+        double ltrigger = gamepad2.left_trigger;
+        double rtrigger = gamepad2.right_trigger;
         double rightY = gamepad2.right_stick_y; //was float—
         boolean button_a = gamepad2.a;
         boolean button_x = gamepad2.x;
@@ -218,18 +220,18 @@ public class Intake {
         boolean button_b = gamepad2.b;
 
 
-        if (leftBumper) {
+        if (ltrigger > 0.3) { //set to 0.3 instead of 0 to stop accidental hits
             openClaw(false);
-        } else if (rightBumper) {
+        } else if (rtrigger > 0.3) {
             openClaw(true);
         }
 
         wristPosition = wristMotor.getCurrentPosition();
 
         if (rightY > 0) {
-            wristMotor.setPower(0.25); //0.25
+            wristMotor.setPower(0.35); //0.25
         } else if (rightY < 0) {
-            wristMotor.setPower(-0.25); //-0.25
+            wristMotor.setPower(-0.35); //-0.25
         } else {
             wristMotor.setPower(0);
         }
@@ -254,16 +256,15 @@ public class Intake {
 
         //
 
-        if (rightArmPosition > 490) {
-            openPixelHolder(false);
-        } else {
-             if (wristPosition < 90) {
+//        if (rightArmPosition > 490) {
+//            openPixelHolder(false);
+//        } else {
+            if (wristPosition < 120) { //90
                 openPixelHolder(true);
             } else {
                 openPixelHolder(false);
             }
-        }
-
+        //}
     }
     public void run_intake_TP(Gamepad gamepad2, int armTarget){
         boolean leftBumper = gamepad2.left_bumper;

@@ -120,8 +120,8 @@ public class Arm {
                 rightMotor.setPower(0.3);
 
             } else {
-                leftMotor.setPower(0.08); //small bit of power for brakes
-                rightMotor.setPower(-0.08);
+                leftMotor.setPower(0.09); //small bit of power for brakes
+                rightMotor.setPower(-0.09);
             }
         }
 //        leftMotor.setPower(speed);
