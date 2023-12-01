@@ -88,7 +88,27 @@ public class Drivetrain {
         rightFront = hardwareMap.get(DcMotor.class, "rightRear"); //rightFront
         leftRear = hardwareMap.get(DcMotor.class, "leftFront"); //leftRear
         rightRear = hardwareMap.get(DcMotor.class, "leftRear"); //rightRear
-//        x_encoder = hardwareMap.get(DcMotor.class, "x");
+        //-------------------Resets Motors to 0 pos---------------------
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //---------------------------------------------------------------
+        //**********Drivetrain Use without Encoder Wires************
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //OR------
+        //**********Drivetrain Use with Encoder Wires***************
+//        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //----------------------------------------------------------------
         leftRear.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
         leftFront.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -109,7 +129,7 @@ public class Drivetrain {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    } //TODO
+    } //Done
 
     public void init_ftclib_drive(HardwareMap hardwareMap, Gamepad gamepad1){
         // constructor takes in frontLeft, frontRight, backLeft, backRight motors
