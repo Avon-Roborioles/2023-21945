@@ -89,17 +89,17 @@ public class Drivetrain {
         leftRear = hardwareMap.get(DcMotor.class, "leftFront"); //leftRear
         rightRear = hardwareMap.get(DcMotor.class, "leftRear"); //rightRear
         //-------------------Resets Motors to 0 pos---------------------
-        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //---------------------------------------------------------------
         //**********Drivetrain Use without Encoder Wires************
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //OR------
         //**********Drivetrain Use with Encoder Wires***************

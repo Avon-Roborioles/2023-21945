@@ -26,16 +26,21 @@ public class DroneLauncher {
         clock = new Timing.Timer(10, TimeUnit.SECONDS);
         feedback = new Haptic_Feedback();
         startPos = launcherServo.getPosition();
+        //launcherServo.turnToAngle(0);
     }
 
     public void run_Launcher(Gamepad gamepad1){
         //if the driver hold left bumper,
-        if(gamepad1.left_bumper && gamepad1.right_bumper && gamepad1.b){
-            launcherServo.setPosition(0.4); //before - 180
+        boolean lbumper = gamepad1.left_bumper;
+        boolean rbumper = gamepad1.right_bumper;
+        boolean b_button = gamepad1.b;
+
+        if(lbumper && rbumper && b_button){
+            launcherServo.setPosition(0); //before - 180
             hasLaunched = true;
 
         } else {
-            launcherServo.setPosition(0.9);
+            launcherServo.setPosition(100);
         }
 
 
