@@ -247,22 +247,29 @@ public class Drivetrain {
 
     }
 
-    public void run_mecanum_drive(Gamepad gamepad1, Telemetry telemetry){
+    public void run_mecanum_drive(Gamepad gamepad1, Telemetry telemetry, double rightArmPosition){
         lx =gamepad1.left_stick_x; //swtiched with x
         ly =gamepad1.left_stick_y; //switched with y
         rx=gamepad1.right_stick_x;
+        double powerLimit = 0.0; //variable that slows down drivetrain based on armPos
+
+        if(rightArmPosition > 1600){
+            powerLimit = 0.5;
+        } else {
+            powerLimit = 1;
+        }
 
         if (Math.abs(ly)>Math.abs(lx)) {//movement
-            leftFront.setPower(-ly -rx); // -+
-            rightFront.setPower(-ly +rx); // --
-            rightRear.setPower(-ly +rx); // --
-            leftRear.setPower(-ly -rx); // -+
+            leftFront.setPower(-ly -rx * powerLimit); // -+
+            rightFront.setPower(-ly +rx * powerLimit); // --
+            rightRear.setPower(-ly +rx * powerLimit); // --
+            leftRear.setPower(-ly -rx * powerLimit); // -+
 
         }else{//rotation
-            leftFront.setPower(lx +rx); //+
-            rightFront.setPower(-lx -rx);
-            leftRear.setPower(-lx +rx);
-            rightRear.setPower(lx -rx); //-
+            leftFront.setPower(lx +rx * powerLimit); //+
+            rightFront.setPower(-lx -rx * powerLimit);
+            leftRear.setPower(-lx +rx * powerLimit);
+            rightRear.setPower(lx -rx * powerLimit); //-
         }
 
         getTelemetry(telemetry);

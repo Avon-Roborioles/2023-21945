@@ -219,10 +219,11 @@ public class Intake {
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
 
+        //TODO Add toggle pixelHolder
 
-        if (ltrigger > 0.3) { //set to 0.3 instead of 0 to stop accidental hits
+        if (leftBumper) { //set to 0.3 instead of 0 to stop accidental hits
             openClaw(false);
-        } else if (rtrigger > 0.3) {
+        } else if (rightBumper) {
             openClaw(true);
         }
 
@@ -259,11 +260,16 @@ public class Intake {
 //        if (rightArmPosition > 490) {
 //            openPixelHolder(false);
 //        } else {
-            if (wristPosition < 120) { //90
-                openPixelHolder(true);
-            } else {
-                openPixelHolder(false);
-            }
+//            if (wristPosition < 120) { //90
+//                openPixelHolder(true);
+//            } else {
+//                openPixelHolder(false);
+//            }
+        if(ltrigger > 0.5){
+            openPixelHolder(true);
+        } else {
+            openPixelHolder(false);
+        }
         //}
     }
     public void run_intake_TP(Gamepad gamepad2, int armTarget){
