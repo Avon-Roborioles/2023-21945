@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
-
-import java.util.concurrent.TimeUnit;
 
 @TeleOp
 public class RedAllianceTeleOp extends LinearOpMode {
@@ -41,7 +38,7 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
             //Driver 1 Controls - Primary
             //Driver 1 Controls
-            drivetrain.run_mecanum_drive(gamepad1, telemetry);
+            drivetrain.run_mecanum_drive(gamepad1, telemetry, rightArmPosition);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
