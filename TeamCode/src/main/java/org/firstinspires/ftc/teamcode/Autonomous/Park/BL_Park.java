@@ -29,7 +29,8 @@ public class BL_Park extends AutoBase {
                 .waitSeconds(.5)
                 .turn(Math.toRadians(88)) //turns 89 degrees right
                 .waitSeconds(.5)
-                .back(30)
+                //.back(30)
+                .forward(30)
                 .build();
 
         waitForStart();
