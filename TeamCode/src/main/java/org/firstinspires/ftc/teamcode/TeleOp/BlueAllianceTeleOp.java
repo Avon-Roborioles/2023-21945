@@ -38,7 +38,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
             //Driver 1 Controls - Primary
             //Driver 1 Controls
-            drivetrain.run_mecanum_drive(gamepad1, telemetry, rightArmPosition);
+            drivetrain.run_mecanum_drive(gamepad1, telemetry, arm.getRightMotorPosition());
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls

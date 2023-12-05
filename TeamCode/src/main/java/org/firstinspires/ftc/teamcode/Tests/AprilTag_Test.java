@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision;
 
-@TeleOp
+//@TeleOp
+@Disabled
 public class AprilTag_Test extends OpMode {
     Camera_Vision vision = new Camera_Vision();
     @Override

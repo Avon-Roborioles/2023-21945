@@ -251,20 +251,6 @@ public class Camera_Vision {
         return pose;
     }
 
-    public void init_pixel_detection(){} //TODO
-
-    public int[] find_nearest_pixel(){
-        int[] pose = {0,0,0};
-
-        return pose;
-    } //TODO a useful function that uses the front camera to find the nearest pixel
-
-    public void init_stacked_pixel_detection(){} //TODO
-
-    public void find_stacked_pixels(){
-        visionPortal = VisionPortal.easyCreateWithDefaults(webcam2);
-    } //TODO
-
     public void close(){ //turns off camera
         visionPortal.stopStreaming();
         visionPortal.close();
