@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.arcrobotics.ftclib.util.Timing;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
@@ -20,7 +19,7 @@ public class Auto_Marker_Implementation extends AutoBase {
 
         waitForStart();
 
-        vision.init_marker_detection(hardwareMap); //starts auto_marker processor
+        vision.init_spike_detection(hardwareMap); //starts auto_marker processor
 
         Timing.Timer clock = new Timing.Timer(8,TimeUnit.SECONDS);
 

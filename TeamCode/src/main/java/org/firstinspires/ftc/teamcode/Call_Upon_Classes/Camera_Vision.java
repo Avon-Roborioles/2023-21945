@@ -1,24 +1,18 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
-import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.opencv.core.Scalar;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 /*
 Main Program used by TeleOp and Auto Programs for everything vision
@@ -49,7 +43,7 @@ public class Camera_Vision {
         webcam1 = hardwareMap.get(WebcamName.class, name1);
     }
 
-    public void init_marker_detection(HardwareMap hardwareMap){
+    public void init_spike_detection(HardwareMap hardwareMap){
         // the current range set by lower and upper is the full range
         // HSV takes the form: (HUE, SATURATION, VALUE)
         // which means to select our colour, only need to change HUE

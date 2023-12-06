@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Autonomous.Park_Score;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.util.Timing;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -14,12 +13,18 @@ import java.util.concurrent.TimeUnit;
 @Disabled
 public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
+
+        //important variables for auto - set to random values
         String propPosition = "MIDDLE";
         int aprilTagID = 5;
-        init_classes();
+
+        init_classes(); //initiates robot functions
+        vision.init_spike_detection(hardwareMap); //sets camera to start looking for spike
+
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+                .lineToLinearHeading(new Pose2d(0,10,Math.toRadians(90)))
                 .build();
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
@@ -38,13 +43,13 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         waitForStart();
 
         //variables stored after 3 seconds of camera processing
-        Timing.Timer clock = new Timing.Timer(3, TimeUnit.SECONDS);
-        while(clock.isTimerOn()) {
+        Timing.Timer timer = new Timing.Timer(3, TimeUnit.SECONDS);
+        while(timer.isTimerOn()) {
             propPosition = vision.getPropPosition();
             aprilTagID = vision.get_Apriltag_id(propPosition, "RED");
         }
 
-        //scores the purple preload pixel based on vison reading
+        //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
                 bot.followTrajectorySequence(LeftSpikeScore);
