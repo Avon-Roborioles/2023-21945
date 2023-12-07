@@ -36,7 +36,7 @@ public class DroneLauncher {
         boolean b_button = gamepad1.b;
         boolean d_up = gamepad1.dpad_up;
 
-        if(lbumper && rbumper && b_button){
+        if(d_up){
             launcherServo.setPosition(0); //before - 180
             hasLaunched = true;
 
