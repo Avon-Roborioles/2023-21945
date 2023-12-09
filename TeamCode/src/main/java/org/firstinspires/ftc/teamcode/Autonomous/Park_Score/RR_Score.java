@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous.Park_Score;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.util.Timing;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -9,8 +10,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.concurrent.TimeUnit;
 
-//@Autonomous(name="RR Score", group="Park + Score")
-@Disabled
+@Autonomous(name="RR Score", group="Park + Score")
 public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
 
@@ -19,21 +19,29 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         int aprilTagID = 5;
 
         init_classes(); //initiates robot functions
-        vision.init_spike_detection(hardwareMap, true); //sets camera to start looking for spike
+        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
-        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .lineToLinearHeading(new Pose2d(0,10,Math.toRadians(90)))
+        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
+                .forward(10)
                 .build();
 
-        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
+                .turn(Math.toRadians(30))
                 .build();
 
-        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
+                .strafeRight(30)
                 .build();
 
-        TrajectorySequence PreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+                .build();
+
+        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+                .build();
+
+        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
                 .build();
 
         TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
@@ -42,12 +50,9 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         //auto code here
         waitForStart();
 
-        //variables stored after 3 seconds of camera processing
-        Timing.Timer timer = new Timing.Timer(3, TimeUnit.SECONDS);
-        while(timer.isTimerOn()) {
-            propPosition = vision.getPropPosition();
-            aprilTagID = vision.get_Apriltag_id(propPosition, "RED");
-        }
+        //gets propPosition and needed april tag from vision class
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition,false);
 
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
@@ -63,10 +68,21 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         }
 
         //score pixel
-        bot.followTrajectorySequence(PreloadScore);
+        //bot.followTrajectorySequence(LeftPreloadScore);
+//        switch(aprilTagID){ //TODO Add back when ready
+//            case 4:
+//                bot.followTrajectorySequence(LeftPreloadScore);
+//                break;
+//            case 5:
+//                bot.followTrajectorySequence(MiddlePreloadScore);
+//                break;
+//            case 6:
+//                bot.followTrajectorySequence(RightPreloadScore);
+//                break;
+//        }
 
         //park robot
-        bot.followTrajectorySequence(park);
+        //bot.followTrajectorySequence(park); //TODO Add back when ready
 
 
 

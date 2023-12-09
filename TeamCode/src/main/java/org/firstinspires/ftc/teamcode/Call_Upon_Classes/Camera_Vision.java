@@ -45,7 +45,7 @@ public class Camera_Vision {
         webcam1 = hardwareMap.get(WebcamName.class, name1);
     }
 
-    public void init_spike_detection(HardwareMap hardwareMap, boolean redAlliance){
+    public void init_prop_detection(HardwareMap hardwareMap, boolean redAlliance){
         // the current range set by lower and upper is the full range
         // HSV takes the form: (HUE, SATURATION, VALUE)
         // which means to select our colour, only need to change HUE
@@ -119,10 +119,10 @@ public class Camera_Vision {
         return position;
     }
 
-    public int get_Apriltag_id(String propPosition, String alliance) {
+    public int get_Apriltag_id(String propPosition, boolean blueAlliance) {
         int tag_id = 0;
 
-        if(Objects.equals(alliance, "BLUE")) {
+        if(blueAlliance) {
             switch (propPosition) {
                 case "LEFT":
                     tag_id = 1;
@@ -135,7 +135,7 @@ public class Camera_Vision {
                     break;
             }
 
-        } else if (Objects.equals(alliance, "RED")){
+        } else {
             switch (propPosition) {
                 case "LEFT":
                     tag_id = 4;
