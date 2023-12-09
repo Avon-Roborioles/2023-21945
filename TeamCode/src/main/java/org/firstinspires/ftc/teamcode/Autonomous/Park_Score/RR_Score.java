@@ -19,7 +19,7 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         int aprilTagID = 5;
 
         init_classes(); //initiates robot functions
-        vision.init_spike_detection(hardwareMap); //sets camera to start looking for spike
+        vision.init_spike_detection(hardwareMap, true); //sets camera to start looking for spike
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 

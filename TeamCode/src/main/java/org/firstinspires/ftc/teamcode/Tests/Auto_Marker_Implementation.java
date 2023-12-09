@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.arcrobotics.ftclib.util.Timing;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
@@ -8,27 +9,23 @@ import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
 import java.util.concurrent.TimeUnit;
 
 //@Autonomous(name="Auto Marker Implementation", group="Park Programs")
-@Disabled
+@Autonomous
 public class Auto_Marker_Implementation extends AutoBase {
     String propPosition = "";
 
     public void runOpMode() throws InterruptedException {
+        String propPosition = "NONE";
+        int aprilTagID = 5;
         init_classes();
-        //Auto_Marker camera = new Auto_Marker();
-        //camera.init(hardwareMap);
+        vision.init_spike_detection(hardwareMap, true);
+
 
         waitForStart();
 
-        vision.init_spike_detection(hardwareMap); //starts auto_marker processor
-
-        Timing.Timer clock = new Timing.Timer(8,TimeUnit.SECONDS);
-
-        while(clock.isTimerOn()){
-            propPosition = vision.getPropPosition(); //determines prop Position for 8 seconds
-        }
-
         while(opModeIsActive()){
+            propPosition = vision.getPropPosition();
             telemetry.addData("Prop Position: ", propPosition);
+            telemetry.update();
         }
     }
 }

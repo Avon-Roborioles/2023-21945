@@ -32,6 +32,8 @@ public class Camera_Vision {
     private Auto_Marker_Processor colourMassDetectionProcessor;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag;
+    Scalar lower;
+    Scalar upper;
 
 
     public void init_cameras(HardwareMap hardwareMap,String name1, String name2){ //setups up cameras
@@ -43,15 +45,26 @@ public class Camera_Vision {
         webcam1 = hardwareMap.get(WebcamName.class, name1);
     }
 
-    public void init_spike_detection(HardwareMap hardwareMap){
+    public void init_spike_detection(HardwareMap hardwareMap, boolean redAlliance){
         // the current range set by lower and upper is the full range
         // HSV takes the form: (HUE, SATURATION, VALUE)
         // which means to select our colour, only need to change HUE
         // the domains are: ([0, 180], [0, 255], [0, 255])
         // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
         // and experiment to fine tune it for blue
-        Scalar lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+
+        if(redAlliance){
+            //color limit for red
+            lower = new Scalar(150, 100, 100);
+            upper = new Scalar(180, 255, 255);
+        } else {
+            //color limit for blue
+            lower = new Scalar(90, 100, 100);
+            upper = new Scalar(180, 255, 255);
+        }
+
+//        lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90,100,100
+//        upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection - 180,255,255
         double minArea = 100; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new Auto_Marker_Processor(
