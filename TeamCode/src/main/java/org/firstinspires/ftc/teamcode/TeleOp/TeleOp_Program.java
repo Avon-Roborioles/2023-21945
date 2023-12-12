@@ -28,9 +28,15 @@ public class TeleOp_Program extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         drivetrain.init_drive_motors(hardwareMap);
-        intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+        //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+        //TODO - testing TP mode for wrist
+        intake.init_intake_main(hardwareMap, "claw", "wrist", "pixelHolder", false);
+
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+
+        //TODO - testing TP mode for arm
+        arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", false);
 
         setTelemetry();
 
@@ -47,8 +53,10 @@ public class TeleOp_Program extends LinearOpMode {
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            arm.run_arm_manual(gamepad2);
-            intake.run_intake_Power(gamepad2, rightArmPosition);
+            //arm.run_arm_manual(gamepad2);
+            arm.run_arm_main(gamepad2, telemetry);
+            //intake.run_intake_Power(gamepad2, rightArmPosition);
+            intake.run_intake_main(gamepad2, arm.getArmTargetPositiion());
 
             setTelemetry();
 

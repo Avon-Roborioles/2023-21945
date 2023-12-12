@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm.armCommands;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback;
 
 import com.arcrobotics.ftclib.util.Timing.Timer;
 
@@ -56,13 +57,13 @@ public class Intake {
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         claw.setPosition(0);
     }
-    public void init_intake_main(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
+    public void init_intake_main(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName, boolean auto){
         claw = new SimpleServo(hardwareMap, clawName, 0, 180);
         pixelHolder = new SimpleServo(hardwareMap, pixelHolderName, 0, 180);
         wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
 
         //used to set start position to 0
-        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if(auto) {wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
 
         wristMotor.setTargetPosition(0);
 
@@ -105,6 +106,14 @@ public class Intake {
             pixelHolder.setPosition(0.1); //0 pos was stopping claw from
         }
     }
+    public void auto_score(){
+        Timing.Timer clock = new Timer(3, TimeUnit.SECONDS);
+        retrievePixel(); //gets pixel from pixelHolder
+        if(clock.done()){
+            openClaw(true);
+        }
+
+    } //TEST - moves wrist to pos and opens claw to score
 
 
     //manages the pixelHolder based on certain conditions
@@ -123,19 +132,50 @@ public class Intake {
         }
     }
     public void storePixel(){
-        openClaw(false);
-        Timing.Timer clock = new Timer(4, TimeUnit.SECONDS);
-        moveWrist(wristCommands.WRIST_UP);
-
-        if(clock.remainingTime() == 2){
+        int initTarget = wristMotor.getTargetPosition();
+        Timing.Timer clock = new Timer(3, TimeUnit.SECONDS);
+        if(clock.remainingTime() == 3){
+            openClaw(false);
+            openPixelHolder(true);
+        }
+        if(clock.remainingTime() == 2.5){
+            wristTarget = 0;
+            wristMotor.setTargetPosition(wristTarget);
+            wristMotor.setPower(0.6);
+        }
+        if(clock.remainingTime() == 1){
             openClaw(true);
         }
-        if(clock.done()){
-            moveWrist(wristCommands.WRIST_DOWN);
-            //TODO close pixelHolder
+        if(clock.remainingTime() == 0.5){
+            wristTarget = initTarget;
+            wristMotor.setTargetPosition(wristTarget);
+            wristMotor.setPower(0.6);
         }
-    } //Done - wrist up, claw open, wrist down
-    public void retrievePixel(){} //TODO
+        if(clock.done()){
+            openPixelHolder(false);
+        }
+
+    } //TEST - close claw, wrist up, open claw, wrist down - test
+    public void retrievePixel(){
+        int initTarget = wristMotor.getTargetPosition(); //allows robot to retrurn to initial pos to not hit things
+        Timing.Timer clock = new Timer(3, TimeUnit.SECONDS);
+        if(clock.remainingTime() == 3){
+            openClaw(true);
+        }
+        if(clock.remainingTime() == 2.5){
+            wristTarget = 0;
+            wristMotor.setTargetPosition(wristTarget);
+            wristMotor.setPower(0.6);
+        }
+        if(clock.remainingTime() == 1){
+            openClaw(false);
+        }
+        if(clock.remainingTime() == 0.5){
+            wristTarget = initTarget;
+            wristMotor.setTargetPosition(wristTarget);
+            wristMotor.setPower(0.6);
+        }
+    } //TEST - open claw, wrist up, close claw, wrist down
 
 
     //Methods of TeleOp Intake Control
@@ -272,7 +312,7 @@ public class Intake {
         }
         //}
     }
-    public void run_intake_TP(Gamepad gamepad2, int armTarget){
+    public void run_intake_main(Gamepad gamepad2, int armTarget){
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
         float rightY = gamepad2.right_stick_y;
@@ -286,7 +326,7 @@ public class Intake {
             openClaw(true);
         } else if(rightBumper){
             openClaw(false);
-        }
+        } //open/close claw
 
         if(rightY > 0){//wrist control
             wristTarget += 10;
@@ -294,7 +334,14 @@ public class Intake {
         } else if(rightY < 0){
             wristTarget -= 10;
             wristMotor.setTargetPosition(wristTarget);
-        }
+        } //move wrist
+
+        if(button_y){
+            storePixel();
+        } //store pixel
+        if(button_a){
+            retrievePixel();
+        } //retrieve pixel
 
         //limits for wrist
         if(wristTarget > maxWristPosition){
@@ -308,7 +355,7 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //BE CAREFUL WITH POWER VALUE!!!!!
-        wristMotor.setPower(0.4);//40% power
+        wristMotor.setPower(0.5);//50% power
 
         //auto PixelHolder Control - change arm value as needed
         if(armTarget > 2000 ){ //keeps pixel stored if arm is backwards - keeps pixel from falling

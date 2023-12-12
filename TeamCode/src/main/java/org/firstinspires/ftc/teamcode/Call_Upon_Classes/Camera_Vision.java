@@ -11,6 +11,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.opencv.core.Scalar;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,16 +36,18 @@ public class Camera_Vision {
     Scalar lower;
     Scalar upper;
 
-
+    //sets up both cameras (front for prop detection & back for apriltag alignment)
     public void init_cameras(HardwareMap hardwareMap,String name1, String name2){ //setups up cameras
          webcam1 = hardwareMap.get(WebcamName.class, name1);
          webcam2 = hardwareMap.get(WebcamName.class, name2);
     }
 
+    //sets up front camera
     public void init_camera(HardwareMap hardwareMap, String name1){
         webcam1 = hardwareMap.get(WebcamName.class, name1);
     }
 
+    //starts detecting prop position through front camera
     public void init_prop_detection(HardwareMap hardwareMap, boolean redAlliance){
         // the current range set by lower and upper is the full range
         // HSV takes the form: (HUE, SATURATION, VALUE)
@@ -55,12 +58,12 @@ public class Camera_Vision {
 
         if(redAlliance){
             //color limit for red
-            lower = new Scalar(150, 100, 100);
-            upper = new Scalar(180, 255, 255);
+            lower = new Scalar(150, 100, 100); // 150, 100, 100
+            upper = new Scalar(180, 255, 255); // 180, 255, 255
         } else {
             //color limit for blue
-            lower = new Scalar(90, 100, 100);
-            upper = new Scalar(180, 255, 255);
+            lower = new Scalar(100, 100, 100); //
+            upper = new Scalar(140, 255, 255); //
         }
 
 //        lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90,100,100
@@ -86,6 +89,7 @@ public class Camera_Vision {
         // consistently, even in different environments
     }
 
+    //returns the detected prop position ("LEFT", "MIDDLE", or "RIGHT")
     public String getPropPosition(){ //runs Auto_Marker Pipeline and returns position as a string
         String position = "";
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
@@ -119,6 +123,7 @@ public class Camera_Vision {
         return position;
     }
 
+    //returns the desired apriltag ID based on propPosition and alliance color (1, 2, 3, etc)
     public int get_Apriltag_id(String propPosition, boolean blueAlliance) {
         int tag_id = 0;
 
@@ -151,11 +156,11 @@ public class Camera_Vision {
         return tag_id;
     }
 
+    //starts finding apriltags through the back camera - don't use this method as it's already called in the one below
     private void initAprilTag() {
 
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
-
                 // The following default settings are available to un-comment and edit as needed.
                 //.setDrawAxes(false)
                 //.setDrawCubeProjection(false)
@@ -169,9 +174,7 @@ public class Camera_Vision {
                 // to load a predefined calibration for your camera.
                 //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
                 // ... these parameters are fx, fy, cx, cy.
-
                 .build();
-
         // Adjust Image Decimation to trade-off detection-range for detection-rate.
         // eg: Some typical detection data using a Logitech C920 WebCam
         // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
@@ -183,7 +186,6 @@ public class Camera_Vision {
 
         // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
-
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
             builder.setCamera(webcam1);
@@ -210,36 +212,14 @@ public class Camera_Vision {
 
         // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();
-
         // Disable or re-enable the aprilTag processor at any time.
         //visionPortal.setProcessorEnabled(aprilTag, true);
+    }   //
 
-    }   // end method initAprilTag()
-
-    /*
-    * returns target AprilTag pose -
-    * Simple algorithm to align robot with tag:
-    *   - reduce bearing to zero (rotate),
-    *   - reduce yaw to zero (strafe sideways),
-    *   - reduce range to zero (drive forward)
-     */ //TODO finish code to get pose array
+    //returns an array of pose values of desired tag - only use this method to get apriltag info
     public double[] get_Apriltag_pose(int tag){
-        double[] pose = new double[9];
-//        AprilTagProcessor aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
-//        visionPortal = VisionPortal.easyCreateWithDefaults(webcam1, aprilTagProcessor);
-//
-//        List<AprilTagDetection> detections = aprilTagProcessor.getDetections();
-//        for(AprilTagDetection detection : detections){
-//            if(tag == detection.id){
-//                AprilTagPoseFtc tagPose = detection.ftcPose;
-//                pose[0] = tagPose.x;
-//                pose[1] = tagPose.y;
-//                pose[2] = tagPose.z;
-//                pose[3] = tagPose.range;
-//                pose[4] = tagPose.bearing;
-//                pose[5] = tagPose.elevation;
-//            }
-//        }
+         //ArrayList<Double> pose = new ArrayList<Double>();
+        double[] pose = new double[6];
         initAprilTag();
 
         List<AprilTagDetection> detections = aprilTag.getDetections();
@@ -250,13 +230,13 @@ public class Camera_Vision {
                 pose[1] = tagPose.y;
                 pose[2] = tagPose.z;
                 pose[3] = tagPose.range;
-                pose[4] = tagPose.bearing;
-                pose[5] = tagPose.elevation;
+                pose[4] = tagPose.pitch;
+                pose[5] = tagPose.bearing;
             }
         }
 
         return pose;
-    }
+    } //TEST
 
     public void close(){ //turns off camera
         visionPortal.stopStreaming();

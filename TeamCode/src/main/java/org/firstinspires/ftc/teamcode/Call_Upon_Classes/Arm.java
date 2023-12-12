@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -8,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import java.util.concurrent.TimeUnit;
 
 public class Arm {
     //TODO Code PID Controller in arm
@@ -26,7 +29,7 @@ public class Arm {
         PIXEL1;
     }
     private armCommands armStatus = armCommands.GROUND;
-    private int scoreHeight = 600;
+    private int scoreHeight = 2000; //600
     private int pixel5Height = 500; //TODO Change these values to actual height
     private int pixel4Height = 400;
     private int pixel3Height = 300;
@@ -34,7 +37,7 @@ public class Arm {
     private int pixel1Height = 100;
     private double leftMotorPosition = 0;
     private double rightMotorPosition = 0;
-    private int maxPosition = 4000; //TODO find max value
+    private int maxPosition = 4000; //Done -  find max value
     private PIDController controller;
     public static double p = 0, i = 0, d = 0; //PID variables needed
     public static double f = 0; //feed forward variable
@@ -52,7 +55,7 @@ public class Arm {
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //leftMotor.setDirection(DcMotorSimple.Direction.REVERSE); - already accounted for in run_PID method
 
     }
     public void init_arm_main(HardwareMap hardwareMap, String leftMotorName, String rightMotorName, boolean autoProgram){
@@ -166,11 +169,15 @@ public class Arm {
 
         double power = pid + ff;
 
-        leftMotor.setPower(power);
-        rightMotor.setPower(-power);
+        leftMotor.setPower(-power);
+        rightMotor.setPower(power);
     } //Done - PID Control - test
     public void run_arm_main(Gamepad gamepad2, Telemetry telemetry){
-       float leftY = gamepad2.left_stick_y;
+       double leftY = gamepad2.left_stick_y;
+       boolean d_up = gamepad2.dpad_up;
+       boolean d_left = gamepad2.dpad_left;
+       boolean d_down = gamepad2.dpad_down;
+       boolean d_right = gamepad2.dpad_right;
 
        leftMotorPosition = leftMotor.getCurrentPosition();
        rightMotorPosition = rightMotor.getCurrentPosition();
@@ -183,6 +190,13 @@ public class Arm {
            target -= 10;
            setArmTargetPosition(target);
        }
+
+       if(d_up){
+           setArmTargetPosition(scoreHeight);
+       } //arm to score height
+       if(d_down){
+           setArmTargetPosition(0);
+       } //arm to ground
 
        //limits for arm
         if(target > maxPosition){
@@ -198,7 +212,7 @@ public class Arm {
         rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //amount of power to get to position - BE CAREFUL WITH THESE VALUES!!!
-        leftMotor.setPower(0.7); //will start with 70% power
+        leftMotor.setPower(-0.7); //will start with 70% power
         rightMotor.setPower(0.7);
 
         getTelemetry(telemetry);
@@ -222,7 +236,28 @@ public class Arm {
     public double getLeftMotorPosition(){
         return leftMotor.getCurrentPosition();
     }
-    public void setPosition(double position){} //TODO - main auto method to move arm
+    public void setPosition(int position){
+        setArmTargetPosition(position);
+        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftMotor.setPower(-0.7);
+        rightMotor.setPower(0.7);
+
+
+    } //TEST - main auto method to move arm
+    public void auto_score(){
+        //create a 4 second timer to score pixel
+        Timing.Timer clock = new Timing.Timer(4, TimeUnit.SECONDS);
+
+        //lift arm at start of timer
+        setPosition(scoreHeight);
+
+        //lower arm after 4.5 second timer
+        if(clock.done()){
+            setPosition(0);
+        }
+
+    } //TEST - moves arm to score and back down in sync with intake
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);

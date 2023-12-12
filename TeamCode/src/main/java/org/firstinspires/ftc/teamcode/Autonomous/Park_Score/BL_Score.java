@@ -10,13 +10,17 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.concurrent.TimeUnit;
 
-//@Autonomous(name="RR Score", group="Park + Score")
-@Disabled
+@Autonomous(name="RR Score", group="Park + Score")
 public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
+
+        //important variables for auto - set to random values
         String propPosition = "MIDDLE";
-        int aprilTagID = 5;
-        init_classes();
+        int aprilTagID = 2;
+
+        init_classes(); //initiates robot functions
+        vision.init_prop_detection(hardwareMap, false); //sets camera to start looking for prop
+
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
@@ -28,7 +32,13 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
                 .build();
 
-        TrajectorySequence PreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+                .build();
+
+        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+                .build();
+
+        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
                 .build();
 
         TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
@@ -37,14 +47,11 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         //auto code here
         waitForStart();
 
-        //variables stored after 3 seconds of camera processing
-        Timing.Timer timer = new Timing.Timer(3, TimeUnit.SECONDS);
-        while(timer.isTimerOn()) {
-            propPosition = vision.getPropPosition();
-            aprilTagID = vision.get_Apriltag_id(propPosition, "RED");
-        }
+        //gets propPosition and needed april tag from vision class
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition,true);
 
-        //scores the purple preload pixel based on vison reading
+        //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
                 bot.followTrajectorySequence(LeftSpikeScore);
@@ -58,10 +65,21 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         }
 
         //score pixel
-        bot.followTrajectorySequence(PreloadScore);
+        //bot.followTrajectorySequence(LeftPreloadScore);
+//        switch(aprilTagID){ //TODO Add back when ready
+//            case 4:
+//                bot.followTrajectorySequence(LeftPreloadScore);
+//                break;
+//            case 5:
+//                bot.followTrajectorySequence(MiddlePreloadScore);
+//                break;
+//            case 6:
+//                bot.followTrajectorySequence(RightPreloadScore);
+//                break;
+//        }
 
         //park robot
-        bot.followTrajectorySequence(park);
+        //bot.followTrajectorySequence(park); //TODO Add back when ready
 
 
 

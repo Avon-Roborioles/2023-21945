@@ -28,7 +28,7 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .build();
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
-                .turn(Math.toRadians(30))
+                .turn(Math.toRadians(60))
                 .build();
 
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing

@@ -26,8 +26,8 @@ public class Auto_Marker_Test extends OpMode {
         // the domains are: ([0, 180], [0, 255], [0, 255])
         // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
         // and experiment to fine tune it for blue
-        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
-        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection - 180,255,255
+        Scalar lower = new Scalar(100, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100 - TODO blue values
+        Scalar upper = new Scalar(140, 255, 255); // the upper hsv threshold for your detection - 180,255,255
         double minArea = 100; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new Auto_Marker_Processor(
