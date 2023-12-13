@@ -27,7 +27,7 @@ public class BL_Park extends AutoBase {
         //create trajectories for our bot to use
         TrajectorySequence BASIC = bot.trajectorySequenceBuilder(new Pose2d())
                 .waitSeconds(.5)
-                .turn(Math.toRadians(88)) //turns 89 degrees right
+                .turn(Math.toRadians(90)) //turns 89 degrees right
                 .waitSeconds(.5)
                 //.back(30)
                 .forward(30)

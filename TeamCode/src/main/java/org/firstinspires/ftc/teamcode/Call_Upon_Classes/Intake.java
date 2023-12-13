@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.util.Timing;
@@ -93,29 +96,34 @@ public class Intake {
     } //Done - test
     public void openClaw(boolean close) {
         if(close){
-            claw.setPosition(.5);
+            claw.setPosition(.4); //.5
         } else {
             claw.setPosition(0); //180 - position is set to 0.1 for testing
         }
     } //Done - test
     public void closePixelHolder(boolean close){
         if(close){
-            pixelHolder.setPosition(.6); //close
+            pixelHolder.setPosition(.2); //close
             holder_up = true;
         } else {
-            pixelHolder.setPosition(0.2); //open
+            pixelHolder.setPosition(0.6); //open
             holder_up = false;
         }
     }
-    public void auto_score(){
-        Timing.Timer clock = new Timer(3, TimeUnit.SECONDS);
-        retrievePixel(); //gets pixel from pixelHolder
-        if(clock.done()){
-            openClaw(true);
-        }
+    public void wrist_up(){
+       wristTarget = 0;
+       wristMotor.setTargetPosition(wristTarget);
+       wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       wristMotor.setPower(.5);
 
     } //TEST - moves wrist to pos and opens claw to score
 
+    public void wrist_down(){
+        wristTarget = 200;
+        wristMotor.setTargetPosition(wristTarget);
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wristMotor.setPower(.5);
+    }
 
     //manages the pixelHolder based on certain conditions
     public void runAutoPixelHolder(boolean override){
@@ -263,17 +271,17 @@ public class Intake {
         //TODO Add toggle pixelHolder
 
         if (leftBumper) { //set to 0.3 instead of 0 to stop accidental hits
-            openClaw(false);
-        } else if (rightBumper) {
             openClaw(true);
+        } else if (rightBumper) {
+            openClaw(false);
         }
 
         wristPosition = wristMotor.getCurrentPosition();
 
         if (rightY > 0) {
-            wristMotor.setPower(0.25); //0.25
+            wristMotor.setPower(-0.35); //0.25
         } else if (rightY < 0) {
-            wristMotor.setPower(-0.25); //-0.25
+            wristMotor.setPower(0.35); //-0.25
         } else {
             wristMotor.setPower(0);
         }
@@ -321,14 +329,23 @@ public class Intake {
         //}
 
     public void run_intake_main(Gamepad gamepad2){
-        boolean leftBumper = gamepad2.left_bumper;
-        boolean rightBumper = gamepad2.right_bumper;
-        double ltrigger = gamepad2.left_trigger;
+
+        GamepadEx gamepad2Ex = new GamepadEx(gamepad2); //added ftclib extension functions
+
+        //TODO - test Gamepad2Ex features
+        boolean leftBumper = gamepad2Ex.wasJustReleased(GamepadKeys.Button.LEFT_BUMPER);//gamepad2.left_bumper;
+        boolean rightBumper = gamepad2Ex.wasJustReleased(GamepadKeys.Button.RIGHT_BUMPER);//gamepad2.right_bumper;
+        // double ltrigger = gamepad2.left_trigger;
+        TriggerReader ltreader = new TriggerReader(gamepad2Ex, GamepadKeys.Trigger.LEFT_TRIGGER);
+        TriggerReader rtreader = new TriggerReader(gamepad2Ex, GamepadKeys.Trigger.RIGHT_TRIGGER);
+        boolean ltrigger = ltreader.isDown();
+        boolean rtrigger = rtreader.isDown();
         float rightY = gamepad2.right_stick_y;
-        boolean button_a = gamepad2.a;
-        boolean button_x = gamepad2.x;
-        boolean button_y = gamepad2.y;
-        boolean button_b = gamepad2.b;
+        boolean button_a = gamepad2Ex.wasJustReleased(GamepadKeys.Button.A);//gamepad2.a;
+        boolean button_x = gamepad2Ex.wasJustReleased(GamepadKeys.Button.X);//gamepad2.x;
+        boolean button_y = gamepad2Ex.wasJustReleased(GamepadKeys.Button.Y);//gamepad2.y;
+        boolean button_b = gamepad2Ex.wasJustReleased(GamepadKeys.Button.B);//gamepad2.b;
+        boolean start_button = gamepad2Ex.wasJustReleased(GamepadKeys.Button.START);
 
         //driver control
         if(leftBumper){ //claw control
@@ -381,7 +398,7 @@ public class Intake {
 //            runAutoPixelHolder(false);
 //        }
 
-        if(ltrigger > 0) {
+        if(ltrigger) {
             closePixelHolder(true);
         } else {
             closePixelHolder(false);

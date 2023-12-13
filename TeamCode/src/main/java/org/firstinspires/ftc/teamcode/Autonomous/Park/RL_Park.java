@@ -16,7 +16,7 @@ public class RL_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
                 .waitSeconds(0.5)
                 .forward(20)
                 .waitSeconds(0.5)
-                .turn(Math.toRadians(-88))
+                .turn(Math.toRadians(-90))
                 .waitSeconds(0.5)
                 .forward(30)
 //                .turn(Math.toRadians(-88)) //turns right 88 degrees

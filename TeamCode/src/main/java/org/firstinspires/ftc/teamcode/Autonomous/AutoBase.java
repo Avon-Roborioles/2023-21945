@@ -23,7 +23,7 @@ public class AutoBase extends LinearOpMode {
 
     public void scorePixel(){
         arm.auto_score();
-        intake.auto_score();
+        //intake.auto_score();
     } //TEST - multi-function method used to score pixel on backboard
 
 }

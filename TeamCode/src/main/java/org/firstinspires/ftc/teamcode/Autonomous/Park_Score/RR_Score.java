@@ -23,16 +23,75 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
-        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
-                .forward(10)
+        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
+                .addTemporalMarker(0, () -> {
+                    intake.openClaw(false);
+                })
+                .strafeRight(5)
+                .waitSeconds(.5)
+                .forward(20)
+                .waitSeconds(.5)
+                .turn(Math.toRadians(88))
+                .waitSeconds(4)
+                .addTemporalMarker(4, () -> {
+                    intake.openClaw(false);
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(5, () -> {
+                    intake.openClaw(true);
+                })
+                .addTemporalMarker(6, () ->{
+                    intake.wrist_up();
+                })
+                .strafeLeft(25)
+                .waitSeconds(1)
+                .back(30)
                 .build();
 
-        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
-                .turn(Math.toRadians(60))
+        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+                .addTemporalMarker(0, () -> {
+                    intake.openClaw(false);
+                })
+                .forward(16)
+                .waitSeconds(3)
+                .addTemporalMarker(2, () -> {
+                    intake.openClaw(false);
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(3, () -> {
+                    intake.openClaw(true);
+                })
+                .addTemporalMarker(4, () ->{
+                    intake.wrist_up();
+                })
+                .back(15)
+                .waitSeconds(1)
+                .strafeRight(35)
                 .build();
-
-        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO testing
-                .strafeRight(30)
+//
+        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+                .addTemporalMarker(0, () -> {
+                    intake.openClaw(false);
+                })
+                .forward(20)
+                .waitSeconds(.5)
+                .turn(Math.toRadians(-88))
+                .waitSeconds(4)
+                .addTemporalMarker(4, () -> {
+                    intake.openClaw(false);
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(5, () -> {
+                    intake.openClaw(true);
+                })
+                .addTemporalMarker(6, () ->{
+                    intake.wrist_up();
+                })
+                .forward(3)
+                .waitSeconds(.5)
+                .strafeRight(25)
+                .waitSeconds(1)
+                .forward(30)
                 .build();
 
 //        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
@@ -44,7 +103,10 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 //        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
 //                .build();
 //
-//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(90))) //TODO
+//                .lineToLinearHeading(new Pose2d(0,10,Math.toRadians(90)))
+//                .waitSeconds(.7)
+//                .lineToLinearHeading(new Pose2d(30, 0, Math.toRadians(90)))
 //                .build();
 
         //auto code here
@@ -67,6 +129,8 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 break;
         }
 
+        //bot.followTrajectorySequence(RightSpikeScore);
+
         //score pixel
         //bot.followTrajectorySequence(LeftPreloadScore);
 //        switch(aprilTagID){ //TODO Add back when ready
@@ -82,7 +146,7 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 //        }
 
         //park robot
-        //bot.followTrajectorySequence(park); //TODO Add back when ready
+       // bot.followTrajectorySequence(park); //TODO Add back when ready
 
 
 
