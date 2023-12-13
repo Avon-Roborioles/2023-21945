@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name="RR Score", group="Park + Score")
+@Autonomous(name="BL Score", group="Park + Score")
 public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
 

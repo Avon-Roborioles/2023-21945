@@ -15,7 +15,7 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
     public void runOpMode() throws InterruptedException {
 
         //important variables for auto - set to random values
-        String propPosition = "MIDDLE";
+        String propPosition = "LEFT";
         int aprilTagID = 5;
 
         init_classes(); //initiates robot functions
@@ -35,17 +35,17 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .strafeRight(30)
                 .build();
 
-        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-
-        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-
-        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-
-        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
+//        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+//                .build();
+//
+//        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+//                .build();
+//
+//        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+//                .build();
+//
+//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+//                .build();
 
         //auto code here
         waitForStart();

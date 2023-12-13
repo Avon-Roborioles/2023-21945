@@ -47,7 +47,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         Timing.Timer clock = new Timing.Timer(3, TimeUnit.SECONDS);
         while(clock.isTimerOn()) {
             propPosition = vision.getPropPosition();
-            aprilTagID = vision.get_Apriltag_id(propPosition, "RED");
+            aprilTagID = vision.get_Apriltag_id(propPosition, false);
         }
 
         //scores the purple preload pixel based on vison reading

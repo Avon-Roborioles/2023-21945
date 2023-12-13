@@ -29,7 +29,8 @@ public class Arm {
         PIXEL1;
     }
     private armCommands armStatus = armCommands.GROUND;
-    private int scoreHeight = 2000; //600
+    private int scoreHeightHIGH = 2000; //600
+    private int scoreHeightLOW = 400; //TODO find optimal arm height to score with arm in front of bot
     private int pixel5Height = 500; //TODO Change these values to actual height
     private int pixel4Height = 400;
     private int pixel3Height = 300;
@@ -154,7 +155,7 @@ public class Arm {
         }
         if(dpadUp){ //score height
             armStatus = armCommands.SCORE;
-            target = scoreHeight;
+            target = scoreHeightHIGH;
         } else if (dpadDown){
             armStatus = armCommands.GROUND;
             target = 0;
@@ -184,15 +185,15 @@ public class Arm {
 
        //driver control
        if(leftY > 0){ //arm up
-           target += 10;
+           target += 20;
            setArmTargetPosition(target);
        } else if(leftY < 0){
-           target -= 10;
+           target -= 20;
            setArmTargetPosition(target);
        }
 
        if(d_up){
-           setArmTargetPosition(scoreHeight);
+           setArmTargetPosition(scoreHeightHIGH);
        } //arm to score height
        if(d_down){
            setArmTargetPosition(0);
@@ -250,7 +251,7 @@ public class Arm {
         Timing.Timer clock = new Timing.Timer(4, TimeUnit.SECONDS);
 
         //lift arm at start of timer
-        setPosition(scoreHeight);
+        setPosition(scoreHeightLOW);
 
         //lower arm after 4.5 second timer
         if(clock.done()){

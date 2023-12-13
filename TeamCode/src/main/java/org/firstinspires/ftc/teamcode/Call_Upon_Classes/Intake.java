@@ -34,7 +34,7 @@ public class Intake {
     private double rightY = 0.0;
     private int maxWristPosition = 1000;
     private int wristPosition = 0;
-    private boolean holder_up = true;
+    private boolean holder_up = false;
     public enum wristCommands {
         WRIST_UP,
         WRIST_DOWN,
@@ -92,18 +92,20 @@ public class Intake {
 
         wristMotor.setPower(power);
     } //Done - test
-    public void openClaw(boolean open) {
-        if(open){
-            claw.setPosition(0.0);
+    public void openClaw(boolean close) {
+        if(close){
+            claw.setPosition(.5);
         } else {
-            claw.setPosition(.5); //180 - position is set to 0.1 for testing
+            claw.setPosition(0); //180 - position is set to 0.1 for testing
         }
     } //Done - test
     public void openPixelHolder(boolean open){
         if(open){
-            pixelHolder.setPosition(0.25);
+            pixelHolder.setPosition(1);
+            holder_up = true;
         } else {
-            pixelHolder.setPosition(0.1); //0 pos was stopping claw from
+            pixelHolder.setPosition(0); //0 pos was stopping claw from
+            holder_up = false;
         }
     }
     public void auto_score(){
@@ -323,9 +325,9 @@ public class Intake {
 
         //driver control
         if(leftBumper){ //claw control
-            openClaw(true);
-        } else if(rightBumper){
             openClaw(false);
+        } else if(rightBumper){
+            openClaw(true);
         } //open/close claw
 
         if(rightY > 0){//wrist control
@@ -342,6 +344,15 @@ public class Intake {
         if(button_a){
             retrievePixel();
         } //retrieve pixel
+        if(button_b){
+            if(holder_up){
+                holder_up = false;
+                openPixelHolder(false);
+            } else {
+                holder_up = true;
+                openPixelHolder(true);
+            }
+        }
 
         //limits for wrist
         if(wristTarget > maxWristPosition){
