@@ -14,9 +14,9 @@ public class RR_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
 
         TrajectorySequence BASIC = bot.trajectorySequenceBuilder(new Pose2d())
                 .waitSeconds(0.5)
-                .turn(Math.toRadians(-88)) //turns right 88 degrees
+                .turn(Math.toRadians(100)) //turns right 88 degrees
                 .waitSeconds(0.5)
-                .forward(30)
+                .back(30)
                 .build();
 
         waitForStart();
