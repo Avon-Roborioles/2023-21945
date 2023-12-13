@@ -183,40 +183,47 @@ public class Arm {
        leftMotorPosition = leftMotor.getCurrentPosition();
        rightMotorPosition = rightMotor.getCurrentPosition();
 
-       //driver control
-       if(leftY > 0){ //arm up
-           target += 20;
-           setArmTargetPosition(target);
-       } else if(leftY < 0){
-           target -= 20;
-           setArmTargetPosition(target);
-       }
+//       //driver control
+//       if(leftY > 0){ //arm up
+//           target -= 20;
+//           setArmTargetPosition(target);
+//       } else if(leftY < 0){
+//           target += 20;
+//           setArmTargetPosition(target);
+//       }
+//
+//       if(d_up){
+//           setArmTargetPosition(scoreHeightHIGH);
+//       } //arm to score height
+//       if(d_down){
+//           setArmTargetPosition(0);
+//       } //arm to ground
+//
+//       //limits for arm
+//        if(target > maxPosition){
+//            armStatus = armCommands.MAX;
+//            target = maxPosition;
+//            setArmTargetPosition(target);
+//        } else if (target < 0){
+//            armStatus = armCommands.GROUND;
+//            target = 0;
+//            setArmTargetPosition(target);
+//        }
+//
+//        //final steps to get arm to position
+//        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//        //amount of power to get to position - BE CAREFUL WITH THESE VALUES!!!
+//        if(rightMotor.getTargetPosition() >= rightMotor.getCurrentPosition() ) {
+//            leftMotor.setPower(0.7); //will start with 70% power
+//            rightMotor.setPower(-0.7);
+//        } else {
+//            leftMotor.setPower(-0.7); //will start with 70% power
+//            rightMotor.setPower(0.7);
+//        }
+//        getTelemetry(telemetry);
 
-       if(d_up){
-           setArmTargetPosition(scoreHeightHIGH);
-       } //arm to score height
-       if(d_down){
-           setArmTargetPosition(0);
-       } //arm to ground
-
-       //limits for arm
-        if(target > maxPosition){
-            armStatus = armCommands.MAX;
-            target = maxPosition;
-        } else if (target < 0){
-            armStatus = armCommands.GROUND;
-            target = 0;
-        }
-
-        //final steps to get arm to position
-        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //amount of power to get to position - BE CAREFUL WITH THESE VALUES!!!
-        leftMotor.setPower(-0.7); //will start with 70% power
-        rightMotor.setPower(0.7);
-
-        getTelemetry(telemetry);
     }
 
 

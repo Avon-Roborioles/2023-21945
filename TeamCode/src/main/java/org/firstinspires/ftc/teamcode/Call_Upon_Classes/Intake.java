@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm.armCommands;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback;
 
 import com.arcrobotics.ftclib.util.Timing.Timer;
 
@@ -32,7 +31,7 @@ public class Intake {
     private ServoEx pixelHolder = null;
     private DcMotorEx wristMotor = null;
     private double rightY = 0.0;
-    private int maxWristPosition = 1000;
+    private int maxWristPosition = 200; //200 is level with ground
     private int wristPosition = 0;
     private boolean holder_up = false;
     public enum wristCommands {
@@ -99,12 +98,12 @@ public class Intake {
             claw.setPosition(0); //180 - position is set to 0.1 for testing
         }
     } //Done - test
-    public void openPixelHolder(boolean open){
-        if(open){
-            pixelHolder.setPosition(1);
+    public void closePixelHolder(boolean close){
+        if(close){
+            pixelHolder.setPosition(.6); //close
             holder_up = true;
         } else {
-            pixelHolder.setPosition(0); //0 pos was stopping claw from
+            pixelHolder.setPosition(0.2); //open
             holder_up = false;
         }
     }
@@ -122,14 +121,14 @@ public class Intake {
     public void runAutoPixelHolder(boolean override){
         if(override){ //if we need pixelHolder closed
             //close pixelHolder
-            openPixelHolder(false);
+            closePixelHolder(false);
         } else {
             if (wristTarget <= 200) {
                 //open pixelHolder
-                openPixelHolder(true);
+                closePixelHolder(true);
             } else {
                 //close pixelHolder
-                openPixelHolder(false);
+                closePixelHolder(false);
             }
         }
     }
@@ -138,9 +137,9 @@ public class Intake {
         Timing.Timer clock = new Timer(3, TimeUnit.SECONDS);
         if(clock.remainingTime() == 3){
             openClaw(false);
-            openPixelHolder(true);
+            closePixelHolder(true);
         }
-        if(clock.remainingTime() == 2.5){
+        if(clock.remainingTime() == 2){
             wristTarget = 0;
             wristMotor.setTargetPosition(wristTarget);
             wristMotor.setPower(0.6);
@@ -148,13 +147,13 @@ public class Intake {
         if(clock.remainingTime() == 1){
             openClaw(true);
         }
-        if(clock.remainingTime() == 0.5){
+        if(clock.remainingTime() == 0){
             wristTarget = initTarget;
             wristMotor.setTargetPosition(wristTarget);
             wristMotor.setPower(0.6);
         }
         if(clock.done()){
-            openPixelHolder(false);
+            closePixelHolder(false);
         }
 
     } //TEST - close claw, wrist up, open claw, wrist down - test
@@ -164,7 +163,7 @@ public class Intake {
         if(clock.remainingTime() == 3){
             openClaw(true);
         }
-        if(clock.remainingTime() == 2.5){
+        if(clock.remainingTime() == 2){
             wristTarget = 0;
             wristMotor.setTargetPosition(wristTarget);
             wristMotor.setPower(0.6);
@@ -172,7 +171,7 @@ public class Intake {
         if(clock.remainingTime() == 1){
             openClaw(false);
         }
-        if(clock.remainingTime() == 0.5){
+        if(clock.remainingTime() == 0){
             wristTarget = initTarget;
             wristMotor.setTargetPosition(wristTarget);
             wristMotor.setPower(0.6);
@@ -272,9 +271,9 @@ public class Intake {
         wristPosition = wristMotor.getCurrentPosition();
 
         if (rightY > 0) {
-            wristMotor.setPower(0.35); //0.25
+            wristMotor.setPower(0.25); //0.25
         } else if (rightY < 0) {
-            wristMotor.setPower(-0.35); //-0.25
+            wristMotor.setPower(-0.25); //-0.25
         } else {
             wristMotor.setPower(0);
         }
@@ -307,16 +306,24 @@ public class Intake {
 //            } else {
 //                openPixelHolder(false);
 //            }
-        if(ltrigger > 0.5){
-            openPixelHolder(true);
+        if(ltrigger > 0) {
+            closePixelHolder(true);
         } else {
-            openPixelHolder(false);
+            closePixelHolder(false);
+        }
+//        if(button_a) {
+//            if (holder_up) {
+//                openPixelHolder(false);
+//            } else {
+//                openPixelHolder(true);
+//            }
         }
         //}
-    }
-    public void run_intake_main(Gamepad gamepad2, int armTarget){
+
+    public void run_intake_main(Gamepad gamepad2){
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
+        double ltrigger = gamepad2.left_trigger;
         float rightY = gamepad2.right_stick_y;
         boolean button_a = gamepad2.a;
         boolean button_x = gamepad2.x;
@@ -331,10 +338,9 @@ public class Intake {
         } //open/close claw
 
         if(rightY > 0){//wrist control
-            wristTarget += 10;
-            wristMotor.setTargetPosition(wristTarget);
+            wristTarget += 3; //increment of 3 is perfect after testing
         } else if(rightY < 0){
-            wristTarget -= 10;
+            wristTarget -= 5;
             wristMotor.setTargetPosition(wristTarget);
         } //move wrist
 
@@ -344,15 +350,15 @@ public class Intake {
         if(button_a){
             retrievePixel();
         } //retrieve pixel
+        if(button_x){
+            wristTarget = 195;
+            wristMotor.setTargetPosition(wristTarget);
+        } //left - bring wrist back up
         if(button_b){
-            if(holder_up){
-                holder_up = false;
-                openPixelHolder(false);
-            } else {
-                holder_up = true;
-                openPixelHolder(true);
-            }
-        }
+            wristTarget = 10;
+            wristMotor.setTargetPosition(wristTarget);
+        } //right - brings wrist back down
+
 
         //limits for wrist
         if(wristTarget > maxWristPosition){
@@ -366,20 +372,28 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //BE CAREFUL WITH POWER VALUE!!!!!
-        wristMotor.setPower(0.5);//50% power
+        wristMotor.setPower(.5);//50% power
 
         //auto PixelHolder Control - change arm value as needed
-        if(armTarget > 2000 ){ //keeps pixel stored if arm is backwards - keeps pixel from falling
-            runAutoPixelHolder(true);
+//        if(armTarget > 2000 ){ //keeps pixel stored if arm is backwards - keeps pixel from falling
+//            runAutoPixelHolder(true);
+//        } else {
+//            runAutoPixelHolder(false);
+//        }
+
+        if(ltrigger > 0) {
+            closePixelHolder(true);
         } else {
-            runAutoPixelHolder(false);
+            closePixelHolder(false);
         }
+
     }
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);
         telemetry.addData("Claw Position", claw.getPosition());
         telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
+        telemetry.addData("Wrist Target", wristMotor.getTargetPosition());
         telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
     }
 

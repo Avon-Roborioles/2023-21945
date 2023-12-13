@@ -26,7 +26,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //drivetrain.init_drive_motors(hardwareMap);
         drivetrain.init_blue_drive_motors(hardwareMap);
-        intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+        intake.init_intake_main(hardwareMap, "claw", "wrist", "pixelHolder",false);
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
 
@@ -44,7 +44,8 @@ public class BlueAllianceTeleOp extends LinearOpMode {
             //Driver 2 Controls
             arm.run_arm_manual(gamepad2);
             double rightArmPosition = arm.getRightMotorPosition();
-            intake.run_intake_Power(gamepad2, rightArmPosition);
+            //intake.run_intake_Power(gamepad2, rightArmPosition);
+            intake.run_intake_main(gamepad2);
 
             setTelemetry();
 

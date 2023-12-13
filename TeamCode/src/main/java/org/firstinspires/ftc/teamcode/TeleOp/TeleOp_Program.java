@@ -36,7 +36,7 @@ public class TeleOp_Program extends LinearOpMode {
         //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
 
         //TODO - testing TP mode for arm
-        arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", false);
+        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
 
         setTelemetry();
 
@@ -46,17 +46,17 @@ public class TeleOp_Program extends LinearOpMode {
 
             //Driver 1 Controls - Primary
             //Driver 1 Controls
-            double rightArmPosition = arm.getRightMotorPosition();
+            //double rightArmPosition = arm.getRightMotorPosition();
 
 
-            drivetrain.run_mecanum_drive(gamepad1, telemetry, rightArmPosition);
+            drivetrain.run_mecanum_drive(gamepad1, telemetry, 1);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
             //arm.run_arm_manual(gamepad2);
-            arm.run_arm_main(gamepad2, telemetry);
+            arm.run_arm_manual(gamepad2);
             //intake.run_intake_Power(gamepad2, rightArmPosition);
-            intake.run_intake_main(gamepad2, arm.getArmTargetPositiion());
+            intake.run_intake_main(gamepad2);
 
             setTelemetry();
 
