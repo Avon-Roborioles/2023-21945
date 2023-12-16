@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_P
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Scalar;
 
-@TeleOp
-public class Auto_Marker_Test extends OpMode {
+@TeleOp(name="RED Camera Test", group="Tests")
+public class Red_Camera_Test extends OpMode {
     private VisionPortal visionPortal;
     private Auto_Marker_Processor colourMassDetectionProcessor;
 
@@ -26,7 +26,7 @@ public class Auto_Marker_Test extends OpMode {
         // the domains are: ([0, 180], [0, 255], [0, 255])
         // this is tuned to detect red, so you will need to experiment to fine tune it for your robot
         // and experiment to fine tune it for blue
-        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100 - TODO blue values
+        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection - 90, 100, 100
         Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection - 180,255,255
         double minArea = 100; // the minimum area for the detection to consider for your prop
 

@@ -26,72 +26,95 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
                 .addTemporalMarker(0, () -> {
                     intake.openClaw(false);
+                    intake.closePixelHolder(true);
                 })
                 .strafeRight(5)
                 .waitSeconds(.5)
                 .forward(20)
                 .waitSeconds(.5)
                 .turn(Math.toRadians(88))
-                .waitSeconds(4)
-                .addTemporalMarker(4, () -> {
+
+
+                .waitSeconds(.5) //------------
+                .forward(10)
+                .waitSeconds(.5) //-----------
+                .back(10)
+                .waitSeconds(5)
+
+                .addTemporalMarker(6, () -> {
                     intake.openClaw(false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(5, () -> {
+                .addTemporalMarker(7, () -> {
                     intake.openClaw(true);
                 })
-                .addTemporalMarker(6, () ->{
+                .addTemporalMarker(8, () ->{
                     intake.wrist_up();
                 })
-                .strafeLeft(25)
+                .turn(Math.toRadians(5))
+                .strafeLeft(23) //25
+
+                //-----------------------
                 .waitSeconds(1)
-                .back(30)
+                .back(33) //35
                 .build();
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
                     intake.openClaw(false);
+                    intake.closePixelHolder(true);
+
                 })
-                .forward(16)
-                .waitSeconds(3)
-                .addTemporalMarker(2, () -> {
+                .forward(24) //16
+                .waitSeconds(.5)
+                .back(8)
+                .waitSeconds(5)
+                .addTemporalMarker(3, () -> {
                     intake.openClaw(false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(3, () -> {
+                .addTemporalMarker(4, () -> {
                     intake.openClaw(true);
                 })
-                .addTemporalMarker(4, () ->{
+                .addTemporalMarker(5, () ->{
                     intake.wrist_up();
                 })
-                .back(15)
+                .back(12)
                 .waitSeconds(1)
+                //----------------------
                 .strafeRight(35)
                 .build();
 //
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
                     intake.openClaw(false);
+                    intake.closePixelHolder(true);
+
                 })
                 .forward(20)
                 .waitSeconds(.5)
                 .turn(Math.toRadians(-88))
+                .waitSeconds(.5) //------------
+                .forward(10)
+                .waitSeconds(.5) //-----------
+                .back(10)
                 .waitSeconds(4)
-                .addTemporalMarker(4, () -> {
+                .addTemporalMarker(6, () -> {
                     intake.openClaw(false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(5, () -> {
+                .addTemporalMarker(7, () -> {
                     intake.openClaw(true);
                 })
-                .addTemporalMarker(6, () ->{
+                .addTemporalMarker(8, () ->{
                     intake.wrist_up();
                 })
                 .forward(3)
                 .waitSeconds(.5)
-                .strafeRight(25)
+                .strafeRight(20) //25
                 .waitSeconds(1)
-                .forward(30)
+                //---------------------
+                .forward(30) //35
                 .build();
 
 //        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO

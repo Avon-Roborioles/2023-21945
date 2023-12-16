@@ -4,19 +4,22 @@
 */
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
-@TeleOp
-public class Mecanum_Drive extends LinearOpMode{
+@TeleOp(name="FieldCentric Drive", group="")
+public class FieldCentric_Drive extends LinearOpMode{
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(false);
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drivetrain.init_ftclib_drive(hardwareMap, gamepad1);
+        GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
+
+        drivetrain.init_ftclib_drive(hardwareMap, gamepad1Ex);
         waitForStart();
 
         while(opModeIsActive()){
-            drivetrain.run_ftclib_drive(hardwareMap, gamepad1);
+            //drivetrain.run_ftclib_drive(hardwareMap, gamepad1Ex);
         }
     }
 }

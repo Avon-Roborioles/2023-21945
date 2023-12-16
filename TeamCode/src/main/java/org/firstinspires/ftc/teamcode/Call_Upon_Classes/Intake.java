@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
@@ -103,10 +104,10 @@ public class Intake {
     } //Done - test
     public void closePixelHolder(boolean close){
         if(close){
-            pixelHolder.setPosition(.2); //close
+            pixelHolder.setPosition(1); //close
             holder_up = true;
         } else {
-            pixelHolder.setPosition(0.6); //open
+            pixelHolder.setPosition(0.7); //open
             holder_up = false;
         }
     }
@@ -257,7 +258,7 @@ public class Intake {
 
 
     }
-    public void run_intake_Power(Gamepad gamepad2, double rightArmPosition) {
+    public void run_intake_Power(Gamepad gamepad2, GamepadEx gamepad2Ex,ToggleButtonReader aReader, double rightArmPosition) {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
         double ltrigger = gamepad2.left_trigger;
@@ -267,6 +268,7 @@ public class Intake {
         boolean button_x = gamepad2.x;
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
+
 
         //TODO Add toggle pixelHolder
 
@@ -314,11 +316,20 @@ public class Intake {
 //            } else {
 //                openPixelHolder(false);
 //            }
-        if(ltrigger > 0) {
+//        if(ltrigger > 0) {
+//            closePixelHolder(true);
+//        } else {
+//            closePixelHolder(false);
+//        }
+
+        if (aReader.getState()) {
+            // if toggle state true
             closePixelHolder(true);
         } else {
+            // if toggle state false
             closePixelHolder(false);
         }
+        aReader.readValue();
 //        if(button_a) {
 //            if (holder_up) {
 //                openPixelHolder(false);

@@ -253,6 +253,21 @@ public class Arm {
 
 
     } //TEST - main auto method to move arm
+    public void up_auto(){
+        setArmTargetPosition(2000); //adust value for backboard
+        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftMotor.setPower(-0.7);
+        rightMotor.setPower(0.7);
+    }
+
+    public void down_auto(){
+        setArmTargetPosition(0);
+        leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftMotor.setPower(-0.7);
+        rightMotor.setPower(0.7);
+    }
     public void auto_score(){
         //create a 4 second timer to score pixel
         Timing.Timer clock = new Timing.Timer(4, TimeUnit.SECONDS);
