@@ -32,23 +32,23 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.5)
                 .forward(20)
                 .waitSeconds(.5)
-                .turn(Math.toRadians(88))
+                .turn(Math.toRadians(85))
 
 
                 .waitSeconds(.5) //------------
                 .forward(10)
                 .waitSeconds(.5) //-----------
-                .back(10)
+                .back(11.5)
                 .waitSeconds(5)
 
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(7, () -> {
                     intake.openClaw(false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(7, () -> {
+                .addTemporalMarker(8, () -> {
                     intake.openClaw(true);
                 })
-                .addTemporalMarker(8, () ->{
+                .addTemporalMarker(9, () ->{
                     intake.wrist_up();
                 })
                 .turn(Math.toRadians(5))
@@ -56,7 +56,7 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 
                 //-----------------------
                 .waitSeconds(1)
-                .forward(33) //35 - back
+                .forward(28) //35 - back
                 .build();
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
@@ -67,7 +67,7 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .forward(24) //16
                 .waitSeconds(.5)
-                .back(8)
+                .back(9.5)
                 .waitSeconds(5)
                 .addTemporalMarker(3, () -> {
                     intake.openClaw(false);
@@ -79,9 +79,10 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .addTemporalMarker(5, () ->{
                     intake.wrist_up();
                 })
-                .back(12)
+                .back(16)
                 .waitSeconds(1)
                 //----------------------
+                .turn(Math.toRadians(5))
                 .strafeLeft(35) //strafeRight
                 .build();
 //
@@ -91,13 +92,13 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.closePixelHolder(true);
 
                 })
-                .forward(20)
+                .forward(18)
                 .waitSeconds(.5)
                 .turn(Math.toRadians(-88))
                 .waitSeconds(.5) //------------
                 .forward(10)
                 .waitSeconds(.5) //-----------
-                .back(10)
+                .back(8.5)
                 .waitSeconds(4)
                 .addTemporalMarker(6, () -> {
                     intake.openClaw(false);
@@ -114,7 +115,7 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .strafeRight(20) //25
                 .waitSeconds(1)
                 //---------------------
-                .back(30) //35 - forward
+                .back(28) //35 - forward
                 .build();
 
 //        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO

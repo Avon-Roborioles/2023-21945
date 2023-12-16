@@ -14,10 +14,10 @@ public class BR_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
 
         TrajectorySequence BASIC = bot.trajectorySequenceBuilder(new Pose2d())
                 .waitSeconds(0.5)
-                .forward(20)
+                .forward(24)
                 .turn(Math.toRadians(90))
                 .waitSeconds(0.5)
-                .forward(30)
+                .forward(40)
 
 //                .turn(Math.toRadians(88)) //turns right 88 degrees
 //                .waitSeconds(0.5)
