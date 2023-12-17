@@ -38,17 +38,17 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.5) //------------
                 .forward(10)
                 .waitSeconds(.5) //-----------
-                .back(10)
+                .back(10.5)
                 .waitSeconds(5)
 
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(7, () -> {
                     intake.openClaw(false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(7, () -> {
+                .addTemporalMarker(8, () -> {
                     intake.openClaw(true);
                 })
-                .addTemporalMarker(8, () ->{
+                .addTemporalMarker(9, () ->{
                     intake.wrist_up();
                 })
                 .turn(Math.toRadians(5))
@@ -67,7 +67,7 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .forward(24) //16
                 .waitSeconds(.5)
-                .back(8)
+                .back(9.5)
                 .waitSeconds(5)
                 .addTemporalMarker(3, () -> {
                     intake.openClaw(false);
@@ -79,7 +79,7 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .addTemporalMarker(5, () ->{
                     intake.wrist_up();
                 })
-                .back(12)
+                .back(15)
 //                .waitSeconds(1)
 //                //----------------------
 //                .strafeRight(35)
@@ -97,7 +97,7 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.5) //------------
                 .forward(10)
                 .waitSeconds(.5) //-----------
-                .back(10)
+                .back(10.5)
                 .waitSeconds(4)
                 .addTemporalMarker(6, () -> {
                     intake.openClaw(false);

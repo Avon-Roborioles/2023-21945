@@ -336,6 +336,7 @@ public class Intake {
 //            } else {
 //                openPixelHolder(true);
 //            }
+        //closePixelHolder(true);
         }
         //}
 
