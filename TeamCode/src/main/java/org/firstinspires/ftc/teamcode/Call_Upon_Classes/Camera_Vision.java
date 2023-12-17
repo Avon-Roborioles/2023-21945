@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Pixel_Stack_Processor;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Team_Prop_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
@@ -11,9 +12,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.opencv.core.Scalar;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /*
 Main Program used by TeleOp and Auto Programs for everything vision
@@ -30,9 +29,11 @@ public class Camera_Vision {
     private VisionPortal visionPortal;
     private WebcamName webcam1 = null;
     private WebcamName webcam2 = null;
-    private Auto_Marker_Processor colourMassDetectionProcessor;
+    private Team_Prop_Processor teamPropProcessor;
+    private Pixel_Stack_Processor pixelStackProcessor;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag;
+    double minArea;
     Scalar lower;
     Scalar upper;
 
@@ -68,9 +69,9 @@ public class Camera_Vision {
 
 //        lower = new Scalar(90, 100, 100); // the lower hsv threshold for your detection - 90,100,100
 //        upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection - 180,255,255
-        double minArea = 100; // the minimum area for the detection to consider for your prop
+         minArea = 100; // the minimum area for the detection to consider for your prop
 
-        colourMassDetectionProcessor = new Auto_Marker_Processor(
+        teamPropProcessor = new Team_Prop_Processor(
                 lower,
                 upper,
                 () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
@@ -79,7 +80,7 @@ public class Camera_Vision {
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .addProcessor(colourMassDetectionProcessor)
+                .addProcessor(teamPropProcessor)
                 .build();
 
         // you may also want to take a look at some of the examples for instructions on
@@ -147,7 +148,27 @@ public class Camera_Vision {
         visionPortal = builder.build();
         // Disable or re-enable the aprilTag processor at any time.
         //visionPortal.setProcessorEnabled(aprilTag, true);
-    }   //
+    }
+
+    //TODO -  starts detecting stacked pixels on the field
+    public void init_stack_detection(HardwareMap hardwareMap){
+        lower = new Scalar(0,0,200); //test these values to detect white
+        upper = new Scalar(180,30,255);
+        minArea = 100;
+
+        pixelStackProcessor = new Pixel_Stack_Processor(
+                lower,
+                upper,
+                () -> minArea,
+                () -> 213,
+                () -> 426
+        );
+
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .addProcessor(pixelStackProcessor)
+                .build();
+    }
 
     //TODO Add Method to start recording matches from front camera
     public void startFRONTRecording(){}
@@ -172,12 +193,12 @@ public class Camera_Vision {
         }
 
         // gets the recorded prop position
-        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        Team_Prop_Processor.PropPositions recordedPropPosition = teamPropProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
-            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
+        if (recordedPropPosition == Team_Prop_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Team_Prop_Processor.PropPositions.MIDDLE;
         }
 
         // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
@@ -195,6 +216,15 @@ public class Camera_Vision {
 
         //return position;
         return position;
+    }
+
+    //TODO - returns the strafing length needed to align robot with stacked pixels
+    public double getStackAlignment(){
+        double length = 0;
+        double centerX = pixelStackProcessor.getLargestContourX();
+        length = pixelStackProcessor.getAlignmentX();
+
+        return length;
     }
 
     //returns the desired apriltag ID based on propPosition and alliance color (1, 2, 3, etc)
@@ -252,7 +282,8 @@ public class Camera_Vision {
         return pose;
     } //TEST
 
-    public void close(){ //turns off camera
+    //closes Vision Portal and Camera - use between diffrent camera usecases (Prop to Stack)
+    public void close(){
         visionPortal.stopStreaming();
         visionPortal.close();
     }

@@ -4,14 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Auto_Marker_Processor;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.Team_Prop_Processor;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Scalar;
 
 @TeleOp(name="BLUE Camera Test", group="Tests")
 public class Blue_Camera_Test extends OpMode {
     private VisionPortal visionPortal;
-    private Auto_Marker_Processor colourMassDetectionProcessor;
+    private Team_Prop_Processor colourMassDetectionProcessor;
 
     /**
      * User-defined init method
@@ -30,7 +30,7 @@ public class Blue_Camera_Test extends OpMode {
         Scalar upper = new Scalar(140, 255, 255); // the upper hsv threshold for your detection - 180,255,255
         double minArea = 100; // the minimum area for the detection to consider for your prop
 
-        colourMassDetectionProcessor = new Auto_Marker_Processor(
+        colourMassDetectionProcessor = new Team_Prop_Processor(
                 lower,
                 upper,
                 () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
@@ -83,12 +83,12 @@ public class Blue_Camera_Test extends OpMode {
         }
 
         // gets the recorded prop position
-        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        Team_Prop_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
-            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
+        if (recordedPropPosition == Team_Prop_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Team_Prop_Processor.PropPositions.MIDDLE;
         }
 
         // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
@@ -120,12 +120,12 @@ public class Blue_Camera_Test extends OpMode {
         }
 
         // gets the recorded prop position
-        Auto_Marker_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        Team_Prop_Processor.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (recordedPropPosition == Auto_Marker_Processor.PropPositions.UNFOUND) {
-            recordedPropPosition = Auto_Marker_Processor.PropPositions.MIDDLE;
+        if (recordedPropPosition == Team_Prop_Processor.PropPositions.UNFOUND) {
+            recordedPropPosition = Team_Prop_Processor.PropPositions.MIDDLE;
         }
 
         // now we can use recordedPropPosition in our auto code to modify where we place the purple and yellow pixels
