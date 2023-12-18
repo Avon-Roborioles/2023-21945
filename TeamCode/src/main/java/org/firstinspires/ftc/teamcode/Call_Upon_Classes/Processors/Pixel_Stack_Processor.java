@@ -210,11 +210,11 @@ public class Pixel_Stack_Processor implements VisionProcessor {
         int physical_width_inches = 0;
 
         //gets stack center (inches from boundary)
-        int stack_centerX = (int)largestContourWidth/2;
+        int stack_centerX = (int)largestContourWidth;
 
         //int pixels_per_inch = largestContourWidth /
 
-     return length;
+     return stack_centerX; //TODO - change to actual alignment distance
     }
 
     public void close() {

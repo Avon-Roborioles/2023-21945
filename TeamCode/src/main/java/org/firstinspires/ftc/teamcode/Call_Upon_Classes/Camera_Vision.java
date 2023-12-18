@@ -33,6 +33,7 @@ public class Camera_Vision {
     private Pixel_Stack_Processor pixelStackProcessor;
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
     private AprilTagProcessor aprilTag;
+    double strafeLength = 0;
     double minArea;
     Scalar lower;
     Scalar upper;
@@ -220,11 +221,9 @@ public class Camera_Vision {
 
     //TODO - returns the strafing length needed to align robot with stacked pixels
     public double getStackAlignment(){
-        double length = 0;
-        double centerX = pixelStackProcessor.getLargestContourX();
-        length = pixelStackProcessor.getAlignmentX();
+        strafeLength = pixelStackProcessor.getAlignmentX();
 
-        return length;
+        return strafeLength;
     }
 
     //returns the desired apriltag ID based on propPosition and alliance color (1, 2, 3, etc)
