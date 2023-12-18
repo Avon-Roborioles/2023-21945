@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 @TeleOp
 public class RedAllianceTeleOp extends LinearOpMode {
     //creating objects for robot functions
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(true); //change to false if driving still isn't fixed
+    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(); //change to false if driving still isn't fixed
     private final Intake intake = new Intake();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();

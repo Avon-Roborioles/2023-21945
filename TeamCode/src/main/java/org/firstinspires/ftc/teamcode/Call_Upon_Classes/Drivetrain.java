@@ -4,14 +4,16 @@ import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.hardware.RevIMU;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 //import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class Drivetrain {
 
@@ -33,9 +35,7 @@ public class Drivetrain {
     private DcMotor rightRear = null;
     private DcMotor x_encoder = null;
     MecanumDrive drivetrain;
-
-    static final boolean FIELD_CENTRIC = false;
-    RevIMU imu = null;
+    IMU imu;
 
 //
 //    /// new library stuff ///
@@ -56,25 +56,13 @@ public class Drivetrain {
 //                driverOp.getRightY()
 //        );
 //    }
-    /**
-     *
-     * @param right_strafe if you want right strafe set true, left set false
-     */
-    public Drivetrain(boolean right_strafe){
-        strafe=right_strafe;
-        if (strafe)
-            strafe_set = 1;
-        else
-            strafe_set = -1;
 
-    }
 
     public void init_drive_motors(HardwareMap hardwareMap) {
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-//        x_encoder = hardwareMap.get(DcMotor.class, "x");
         leftRear.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
         leftFront.setDirection(DcMotor.Direction.REVERSE); // maybe reverse
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -83,6 +71,7 @@ public class Drivetrain {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    //TODO - add fieldCentric Driving
     public void init_red_drive_motors(HardwareMap hardwareMap){
         leftFront = hardwareMap.get(DcMotor.class, "rightFront"); //leftFront
         rightFront = hardwareMap.get(DcMotor.class, "rightRear"); //rightFront
@@ -117,6 +106,7 @@ public class Drivetrain {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     } //Done
 
+    //TODO - add fieldCentric Driving
     public void init_blue_drive_motors(HardwareMap hardwareMap){
         leftFront = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "leftFront");
@@ -131,15 +121,22 @@ public class Drivetrain {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     } //Done
 
-    public void init_ftclib_drive(HardwareMap hardwareMap, GamepadEx gamepadEx){
-         Motor fL = new Motor(hardwareMap, "leftFront", Motor.GoBILDA.RPM_435);
-         Motor fR = new Motor(hardwareMap, "rightFront", Motor.GoBILDA.RPM_435);
-         Motor bL = new Motor(hardwareMap, "leftRear", Motor.GoBILDA.RPM_435);
-         Motor bR = new Motor(hardwareMap, "rightRear", Motor.GoBILDA.RPM_435);
+    //generic fieldCentric drive setup
+    public void init_fieldCentric_drive(HardwareMap hardwareMap){
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
 
-         drivetrain = new MecanumDrive(fL, fR, bL, bR);
-        RevIMU imu = new RevIMU(hardwareMap);
-        imu.init();
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+
+         imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP
+        ));
+        imu.initialize(parameters);
 
     }
 
@@ -196,36 +193,29 @@ public class Drivetrain {
         getTelemetry(telemetry);
     }
 
-    //tank drive
-    public void run_tank_drive(Gamepad gamepad1, Telemetry telemetry){
-        lx =gamepad1.left_stick_x; //swtiched with x
-        ly =gamepad1.left_stick_y; //switched with y
-        ry = gamepad1.right_stick_y;
-        rx=gamepad1.right_stick_x;
+    public void run_fieldCentric_drive(Gamepad gamepad1){
+        //tutorial -> https://youtu.be/4rG5G9Mjw-g?si=b2D4wEkw01eRBSOd
 
-        if(ly > 0){
-            leftFront.setPower(ly);
-            leftRear.setPower(ly);
-        } else if(ly < 0){
-            leftFront.setPower(-ly);
-            leftRear.setPower(-ly);
-        } else {
-            leftFront.setPower(0);
-            leftRear.setPower(0);
-        }
+        double lx = gamepad1.left_stick_x;
+        double ly = gamepad1.left_stick_y;
+        double rx = gamepad1.right_stick_x;
 
-        if(ry > 0){
-            rightFront.setPower(ry);
-            rightRear.setPower(ry);
-        } else if(ry < 0){
-            rightFront.setPower(-ry);
-            rightRear.setPower(-ry);
-        } else {
-            rightFront.setPower(0);
-            rightRear.setPower(0);
-        }
+        double max = Math.max(Math.abs(lx) + Math.abs(ly) + Math.abs(rx), 1 );
+
+        double power = 0.2 + (0.6 * gamepad1.right_trigger);
+
+        double heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+        double adjustedLx = -ly * Math.sin(heading) + lx * Math.cos(heading);
+        double adjustedLy = ly * Math.cos(heading) + lx * Math.sin(heading);
+
+        leftFront.setPower(((adjustedLy + adjustedLx + rx) / max) * power);
+        leftRear.setPower(((adjustedLy - adjustedLx + rx) / max) * power);
+        rightFront.setPower(((adjustedLy - adjustedLx - rx) / max) * power);
+        rightRear.setPower(((adjustedLy + adjustedLx - rx) / max) * power);
+
+
     }
-
 
     public void getTelemetry (@NonNull Telemetry telemetry){
         telemetry.addData("fl power: ", leftFront.getPower());
