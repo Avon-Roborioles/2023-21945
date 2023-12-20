@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.hardware.RevIMU;
@@ -34,8 +35,8 @@ public class Drivetrain {
     private DcMotor rightFront = null;
     private DcMotor rightRear = null;
     private DcMotor x_encoder = null;
+    RevIMU imu;
     MecanumDrive drivetrain;
-    IMU imu;
 
 //
 //    /// new library stuff ///
@@ -131,12 +132,21 @@ public class Drivetrain {
         leftRear.setDirection(DcMotor.Direction.REVERSE);
         leftFront.setDirection(DcMotor.Direction.REVERSE);
 
-         imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP
-        ));
-        imu.initialize(parameters);
+        imu = new RevIMU(hardwareMap, "imu");
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+
+        imu.init(parameters);
+
+//         imu = hardwareMap.get(RevIMU.class, "imu");
+//        RevIMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+//                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+//                RevHubOrientationOnRobot.UsbFacingDirection.UP
+//        ));
+//        imu.initialize(parameters);
+//
+//        imu.init();
 
     }
 
@@ -204,7 +214,8 @@ public class Drivetrain {
 
         double power = 0.2 + (0.6 * gamepad1.right_trigger);
 
-        double heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        //double heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double heading = -imu.getHeading();
 
         double adjustedLx = -ly * Math.sin(heading) + lx * Math.cos(heading);
         double adjustedLy = ly * Math.cos(heading) + lx * Math.sin(heading);

@@ -219,8 +219,8 @@ public class Camera_Vision {
         return position;
     }
 
-    //TODO - returns the strafing length needed to align robot with stacked pixels
-    public double getStackAlignment(){
+    //TODO - returns the strafing distance needed to align robot with stacked pixels
+    public double getStrafeDistance(){
         strafeLength = pixelStackProcessor.getAlignmentX();
 
         return strafeLength;

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 
 @TeleOp(name="Robot Telemetry", group = "Tests")
 public class Robot_Telemetry extends OpMode {
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(true); //change to false if driving still isn't fixed
+    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(); //change to false if driving still isn't fixed
     private final Intake intake = new Intake();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();

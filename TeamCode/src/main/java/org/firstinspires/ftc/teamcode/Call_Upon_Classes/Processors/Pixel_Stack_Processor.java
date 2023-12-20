@@ -204,17 +204,26 @@ public class Pixel_Stack_Processor implements VisionProcessor {
         return largestContour;
     }
 
+    //quick method to compute and return the distance from the maker to the camera
+    private double distance_from_camera(double knownWidth, double focalLength, double perWidth){
+        return (knownWidth * focalLength) / perWidth;
+    }
+
+    //guide -> https://pyimagesearch.com/2015/01/19/find-distance-camera-objectmarker-using-python-opencv/
     //TODO - returns the strafing length the robot needs to align with stacked cones
-    public int getAlignmentX(){
-        int length = 0;
-        int physical_width_inches = 0;
+    public int getAlignmentX(){ //Equation for focal length -> F = (P x D) / W
+        /*
+            Steps:
+              - Use Triangle Similarity to get range (hypotenuse)
+                   - Range  = ((Pixel Width in.) * (Focal Length)) / Contour Width px.   |\
+              - Use Pythagoren Theorem to get strafe distance        n     | \   range
+              - Return strafe distance                                     |  \
+              - n is known                                                 -----
+                                                                             x
+         */
+        int strafeLength = (int)getLargestContourWidth();
 
-        //gets stack center (inches from boundary)
-        int stack_centerX = (int)largestContourWidth;
-
-        //int pixels_per_inch = largestContourWidth /
-
-     return stack_centerX; //TODO - change to actual alignment distance
+     return strafeLength;
     }
 
     public void close() {

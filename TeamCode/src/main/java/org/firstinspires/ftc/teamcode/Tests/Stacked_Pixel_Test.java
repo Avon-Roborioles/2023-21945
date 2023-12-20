@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision;
 
+@TeleOp(name="Stacked Pixel Test", group="Tests")
 public class Stacked_Pixel_Test extends LinearOpMode {
     Camera_Vision vision = new Camera_Vision();
     public double alignmentX = 0;
@@ -17,7 +20,7 @@ public class Stacked_Pixel_Test extends LinearOpMode {
         vision.init_stack_detection(hardwareMap);
 
         while(opModeIsActive()){
-            alignmentX = vision.getStackAlignment();
+            alignmentX = vision.getStrafeDistance();
             telemetry.addData("Strafe Length Needed", alignmentX);
             telemetry.update();
         }
