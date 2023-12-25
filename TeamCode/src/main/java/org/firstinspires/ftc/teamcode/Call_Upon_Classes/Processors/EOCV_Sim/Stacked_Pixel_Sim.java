@@ -34,7 +34,6 @@ public class Stacked_Pixel_Sim extends OpenCvPipeline {
     private double largestContourWidth;
     private double largestContourArea;
     private MatOfPoint largestContour;
-    Telemetry telemetry = new Telemetry() {}
 
 
     @Override
