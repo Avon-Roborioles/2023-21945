@@ -1,27 +1,21 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.EOCV_Sim;
 
-import android.graphics.Color;
 //import android.graphics.Paint;
 //import android.graphics.Typeface;
 //import android.text.TextPaint;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
+        import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.function.DoubleSupplier;
+        import java.util.ArrayList;
 
 
-public class Stacked_Pixel_Sim extends OpenCvPipeline {
+public class Pixel_Stack_Sim extends OpenCvPipeline {
     private final double minArea = 100;
     private final Scalar lower = new Scalar(0, 0, 200);
     private final Scalar upper = new Scalar(180, 50, 255);
