@@ -5,6 +5,7 @@ import android.graphics.Color;
 //import android.graphics.Typeface;
 //import android.text.TextPaint;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -13,16 +14,18 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.function.DoubleSupplier;
 
 
 public class Stacked_Pixel_Sim extends OpenCvPipeline {
     private final double minArea = 100;
-    private final Scalar lower = new Scalar(0,0,200);
-    private final Scalar upper = new Scalar(180,30,255);
-//    private final TextPaint textPaint = new TextPaint();
+    private final Scalar lower = new Scalar(0, 0, 200);
+    private final Scalar upper = new Scalar(180, 50, 255);
+    //    private final TextPaint textPaint = new TextPaint();
 //    private final Paint linePaint = new Paint();
     private ArrayList<MatOfPoint> contours;
     private final Mat hierarchy = new Mat();
@@ -31,23 +34,12 @@ public class Stacked_Pixel_Sim extends OpenCvPipeline {
     private double largestContourWidth;
     private double largestContourArea;
     private MatOfPoint largestContour;
+    Telemetry telemetry = new Telemetry() {}
 
 
     @Override
-    public void init(Mat input){
-        // setting up the paint for the text in the center of the box
-//        textPaint.setColor(Color.GREEN); // you may want to change this
-//        textPaint.setTextAlign(Paint.Align.CENTER);
-//        textPaint.setAntiAlias(true);
-//        textPaint.setTextSize(40); // or this
-//        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-//
-//        // setting up the paint for the lines that comprise the box
-//        linePaint.setColor(Color.GREEN); // you may want to change this
-//        linePaint.setAntiAlias(true);
-//        linePaint.setStrokeWidth(10); // or this
-//        linePaint.setStrokeCap(Paint.Cap.ROUND);
-//        linePaint.setStrokeJoin(Paint.Join.ROUND);
+    public void init(Mat input) {
+        contours = new ArrayList<>();
     }
 
 
@@ -75,7 +67,9 @@ public class Stacked_Pixel_Sim extends OpenCvPipeline {
     /**
      * @return the width of the largest contour (stacked pixels)
      */
-    public double getLargestContourWidth(){return largestContourWidth;}
+    public double getLargestContourWidth() {
+        return largestContourWidth;
+    }
 
 
     @Override
@@ -84,14 +78,17 @@ public class Stacked_Pixel_Sim extends OpenCvPipeline {
         Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2HSV);
 
         Core.inRange(frame, lower, upper, frame);
-        contours.clear();
+        //contours.clear();
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+//
 
-        largestContourArea = -1;
+
+
+       largestContourArea = -1;
         largestContour = null;
-
-        double minArea = this.minArea;
-
+//
+//        double minArea = 100;
+//
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
 
@@ -100,8 +97,8 @@ public class Stacked_Pixel_Sim extends OpenCvPipeline {
                 largestContour = contour;
                 largestContourArea = area;
 
-                Rect boundingRect = Imgproc.boundingRect(contour); //creates box around contour
-                largestContourWidth = boundingRect.width; //gets width of box
+                //Rect boundingRect = Imgproc.boundingRect(contour); //creates box around contour
+
 
             }
         }
@@ -114,10 +111,36 @@ public class Stacked_Pixel_Sim extends OpenCvPipeline {
                 largestContourY = (moment.m01 / moment.m00);
             }
 
-
-
-
-
         return frame;
     }
+
+
+    @Override
+    public void onViewportTapped() {
+        // Executed when the image display is clicked by the mouse or tapped
+        // This method is executed from the UI thread, so be careful to not
+        // perform any sort heavy processing here! Your app might hang otherwise
+//
+//        if (largestContour != null) {
+//            Rect rect = Imgproc.boundingRect(largestContour);
+//
+//            float[] points = {rect.x * scaleBmpPxToCanvasPx, rect.y * scaleBmpPxToCanvasPx, (rect.x + rect.width) * scaleBmpPxToCanvasPx, (rect.y + rect.height) * scaleBmpPxToCanvasPx};
+//
+//            canvas.drawLine(points[0], points[1], points[0], points[3], linePaint);
+//            canvas.drawLine(points[0], points[1], points[2], points[1], linePaint);
+//
+//            canvas.drawLine(points[0], points[3], points[2], points[3], linePaint);
+//            canvas.drawLine(points[2], points[1], points[2], points[3], linePaint);
+//
+//            String text = String.format(Locale.ENGLISH, "%s", "Pixel Stack");
+//
+//            canvas.drawText(text, (float) largestContourX * scaleBmpPxToCanvasPx, (float) largestContourY * scaleBmpPxToCanvasPx, textPaint);
+//        }
+
+
+    }
+
+
+
 }
+
