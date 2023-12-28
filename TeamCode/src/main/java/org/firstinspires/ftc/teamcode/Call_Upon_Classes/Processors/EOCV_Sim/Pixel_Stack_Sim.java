@@ -1,26 +1,22 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes.Processors.EOCV_Sim;
 
-//import android.graphics.Paint;
-//import android.graphics.Typeface;
-//import android.text.TextPaint;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-        import org.opencv.core.Scalar;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
+import java.util.ArrayList;
 
-        import java.util.ArrayList;
+import android.graphics.Canvas;
 
 
 public class Pixel_Stack_Sim extends OpenCvPipeline {
-    private final double minArea = 100;
     private final Scalar lower = new Scalar(0, 0, 200);
     private final Scalar upper = new Scalar(180, 50, 255);
-    //    private final TextPaint textPaint = new TextPaint();
-//    private final Paint linePaint = new Paint();
+
     private ArrayList<MatOfPoint> contours;
     private final Mat hierarchy = new Mat();
     private double largestContourX;
@@ -67,6 +63,7 @@ public class Pixel_Stack_Sim extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat frame) {
+        int contourCount = 0;
         //camera vision magic
         Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2HSV);
 
@@ -86,6 +83,7 @@ public class Pixel_Stack_Sim extends OpenCvPipeline {
             double area = Imgproc.contourArea(contour);
 
             // get contour and calculate width
+            double minArea = 100;
             if (area > largestContourArea && area > minArea) {
                 largestContour = contour;
                 largestContourArea = area;
@@ -94,6 +92,7 @@ public class Pixel_Stack_Sim extends OpenCvPipeline {
 
 
             }
+            contourCount++;
         }
             largestContourX = largestContourY = -1;
 
@@ -104,6 +103,7 @@ public class Pixel_Stack_Sim extends OpenCvPipeline {
                 largestContourY = (moment.m01 / moment.m00);
             }
 
+        //telemetry.addData("Contour Count: ", contourCount);
         return frame;
     }
 
