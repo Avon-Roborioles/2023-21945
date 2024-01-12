@@ -92,7 +92,7 @@ public class Camera_Vision {
     }
 
     //starts finding apriltags through the back camera - don't use this method as it's already called in the one below
-    private void initAprilTag() {
+    public void initAprilTag() {
 
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
@@ -280,6 +280,11 @@ public class Camera_Vision {
 
         return pose;
     } //TEST
+
+    //TODO returns true is robot can detect at least 2 tags
+    public boolean boardAvailable(){
+        return true;
+    }
 
     //closes Vision Portal and Camera - use between diffrent camera usecases (Prop to Stack)
     public void close(){
