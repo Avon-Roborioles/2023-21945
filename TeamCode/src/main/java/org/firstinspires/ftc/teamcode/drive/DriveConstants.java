@@ -23,7 +23,7 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 375;//537.7
+    public static final double TICKS_PER_REV = 375;//537.7 // 375
     public static final double MAX_RPM = 312;
 
     /*
@@ -48,7 +48,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.8898; // in(1.9)
     public static double GEAR_RATIO = 0.9047619047619048; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 10.5; // in
+    public static double TRACK_WIDTH = 10.5; // in (prev: 10.5)
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -57,8 +57,8 @@ public class DriveConstants {
      * empirically tuned.
      */
     public static double kV = 1.0 / rpmToVelocity(MAX_RPM);//.0057
-    public static double kA = 0.0005;//.0005
-    public static double kStatic = 0.01;//.01
+    public static double kA = 0.0005;//.0005 (prev: 0.0005)
+    public static double kStatic = 0.01;//.01 (prev: 0.01)
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -88,12 +88,12 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
-    public static double MAX_VEL = 88.2809332; //90% of Max Velocity from Tuning
+    public static double MAX_VEL = 88.2809332; //90% of Max Velocity from Tuning (prev: 88.2809332)
     //Voltage Compensated kF --> 10.08197384373344
 
-    public static double MAX_ACCEL = 47.4845458372762;
-    public static double MAX_ANG_VEL = 7.660142060308357; //7.660142060308357
-    public static double MAX_ANG_ACCEL = Math.toRadians(259.11086367346934);
+    public static double MAX_ACCEL = 47.4845458372762; // (prev: 47.4845458372762)
+    public static double MAX_ANG_VEL = 7.660142060308357; //7.660142060308357 (prev: 7.660142060308357)
+    public static double MAX_ANG_ACCEL = Math.toRadians(259.11086367346934); // (prev: 259.11086367346934)
 
 
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
