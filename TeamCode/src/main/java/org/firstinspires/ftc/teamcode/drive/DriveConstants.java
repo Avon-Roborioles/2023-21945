@@ -23,7 +23,11 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
+<<<<<<< Updated upstream
     public static final double TICKS_PER_REV = 375;//537.7 // 375
+=======
+    public static final double TICKS_PER_REV = 537.7;//300
+>>>>>>> Stashed changes
     public static final double MAX_RPM = 312;
 
     /*
@@ -46,9 +50,15 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
+<<<<<<< Updated upstream
     public static double WHEEL_RADIUS = 1.8898; // in(1.9)
     public static double GEAR_RATIO = 0.9047619047619048; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 10.5; // in (prev: 10.5)
+=======
+    public static double WHEEL_RADIUS = 1.8898; // in
+    public static double GEAR_RATIO = 19.2; //0.9047619047619048 output (wheel) speed / input (motor) speed
+    public static double TRACK_WIDTH = 12.25; // in
+>>>>>>> Stashed changes
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -56,9 +66,15 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
+<<<<<<< Updated upstream
     public static double kV = 1.0 / rpmToVelocity(MAX_RPM);//.0057
     public static double kA = 0.0005;//.0005 (prev: 0.0005)
     public static double kStatic = 0.01;//.01 (prev: 0.01)
+=======
+    public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
+    public static double kA = 0.0;
+    public static double kStatic = 0.0;
+>>>>>>> Stashed changes
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -88,7 +104,11 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
+<<<<<<< Updated upstream
     public static double MAX_VEL = 88.2809332; //90% of Max Velocity from Tuning (prev: 88.2809332)
+=======
+    public static double MAX_VEL = 104; //90% of Max Velocity from Tuning
+>>>>>>> Stashed changes
     //Voltage Compensated kF --> 10.08197384373344
 
     public static double MAX_ACCEL = 47.4845458372762; // (prev: 47.4845458372762)
