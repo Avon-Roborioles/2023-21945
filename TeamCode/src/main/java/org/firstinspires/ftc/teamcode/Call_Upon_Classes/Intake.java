@@ -32,6 +32,8 @@ public class Intake {
     public static int wristTarget = 0; //the variable team drivers will control to move the wrist
     private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
     private ServoEx claw = null;
+    private ServoEx claw1 = null;
+    private ServoEx claw2 = null;
     private ServoEx pixelHolder = null;
     private DcMotorEx wristMotor = null;
     private double rightY = 0.0;
@@ -73,6 +75,18 @@ public class Intake {
         wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    public void init_intake_V2(HardwareMap hardwareMap, String claw1Name, String claw2Name,String wristName){
+        claw1 = new SimpleServo(hardwareMap, claw1Name, 0, 180);
+        claw2 = new SimpleServo(hardwareMap, claw2Name, 0, 180);
+        wristMotor = hardwareMap.get(DcMotorEx.class, wristName);
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets initial wrist position to 0
+        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        claw1.setPosition(0);
+        claw2.setPosition(0);
+    }
+
     //autonomous methods
     public wristCommands getWristStatus(){
         return wristStatus;
@@ -102,6 +116,30 @@ public class Intake {
             claw.setPosition(0); //180 - position is set to 0.1 for testing
         }
     } //Done - test
+    public void openClawV2(boolean open, boolean leftClaw){ //Done
+        if(leftClaw){ //done - control left claw
+            if (open){
+                claw1.setPosition(.4);
+            } else {
+                claw1.setPosition(0);
+            }
+        } else { //Done control right claw
+            if (open){
+                claw2.setPosition(-.4);
+            } else {
+                claw2.setPosition(0);
+            }
+        }
+    }
+    public void openClaws(boolean open){ //Done
+        if (open){
+            claw1.setPosition(.4);
+            claw2.setPosition(-.4);
+        } else {
+            claw1.setPosition(0);
+            claw2.setPosition(0);
+        }
+    }
     public void closePixelHolder(boolean close){
         if(close){
             pixelHolder.setPosition(1); //close
@@ -338,7 +376,55 @@ public class Intake {
 //            }
         //closePixelHolder(true);
         }
-        //}
+
+    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader, ToggleButtonReader LBumperReader, ToggleButtonReader RBumperReader){
+        double ltrigger = gamepad2.left_trigger;
+        double rtrigger = gamepad2.right_trigger;
+        double rightY = gamepad2.right_stick_y; //was float—
+        boolean button_a = gamepad2.a;
+        boolean button_x = gamepad2.x;
+        boolean button_y = gamepad2.y;
+        boolean button_b = gamepad2.b;
+
+        //open-close claws
+        if(LBumperReader.getState()) {
+            //done close claw1
+            openClawV2(false,true);
+        } else {
+            //Done open claw1
+            openClawV2(true, true);
+        }
+
+        if(RBumperReader.getState()){
+            //Done close claw2
+            openClawV2(false, false);
+        } else {
+            //Done open claw2
+            openClawV2(true, false);
+        }
+
+        //open-close claws
+        if(aReader.getState()){
+            //done close both claws
+            openClaws(false);
+        } else {
+            //Done open both claws
+            openClaws(true);
+        }
+
+        //control wrist
+        if (rightY > 0) {
+            wristMotor.setPower(-0.35); //0.25
+        } else if (rightY < 0) {
+            wristMotor.setPower(0.35); //-0.25
+        } else {
+            wristMotor.setPower(0);
+        }
+
+        aReader.readValue();
+        RBumperReader.readValue();
+        LBumperReader.readValue();
+    }
 
     public void run_intake_main(Gamepad gamepad2){
 

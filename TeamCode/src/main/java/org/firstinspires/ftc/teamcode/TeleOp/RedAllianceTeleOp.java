@@ -29,7 +29,8 @@ public class RedAllianceTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //drivetrain.init_drive_motors(hardwareMap);
         drivetrain.init_red_drive_motors(hardwareMap);
-        intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+        //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+        intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
@@ -41,6 +42,14 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
         ToggleButtonReader a1Reader = new ToggleButtonReader(
                 gamepad1Ex, GamepadKeys.Button.A
+        );
+
+        ToggleButtonReader LBumperReader = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.LEFT_BUMPER
+        );
+
+        ToggleButtonReader RBumperReader = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.RIGHT_BUMPER
         );
 
 
