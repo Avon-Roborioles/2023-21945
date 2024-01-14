@@ -11,7 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import java.util.concurrent.TimeUnit;
 
 @Disabled//(name="RR Score", group="Park + Score")
-public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
+public class
+RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
 
         //important variables for auto - set to random values
