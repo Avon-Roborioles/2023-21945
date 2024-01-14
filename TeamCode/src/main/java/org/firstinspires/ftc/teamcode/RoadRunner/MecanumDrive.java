@@ -56,9 +56,9 @@ public final class MecanumDrive {
         // TODO: fill in these values based on
         //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT; //UP
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+                RevHubOrientationOnRobot.UsbFacingDirection.UP; //FORWARD
 
         // drive model parameters
         public double inPerTick = 0;
@@ -104,7 +104,7 @@ public final class MecanumDrive {
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
 
-    public final DcMotorEx leftFront, leftBack, rightBack, rightFront;
+    public final DcMotorEx leftFront, leftRear, rightRear, rightFront;
 
     public final VoltageSensor voltageSensor;
 
@@ -128,8 +128,8 @@ public final class MecanumDrive {
 
         public DriveLocalizer() {
             leftFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftFront));
-            leftBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftBack));
-            rightBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightBack));
+            leftBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftRear));
+            rightBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightRear));
             rightFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightFront));
 
             // TODO: reverse encoders if needed
@@ -201,13 +201,13 @@ public final class MecanumDrive {
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // TODO: reverse motor directions if needed
@@ -222,7 +222,8 @@ public final class MecanumDrive {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        localizer = new DriveLocalizer();
+        //2 parallel encoders are par0, par1, the perpendicular encoder is perp
+        localizer = new ThreeDeadWheelLocalizer(hardwareMap, PARAMS.inPerTick);
 
         FlightRecorder.write("MECANUM_PARAMS", PARAMS);
     }
@@ -237,8 +238,8 @@ public final class MecanumDrive {
         }
 
         leftFront.setPower(wheelVels.leftFront.get(0) / maxPowerMag);
-        leftBack.setPower(wheelVels.leftBack.get(0) / maxPowerMag);
-        rightBack.setPower(wheelVels.rightBack.get(0) / maxPowerMag);
+        leftRear.setPower(wheelVels.leftBack.get(0) / maxPowerMag);
+        rightRear.setPower(wheelVels.rightBack.get(0) / maxPowerMag);
         rightFront.setPower(wheelVels.rightFront.get(0) / maxPowerMag);
     }
 
@@ -275,8 +276,8 @@ public final class MecanumDrive {
 
             if (t >= timeTrajectory.duration) {
                 leftFront.setPower(0);
-                leftBack.setPower(0);
-                rightBack.setPower(0);
+                leftRear.setPower(0);
+                rightRear.setPower(0);
                 rightFront.setPower(0);
 
                 return false;
@@ -308,8 +309,8 @@ public final class MecanumDrive {
             ));
 
             leftFront.setPower(leftFrontPower);
-            leftBack.setPower(leftBackPower);
-            rightBack.setPower(rightBackPower);
+            leftRear.setPower(leftBackPower);
+            rightRear.setPower(rightBackPower);
             rightFront.setPower(rightFrontPower);
 
             p.put("x", pose.position.x);
@@ -367,8 +368,8 @@ public final class MecanumDrive {
 
             if (t >= turn.duration) {
                 leftFront.setPower(0);
-                leftBack.setPower(0);
-                rightBack.setPower(0);
+                leftRear.setPower(0);
+                rightRear.setPower(0);
                 rightFront.setPower(0);
 
                 return false;
@@ -399,8 +400,8 @@ public final class MecanumDrive {
             ));
 
             leftFront.setPower(feedforward.compute(wheelVels.leftFront) / voltage);
-            leftBack.setPower(feedforward.compute(wheelVels.leftBack) / voltage);
-            rightBack.setPower(feedforward.compute(wheelVels.rightBack) / voltage);
+            leftRear.setPower(feedforward.compute(wheelVels.leftBack) / voltage);
+            rightRear.setPower(feedforward.compute(wheelVels.rightBack) / voltage);
             rightFront.setPower(feedforward.compute(wheelVels.rightFront) / voltage);
 
             Canvas c = p.fieldOverlay();
