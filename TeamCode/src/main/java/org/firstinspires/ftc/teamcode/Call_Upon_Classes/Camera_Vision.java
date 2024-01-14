@@ -37,6 +37,7 @@ public class Camera_Vision {
     double minArea;
     Scalar lower;
     Scalar upper;
+   private boolean boardAvailable = false;
 
     //sets up both cameras (front for prop detection & back for apriltag alignment)
     public void init_cameras(HardwareMap hardwareMap,String name1, String name2){ //setups up cameras
@@ -151,7 +152,7 @@ public class Camera_Vision {
         //visionPortal.setProcessorEnabled(aprilTag, true);
     }
 
-    //TODO -  starts detecting stacked pixels on the field
+    //Done -  starts detecting stacked pixels on the field
     public void init_stack_detection(HardwareMap hardwareMap){
         lower = new Scalar(0,0,200); //test these values to detect white
         upper = new Scalar(180,30,255);
@@ -281,9 +282,15 @@ public class Camera_Vision {
         return pose;
     } //TEST
 
-    //TODO returns true is robot can detect at least 2 tags
-    public boolean boardAvailable(){
-        return true;
+    //Done returns true is robot can detect at least 2 tags
+    public boolean BoardIsAvailable(){
+        List<AprilTagDetection> detections = aprilTag.getDetections();
+        if (detections.size() >= 2){ // # of tags is at least 2 of 3
+            boardAvailable = true;
+        } else {
+            boardAvailable = false;
+        }
+        return boardAvailable;
     }
 
     //closes Vision Portal and Camera - use between diffrent camera usecases (Prop to Stack)

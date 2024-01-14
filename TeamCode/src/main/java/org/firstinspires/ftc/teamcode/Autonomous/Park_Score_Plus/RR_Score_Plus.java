@@ -1,42 +1,39 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 
-//import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-//import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-//import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
-//@Autonomous(name="RR Score", group="Park + Score")
-@Disabled
+@Autonomous(name="RR Score Plus", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
+     TrajectoryActionBuilder quickStrafe = null;
 
-//    SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
-//
-//    TrajectorySequence quickStrafe = null;
+     //TODO - uncomment if currentPose object can't be used in certain cases
 //    double Xaxis = 0;
 //    double Yaxis = 0;
 //    double heading = Math.toRadians(0);
+
+    //position object containing info on robot's current position and heading on the field
+    public Pose2d currentPose = new Pose2d(0,0,Math.toRadians(0));
+    MecanumDrive bot = new MecanumDrive(hardwareMap, currentPose);
+
+    //Done - used to move robot to available stack
+    public void QuickStrafe(double distance){
+        quickStrafe = bot.actionBuilder(currentPose)
+                .lineToYConstantHeading(currentPose.position.y + distance);
+    }
 //
-//    //used to move robot to available stack
-//    public void QuickStrafe(double distance){
-//        quickStrafe = bot.trajectorySequenceBuilder(new Pose2d(Xaxis, Yaxis, heading))
-//                .lineToLinearHeading(new Pose2d(Xaxis, Yaxis + distance, heading))
-//                .build();
-//        Yaxis += distance; //update Yaxis
-//    }
-//
-//    public void runOpMode() throws InterruptedException {
-//
-//
-//        //important variables for auto - set to random values
-//        String propPosition = "LEFT";
-//        int aprilTagID = 5;
-//
-//        init_classes(); //init robot functions
-//        //SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
-//
-//        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
+    public void runOpMode() throws InterruptedException {
+        //important variables for auto - set to random values
+        String propPosition = "LEFT";
+        int aprilTagID = 5;
+
+        init_classes(); //init robot functions
+        
+        TrajectoryActionBuilder LeftSpikeScore = bot.actionBuilder(currentPose)
+                .afterTime(0,() -> intake.openClaws(false));
 //
 //        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
 //                .build();
@@ -71,7 +68,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //
 //        //-------------------------------------------------------------------------------------------
 //
-//        waitForStart();
+        waitForStart();
 //
 //        propPosition = vision.getPropPosition(); //get latest prop position
 //        aprilTagID = vision.get_Apriltag_id(propPosition, false); //choose apriltag based on prop position
@@ -165,5 +162,5 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
 
 
-    //}
+    }
 }
