@@ -1,15 +1,22 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
+import java.util.concurrent.TimeUnit;
+
 @Autonomous(name="RR Score Plus", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
+    Timing.Timer autoTimer = new Timing.Timer(30, TimeUnit.SECONDS);
+
+    int CycleCount = 0;
      TrajectoryActionBuilder quickStrafe = null;
 
      //TODO - uncomment if currentPose object can't be used in certain cases
@@ -95,7 +102,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         TrajectoryActionBuilder CheckPoint2 = bot.actionBuilder(bot.pose)
                 .splineToConstantHeading(checkPoint2, poseHeading(0));
 
-
+        //returns to Checkpoint #1
         TrajectoryActionBuilder get2StackedPixels = bot.actionBuilder(bot.pose); //TODO
 
         TrajectoryActionBuilder ScorePixels = bot.actionBuilder(bot.pose); //TODO
@@ -153,52 +160,58 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         vision.init_stack_detection(hardwareMap);
         vision.initAprilTag();
 
-       //go to scoring checkpoint #1
+       //go to scoring checkpoint #1 (scoring region)
         Actions.runBlocking(CheckPoint1);
 
-        //go to retrieving safe spot
+        //go to scoring checkpoint #2 (retrieving region)
         Actions.runBlocking(CheckPoint2);
-//
-//        //strafes to 1 of 2 available stacks
-//        double strafeDistance = vision.getStrafeDistance();
-//        QuickStrafe(strafeDistance);
-//
-//        bot.followTrajectorySequence(get2StackedPixels);
-//
-//        bot.followTrajectorySequence(SafeSpot2);
-//
-//        bot.followTrajectorySequence(SafeSpot1);
-//
-//        //TODO check for board availablility (able to find at least 2 tags?)
-//        boolean boardAvailable = vision.boardAvailable();
-//
-//        bot.followTrajectorySequence(scorePixels);
-//
-//        bot.followTrajectorySequence(SafeSpot1);
-//
-//        bot.followTrajectorySequence(SafeSpot2);
-//
-//        //strafes to 1 of 2 available stacks
-////        double strafeDistance = vision.getStrafeDistance();
-////        QuickStrafe(strafeDistance);
-//
-//        bot.followTrajectorySequence(get2StackedPixels);
-//
-//        bot.followTrajectorySequence(SafeSpot2);
-//
-//        bot.followTrajectorySequence(SafeSpot1);
-//
-//        //TODO check for board availablility (able to find at least 2 tags?)
-//
-//        bot.followTrajectorySequence(scorePixels);
-//
-//        bot.followTrajectorySequence(SafeSpot1);
-//
-//        //park robot
-//        bot.followTrajectorySequence(park);
 
+        //strafes to 1 of 2 available stacks
+        double strafeDistance = vision.getStrafeDistance();
+        QuickStrafe(strafeDistance);
 
+        Actions.runBlocking(get2StackedPixels);   //FIRST Cycle Round
 
+        CycleCount++; //used in "get2StackedPixels" Sequence to determine arm/claw poses
 
+        Actions.runBlocking(CheckPoint2);
+
+        Actions.runBlocking(CheckPoint1);
+
+        //Done - check for board availability (able to see at least 2 tags)
+        boolean boardAvailable = vision.BoardIsAvailable();
+
+        telemetry.addData("Board Available: ", boardAvailable);
+        telemetry.update();
+
+        while(!boardAvailable){ //stops bot until board is available
+            if(autoTimer.remainingTime() >= 5){ //checks if bot has enough time to park
+                boardAvailable = vision.BoardIsAvailable();
+                telemetry.update();
+            } else {
+                boardAvailable = true; //passes board check to have time to park
+            }
+        }
+
+        if(autoTimer.remainingTime() >= 5){
+            Actions.runBlocking(ScorePixels);
+            Actions.runBlocking(CheckPoint1); //returns to CheckPoint #1
+        } else {
+            Actions.runBlocking(Park);
+        }
+
+        if(autoTimer.remainingTime() >= 10){ //retrieving pixels needs more time
+            Actions.runBlocking(CheckPoint2);
+
+            strafeDistance = vision.getStrafeDistance(); //gets
+            QuickStrafe(strafeDistance);
+            Actions.runBlocking(get2StackedPixels); //SECOND Cycle Round
+            Actions.runBlocking(CheckPoint2);
+            Actions.runBlocking(CheckPoint1);
+        } else {
+            Actions.runBlocking(Park);
+        }
+
+        Actions.runBlocking(Park); //parks in case it hasn't already
     }
 }
