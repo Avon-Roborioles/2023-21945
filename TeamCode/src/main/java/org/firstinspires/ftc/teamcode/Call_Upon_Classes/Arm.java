@@ -253,7 +253,7 @@ public class Arm {
 
 
     } //TEST - main auto method to move arm
-    public void up_auto(){
+    public void up_auto(){ //TODO
         setArmTargetPosition(2000); //adust value for backboard
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -261,7 +261,7 @@ public class Arm {
         rightMotor.setPower(0.7);
     }
 
-    public void down_auto(){
+    public void down_auto(){ //TODO
         setArmTargetPosition(0);
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

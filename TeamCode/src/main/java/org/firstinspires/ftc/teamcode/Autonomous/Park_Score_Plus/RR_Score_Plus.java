@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 @Autonomous(name="RR Score Plus", group="Park + Score")
@@ -27,6 +28,10 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
     public Pose2d startPose = new Pose2d(0,0,Math.toRadians(90));
     public Vector2d checkPoint1 = new Vector2d(20,20);
     public Vector2d checkPoint2 = new Vector2d(-55,15);
+    public Vector2d LeftBoardPose = new Vector2d(45,20); //TODO Update These Board Poses
+    public Pose2d MiddleBoardPose = new Pose2d(45,15,Math.toRadians(180));
+    public Pose2d RightBoardPose = new Pose2d(45, 10,Math.toRadians(180));
+
 
 
     MecanumDrive bot = new MecanumDrive(hardwareMap, startPose);
@@ -82,7 +87,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
 
 
-        TrajectoryActionBuilder MiddleSpikeScore = bot.actionBuilder(bot.pose) //TODO
+        TrajectoryActionBuilder MiddleSpikeScore = bot.actionBuilder(bot.pose)
                 //get to middle spike
                 .afterTime(0, () -> intake.openClaws(false))
                 .lineToYConstantHeading(poseY(24))
@@ -94,7 +99,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .afterTime(7.5, () -> intake.openClawV2(true, true))
                 .afterTime(8, () -> intake.wrist_up());
 
-        TrajectoryActionBuilder RightSpikeScore = bot.actionBuilder(bot.pose) //TODO
+        TrajectoryActionBuilder RightSpikeScore = bot.actionBuilder(bot.pose)
                 //get to right spike
                 .lineToYLinearHeading(poseY(20),poseHeading(-90))
                 .waitSeconds(.1)
@@ -109,17 +114,44 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .afterTime(7.5, () -> intake.openClawV2(true, true))
                 .afterTime(8, () -> intake.wrist_up());
 
-        TrajectoryActionBuilder PreloadScore1 = bot.actionBuilder(bot.pose); //TODO
+        TrajectoryActionBuilder PreloadScore1 = bot.actionBuilder(bot.pose)
+                //get to backboard
+                .splineToConstantHeading(LeftBoardPose,poseHeading(0))
+                .waitSeconds(.1)
 
-        TrajectoryActionBuilder PreloadScore2 = bot.actionBuilder(bot.pose); //TODO
+                //score purple pixel
+                .afterTime(3,() -> arm.up_auto()) //arm up
+                .afterTime(4,() -> intake.openClawV2(true,false)) //open claw
+                .afterTime(4.5,() -> arm.down_auto()); //arm down
 
-        TrajectoryActionBuilder PreloadScore3 = bot.actionBuilder(bot.pose); //TODO
+
+        TrajectoryActionBuilder PreloadScore2 = bot.actionBuilder(bot.pose)
+                //get to backboard
+                .splineToLinearHeading(MiddleBoardPose,poseHeading(0))
+                .waitSeconds(.1)
+
+                //score purple pixel
+                .afterTime(3,() -> arm.up_auto()) //arm up
+                .afterTime(4,() -> intake.openClawV2(true,false)) //open claw
+                .afterTime(4.5,() -> arm.down_auto()); //arm down
+
+        TrajectoryActionBuilder PreloadScore3 = bot.actionBuilder(bot.pose)
+                //get to backboard
+                .splineToLinearHeading(RightBoardPose,poseHeading(0))
+                .waitSeconds(.1)
+
+                //score purple pixel
+                .afterTime(3,() -> arm.up_auto()) //arm up
+                .afterTime(4,() -> intake.openClawV2(true,false)) //open claw
+                .afterTime(4.5,() -> arm.down_auto()); //arm down
 
         TrajectoryActionBuilder CheckPoint1 = bot.actionBuilder(bot.pose)
                 .splineToConstantHeading(checkPoint1, poseHeading(0));
 
         TrajectoryActionBuilder CheckPoint2 = bot.actionBuilder(bot.pose)
                 .splineToConstantHeading(checkPoint2, poseHeading(0));
+
+
 
         //returns to Checkpoint #1
         TrajectoryActionBuilder get2StackedPixels = bot.actionBuilder(bot.pose); //TODO
