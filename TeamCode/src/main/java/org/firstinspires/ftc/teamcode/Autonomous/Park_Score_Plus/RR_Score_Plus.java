@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -19,13 +18,13 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
     int CycleCount = 0;
      TrajectoryActionBuilder quickStrafe = null;
 
-     //TODO - uncomment if currentPose object can't be used in certain cases
-//    double Xaxis = 0;
-//    double Yaxis = 0;
-//    double heading = Math.toRadians(0);
-
+     /*TODO - uncomment if currentPose object can't be used in certain cases
+    double Xaxis = 0;
+    double Yaxis = 0;
+    double heading = Math.toRadians(0);
+*/
     //defined poses on the field to use
-    public Pose2d startPose = new Pose2d(0,0,Math.toRadians(0));
+    public Pose2d startPose = new Pose2d(0,0,Math.toRadians(90));
     public Vector2d checkPoint1 = new Vector2d(20,20);
     public Vector2d checkPoint2 = new Vector2d(-55,15);
 
@@ -58,8 +57,8 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
     public void runOpMode() throws InterruptedException {
         //important variables for auto - set to random values
-        String propPosition = "LEFT";
-        int aprilTagID = 5;
+        String propPosition;
+        int aprilTagID;
 
         init_classes(); //init robot functions
 
@@ -72,23 +71,43 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.1)
 
                 //move prop
-                .lineToXConstantHeading(poseX(-5))
+                .lineToXConstantHeading(poseX(-10))
                 .waitSeconds(.1)
-                .lineToXConstantHeading(poseX(5))
+                .lineToXConstantHeading(poseX(10.25))
 
-                //score y pixel
+                //score yellow pixel
                 .afterTime(7,() -> intake.wrist_down())
                 .afterTime(7.5, () -> intake.openClawV2(true, true))
-                .afterTime(8, () -> intake.wrist_up())
-
-                //get to CheckPoint #1
-                .lineToXConstantHeading(poseX(15));
+                .afterTime(8, () -> intake.wrist_up());
 
 
-        TrajectoryActionBuilder MiddleSpikeScore = bot.actionBuilder(bot.pose); //TODO
 
-        TrajectoryActionBuilder RightSpikeScore = bot.actionBuilder(bot.pose); //TODO
+        TrajectoryActionBuilder MiddleSpikeScore = bot.actionBuilder(bot.pose) //TODO
+                //get to middle spike
+                .afterTime(0, () -> intake.openClaws(false))
+                .lineToYConstantHeading(poseY(24))
+                .waitSeconds(.1)
+                .lineToYConstantHeading(poseY(-8.5))
 
+                //score yellow pixel
+                .afterTime(7,() -> intake.wrist_down())
+                .afterTime(7.5, () -> intake.openClawV2(true, true))
+                .afterTime(8, () -> intake.wrist_up());
+
+        TrajectoryActionBuilder RightSpikeScore = bot.actionBuilder(bot.pose) //TODO
+                //get to right spike
+                .lineToYLinearHeading(poseY(20),poseHeading(-90))
+                .waitSeconds(.1)
+
+                //move prop
+                .lineToXConstantHeading(poseX(10))
+                .waitSeconds(.1)
+                .lineToXConstantHeading(poseX(-10.5))
+
+                //score yellow pixel
+                .afterTime(7,() -> intake.wrist_down())
+                .afterTime(7.5, () -> intake.openClawV2(true, true))
+                .afterTime(8, () -> intake.wrist_up());
 
         TrajectoryActionBuilder PreloadScore1 = bot.actionBuilder(bot.pose); //TODO
 
