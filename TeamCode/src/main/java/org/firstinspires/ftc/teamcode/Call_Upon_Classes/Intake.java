@@ -119,25 +119,25 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
-                claw1.setPosition(.4);
+                claw1.setPosition(-.4);
             } else {
-                claw1.setPosition(0);
+                claw1.setPosition(.4);
             }
         } else { //Done control right claw
             if (open){
                 claw2.setPosition(-.4);
             } else {
-                claw2.setPosition(0);
+                claw2.setPosition(.4);
             }
         }
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(.4);
+            claw1.setPosition(-.4);
             claw2.setPosition(-.4);
         } else {
-            claw1.setPosition(0);
-            claw2.setPosition(0);
+            claw1.setPosition(.4);
+            claw2.setPosition(.4);
         }
     }
     public void closePixelHolder(boolean close){
@@ -505,11 +505,13 @@ public class Intake {
     }
 
     public void getTelemetry(Telemetry telemetry){
+        telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
+        telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
         //telemetry.addData("Intake Currently Moving: ", isActive);
-        telemetry.addData("Claw Position", claw.getPosition());
-        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
-        telemetry.addData("Wrist Target", wristMotor.getTargetPosition());
-        telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
+//        //telemetry.addData("Claw Position", claw.getPosition());
+//        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
+//        telemetry.addData("Wrist Target", wristMotor.getTargetPosition());
+       //. telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
     }
 
 }
