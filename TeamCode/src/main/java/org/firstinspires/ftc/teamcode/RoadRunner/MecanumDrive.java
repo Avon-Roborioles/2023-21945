@@ -62,14 +62,14 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP; //UP
 
         // drive model parameters
-        public double inPerTick = 0.00295508274; //Team 15 Comparison => 0.00295514
-        public double lateralInPerTick =  0.0021682868667808534; //Team 15 Comparison => 0.0022394420449048397
-        public double trackWidthTicks = 0; //Team 15 Comparison => 4005.5024075445367
+        public double inPerTick = 0.00295514;//0.00295508274; //Team 15 Comparison => 0.00295514
+        public double lateralInPerTick =  0.0022394420449048397;//0.0021682868667808534; //Team 15 Comparison => 0.0022394420449048397
+        public double trackWidthTicks = 4005.5024075445367;//4230.00393; //Team 15 Comparison => 4005.5024075445367
 
         // feedforward parameters (in tick units)
-        public double kS = 0.7903189435992268;
-        public double kV = 0.0005856890544013056;
-        public double kA = 0;
+        public double kS = 1.102274741503774;//0.7903189435992268;
+        public double kV = 0.000581227127084194;//0.0005856890544013056;
+        public double kA = 0.00007;//0.0001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -81,13 +81,13 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 0.0;
-        public double lateralGain = 0.0;
-        public double headingGain = 0.0; // shared with turn
+        public double axialGain = 3;//0.0;
+        public double lateralGain = 0.01;//0.0;
+        public double headingGain = 1;//0.0; // shared with turn
 
-        public double axialVelGain = 0.0;
-        public double lateralVelGain = 0.0;
-        public double headingVelGain = 0.0; // shared with turn
+        public double axialVelGain = 0.1;//0.0;
+        public double lateralVelGain = 0.001;//0.0;
+        public double headingVelGain = 0.001;//0.0; // shared with turn
     }
 
     public static Params PARAMS = new Params();
