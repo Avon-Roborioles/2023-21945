@@ -83,8 +83,8 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        claw1.setPosition(0);
-        claw2.setPosition(0);
+//        claw1.setPosition(0);
+//        claw2.setPosition(0);
     }
 
     //autonomous methods
