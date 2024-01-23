@@ -83,8 +83,8 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        claw1.setPosition(0);
-        claw2.setPosition(0);
+//        claw1.setPosition(0);
+//        claw2.setPosition(0);
     }
 
     //autonomous methods
@@ -119,25 +119,25 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
-                claw1.setPosition(.4);
+                claw1.setPosition(-.4);
             } else {
-                claw1.setPosition(0);
+                claw1.setPosition(.4);
             }
         } else { //Done control right claw
             if (open){
                 claw2.setPosition(-.4);
             } else {
-                claw2.setPosition(0);
+                claw2.setPosition(.2);
             }
         }
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(.4);
+            claw1.setPosition(-.4);
             claw2.setPosition(-.4);
         } else {
-            claw1.setPosition(0);
-            claw2.setPosition(0);
+            claw1.setPosition(.4);
+            claw2.setPosition(.4);
         }
     }
     public void closePixelHolder(boolean close){
@@ -150,10 +150,10 @@ public class Intake {
         }
     }
     public void wrist_up(){
-       wristTarget = 0;
-       wristMotor.setTargetPosition(wristTarget);
-       wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-       wristMotor.setPower(.5);
+        wristTarget = 0;
+        wristMotor.setTargetPosition(wristTarget);
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wristMotor.setPower(.5);
 
     } //TEST - moves wrist to pos and opens claw to score
 
@@ -375,7 +375,7 @@ public class Intake {
 //                openPixelHolder(true);
 //            }
         //closePixelHolder(true);
-        }
+    }
 
     public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader, ToggleButtonReader LBumperReader, ToggleButtonReader RBumperReader){
         double ltrigger = gamepad2.left_trigger;
@@ -505,11 +505,13 @@ public class Intake {
     }
 
     public void getTelemetry(Telemetry telemetry){
+        telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
+        telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
         //telemetry.addData("Intake Currently Moving: ", isActive);
-        telemetry.addData("Claw Position", claw.getPosition());
-        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
-        telemetry.addData("Wrist Target", wristMotor.getTargetPosition());
-        telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
+//        //telemetry.addData("Claw Position", claw.getPosition());
+//        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
+//        telemetry.addData("Wrist Target", wristMotor.getTargetPosition());
+        //. telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
     }
 
 }
