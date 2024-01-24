@@ -386,22 +386,22 @@ public class Intake {
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
 
-        //open-close claws
-        if(LBumperReader.getState()) {
-            //done close claw1
-            openClawV2(false,true);
-        } else {
-            //Done open claw1
-            openClawV2(true, true);
-        }
-
-        if(RBumperReader.getState()){
-            //Done close claw2
-            openClawV2(false, false);
-        } else {
-            //Done open claw2
-            openClawV2(true, false);
-        }
+        //open-close claws -- Caused Twitching Problem
+//        if(LBumperReader.getState()) {
+//            //done close claw1
+//            openClawV2(false,true);
+//        } else {
+//            //Done open claw1
+//            openClawV2(true, true);
+//        }
+//
+//        if(RBumperReader.getState()){
+//            //Done close claw2
+//            openClawV2(false, false);
+//        } else {
+//            //Done open claw2
+//            openClawV2(true, false);
+//        }
 
         //open-close claws
         if(aReader.getState()){
@@ -422,8 +422,8 @@ public class Intake {
         }
 
         aReader.readValue();
-        RBumperReader.readValue();
-        LBumperReader.readValue();
+//        RBumperReader.readValue();
+//        LBumperReader.readValue();
     }
 
     public void run_intake_main(Gamepad gamepad2){

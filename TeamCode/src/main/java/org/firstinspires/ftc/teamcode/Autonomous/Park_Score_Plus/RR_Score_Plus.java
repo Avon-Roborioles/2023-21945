@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -9,6 +10,11 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.concurrent.TimeUnit;
+
+/*
+* NL means not localized -> doesn't keep track of where the bot is on the field
+* L means localized -> keeps track of where the bot is on the field
+ */
 
 @Autonomous(name="RR Score", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
@@ -23,7 +29,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
-        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
+        TrajectorySequence LeftSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
                 .addTemporalMarker(0, () -> {
 //                  intake.openClaw(false);
 //                  intake.closePixelHolder(true);
@@ -67,7 +73,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .back(31) //35
                 .build();
 
-        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+        TrajectorySequence MiddleSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
                     intake.openClaws(false);
                     intake.wrist_up();
@@ -98,7 +104,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .strafeRight(33)
                 .build();
 //
-        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+        TrajectorySequence RightSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
                     intake.openClaws(false);
                     intake.wrist_up();
@@ -135,20 +141,18 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .forward(30) //35
                 .build();
 
-        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence LeftPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
+
                 .build();
 
-        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence MiddlePreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
+
                 .build();
 
-        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence RightPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+
                 .build();
-//
-//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(90))) //TODO
-//                .lineToLinearHeading(new Pose2d(0,10,Math.toRadians(90)))
-//                .waitSeconds(.7)
-//                .lineToLinearHeading(new Pose2d(30, 0, Math.toRadians(90)))
-//                .build();
+
 
         //auto code here
         waitForStart();
@@ -160,33 +164,29 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
-                bot.followTrajectorySequence(LeftSpikeScore);
+                bot.followTrajectorySequence(LeftSpikeScoreNL);
                 break;
             case "MIDDLE":
-                bot.followTrajectorySequence(MiddleSpikeScore);
+                bot.followTrajectorySequence(MiddleSpikeScoreNL);
                 break;
             case "RIGHT":
-                bot.followTrajectorySequence(RightSpikeScore);
+                bot.followTrajectorySequence(RightSpikeScoreNL);
                 break;
         }
 
-        //bot.followTrajectorySequence(RightSpikeScore);
-
-        //score pixel
-        switch(aprilTagID){ //TODO Add back when ready
+        //score pixel (& park bot if Not Localized - NL)
+        switch(aprilTagID){
             case 4:
-                bot.followTrajectorySequence(LeftPreloadScore);
+                bot.followTrajectorySequence(LeftPreloadScoreNL);
                 break;
             case 5:
-                bot.followTrajectorySequence(MiddlePreloadScore);
+                bot.followTrajectorySequence(MiddlePreloadScoreNL);
                 break;
             case 6:
-                bot.followTrajectorySequence(RightPreloadScore);
+                bot.followTrajectorySequence(RightPreloadScoreNL);
                 break;
         }
 
-        //park robot
-        // bot.followTrajectorySequence(park); //TODO Add back when ready
 
 
 
