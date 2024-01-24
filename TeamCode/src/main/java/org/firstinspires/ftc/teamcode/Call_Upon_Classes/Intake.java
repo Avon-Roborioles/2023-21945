@@ -119,13 +119,13 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
-                claw1.setPosition(-.4);
-            } else {
                 claw1.setPosition(.4);
+            } else {
+                claw1.setPosition(-.2);
             }
         } else { //Done control right claw
             if (open){
-                claw2.setPosition(-.4);
+                claw2.setPosition(-.2);
             } else {
                 claw2.setPosition(.4);
             }
@@ -133,10 +133,10 @@ public class Intake {
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(-.4);
-            claw2.setPosition(-.4);
+            claw1.setPosition(.4); //
+            claw2.setPosition(-.2); //-.3
         } else {
-            claw1.setPosition(.4);
+            claw1.setPosition(-.2); //-.2
             claw2.setPosition(.4);
         }
     }
