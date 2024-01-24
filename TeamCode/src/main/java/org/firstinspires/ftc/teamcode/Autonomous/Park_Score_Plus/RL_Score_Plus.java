@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -18,6 +19,44 @@ import java.util.concurrent.TimeUnit;
 
 @Autonomous(name="RL Score Plus", group="Park + Score")
 public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
+    Timing.Timer autoTimer = new Timing.Timer(30, TimeUnit.SECONDS);
+
+    int CycleCount = 0;
+     TrajectorySequence quickStrafe = null;
+
+     /*TODO - uncomment if currentPose object can't be used in certain cases
+    double Xaxis = 0;
+    double Yaxis = 0;
+    double heading = Math.toRadians(0);
+*/
+    //defined poses on the field to use
+    public Pose2d startPose = new Pose2d(0,0,Math.toRadians(90));
+    public Vector2d checkPoint1 = new Vector2d(20,20);
+    public Vector2d checkPoint2 = new Vector2d(-55,15);
+    public Vector2d LeftBoardPose = new Vector2d(45,20); //TODO Update These Board Poses
+    public Pose2d MiddleBoardPose = new Pose2d(45,15,Math.toRadians(180));
+    public Pose2d RightBoardPose = new Pose2d(45, 10,Math.toRadians(180));
+
+    SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
+
+
+    //easy to use methods that update bot pose AND return added/subtracted pose value
+    public double poseX(double distance){
+        bot.updatePoseEstimate();
+        return bot.getPoseEstimate().getX() + distance;
+    }
+
+    public double poseY(double distance){
+        bot.updatePoseEstimate();
+        return bot.getPoseEstimate().getY() + distance;
+    }
+
+    public double poseHeading(double degrees){
+        bot.updatePoseEstimate();
+        return bot.getPoseEstimate().getHeading() + Math.toRadians(degrees);
+    }
+
+
     public void runOpMode() throws InterruptedException {
 
         //important variables for auto - set to random values
@@ -27,12 +66,11 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         init_classes(); //initiates robot functions
         vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
-        SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
+
+
 
         TrajectorySequence LeftSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
                 .addTemporalMarker(0, () -> {
-//                  intake.openClaw(false);
-//                  intake.closePixelHolder(true);
                     intake.openClaws(false);
                     intake.wrist_up();
                 })
@@ -251,9 +289,6 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 break;
         }
 
-
-
-
-
+     //end of program
     }
 }
