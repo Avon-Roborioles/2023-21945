@@ -119,25 +119,25 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
-                claw1.setPosition(-.4);
-            } else {
                 claw1.setPosition(.4);
+            } else {
+                claw1.setPosition(-.2);
             }
         } else { //Done control right claw
             if (open){
-                claw2.setPosition(-.4);
+                claw2.setPosition(-.2);
             } else {
-                claw2.setPosition(.2);
+                claw2.setPosition(.4);
             }
         }
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(1);
-            claw2.setPosition(1); //good
+            claw1.setPosition(.4); //
+            claw2.setPosition(-.2); //-.3
         } else {
-            claw1.setPosition(0);
-            claw2.setPosition(0); //good
+            claw1.setPosition(-.2); //-.2
+            claw2.setPosition(.4);
         }
     }
     public void closePixelHolder(boolean close){
@@ -150,7 +150,7 @@ public class Intake {
         }
     }
     public void wrist_up(){
-        wristTarget = 0;
+        wristTarget = -50; //0
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.5);
@@ -158,7 +158,7 @@ public class Intake {
     } //TEST - moves wrist to pos and opens claw to score
 
     public void wrist_down(){
-        wristTarget = 200;
+        wristTarget = 0; //-200
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.5);
@@ -505,9 +505,8 @@ public class Intake {
     }
 
     public void getTelemetry(Telemetry telemetry){
-        telemetry.addData("Claw 1 Pose: ", claw1.getAngle());
-        telemetry.addData("Claw 2 Pose: ", claw2.getAngle());
-        telemetry.addData("Wrist Pose", wristMotor.getCurrentPosition());
+        telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
+        telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
         //telemetry.addData("Intake Currently Moving: ", isActive);
 //        //telemetry.addData("Claw Position", claw.getPosition());
 //        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());

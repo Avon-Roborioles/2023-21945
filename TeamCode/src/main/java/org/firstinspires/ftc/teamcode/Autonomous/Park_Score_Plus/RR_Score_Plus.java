@@ -1,166 +1,192 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.arcrobotics.ftclib.util.Timing;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-//@Autonomous(name="RR Score", group="Park + Score")
-@Disabled
+import java.util.concurrent.TimeUnit;
+
+@Autonomous(name="RR Score", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
-
-    SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
-
-    TrajectorySequence quickStrafe = null;
-    double Xaxis = 0;
-    double Yaxis = 0;
-    double heading = Math.toRadians(0);
-
-    //used to move robot to available stack
-    public void QuickStrafe(double distance){
-        quickStrafe = bot.trajectorySequenceBuilder(new Pose2d(Xaxis, Yaxis, heading))
-                .lineToLinearHeading(new Pose2d(Xaxis, Yaxis + distance, heading))
-                .build();
-        Yaxis += distance; //update Yaxis
-    }
-
     public void runOpMode() throws InterruptedException {
-
 
         //important variables for auto - set to random values
         String propPosition = "LEFT";
         int aprilTagID = 5;
 
-        init_classes(); //init robot functions
-        //SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
+        init_classes(); //initiates robot functions
+        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
-        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
+
+        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
+                .addTemporalMarker(0, () -> {
+//                  intake.openClaw(false);
+//                  intake.closePixelHolder(true);
+                    intake.openClaws(false);
+                    intake.wrist_up();
+                })
+                .strafeRight(5)
+                .waitSeconds(.5)
+                .forward(20)
+                .waitSeconds(.5)
+                .turn(Math.toRadians(88))
+
+
+                .waitSeconds(.5) //------------
+                .forward(10)
+                .waitSeconds(.5) //-----------
+                .back(10.25)
+                .waitSeconds(5)
+
+                .addTemporalMarker(7, () -> {
+//                    intake.openClaw(false);
+//                    intake.wrist_down();
+                    intake.wrist_down();
+                    intake.openClaws(false);
+                })
+                .addTemporalMarker(8, () -> {
+//                    intake.openClaw(true);
+                    intake.openClawV2(true,true);
+                })
+                .addTemporalMarker(9, () ->{
+                    intake.wrist_up();
+                })
+                .addTemporalMarker(9.3, () -> { //closes claw on way up
+                    intake.openClawV2(false,true);
+                })
+                .turn(Math.toRadians(5))
+                .strafeLeft(25) //25
+
+                //-----------------------
+                .waitSeconds(1)
+                .back(31) //35
                 .build();
 
-        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+                .addTemporalMarker(0, () -> {
+                    intake.openClaws(false);
+                    intake.wrist_up();
+
+                })
+                .forward(24) //16
+                .waitSeconds(.5)
+                .back(8.75)
+                .waitSeconds(5)
+                .addTemporalMarker(3, () -> {
+                    //intake.openClaw(false);
+                    intake.openClaws(false);
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(4, () -> {
+                    //intake.openClaw(true);
+                    intake.openClawV2(true,true);
+                })
+                .addTemporalMarker(5, () ->{
+                    intake.wrist_up();
+                })
+                .addTemporalMarker(5.3, () -> {
+                    intake.openClawV2(false, true);
+                })
+                .back(14)
+                .waitSeconds(1)
+                //----------------------
+                .strafeRight(33)
+                .build();
+//
+        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+                .addTemporalMarker(0, () -> {
+                    intake.openClaws(false);
+                    intake.wrist_up();
+
+                })
+                .forward(20)
+                .waitSeconds(.5)
+                .turn(Math.toRadians(-88))
+                .waitSeconds(.5) //------------
+                .forward(10)
+                .waitSeconds(.5) //-----------
+                .back(10.5)
+                .waitSeconds(4)
+                .addTemporalMarker(6, () -> {
+                    //intake.openClaw(false);
+                    intake.openClaws(false);
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(7, () -> {
+                    //intake.openClaw(true);
+                    intake.openClawV2(true, true);
+                })
+                .addTemporalMarker(8, () ->{
+                    intake.wrist_up();
+                })
+                .addTemporalMarker(8.3, () -> {
+                    intake.openClawV2(false, true);
+                })
+                .forward(3)
+                .waitSeconds(.5)
+                .strafeRight(20) //25
+                .waitSeconds(1)
+                //---------------------
+                .forward(30) //35
                 .build();
 
-        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
                 .build();
 
-        TrajectorySequence PreloadScore1 = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-        TrajectorySequence PreloadScore2 = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-        TrajectorySequence PreloadScore3 = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
                 .build();
 
-       //safe spot for scoring region
-        TrajectorySequence SafeSpot1 = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
                 .build();
+//
+//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(90))) //TODO
+//                .lineToLinearHeading(new Pose2d(0,10,Math.toRadians(90)))
+//                .waitSeconds(.7)
+//                .lineToLinearHeading(new Pose2d(30, 0, Math.toRadians(90)))
+//                .build();
 
-        //safe spot for retrieving region
-        TrajectorySequence SafeSpot2 = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-
-
-        TrajectorySequence get2StackedPixels = bot.trajectorySequenceBuilder(new Pose2d())//TODO
-                .build();
-
-        TrajectorySequence scorePixels = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-
-        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .build();
-
-        //-------------------------------------------------------------------------------------------
-
+        //auto code here
         waitForStart();
 
-        propPosition = vision.getPropPosition(); //get latest prop position
-        aprilTagID = vision.get_Apriltag_id(propPosition, false); //choose apriltag based on prop position
+        //gets propPosition and needed april tag from vision class
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition,false);
 
-        telemetry.addData("Prop Position: ", propPosition);
-        telemetry.addData("AprilTag ID: ", aprilTagID);
-        telemetry.update();
-
-        //scores purple pixel on spike based on vision reading
+        //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
                 bot.followTrajectorySequence(LeftSpikeScore);
-                telemetry.addData("Left Pixel:  ", "SCORED");
                 break;
             case "MIDDLE":
                 bot.followTrajectorySequence(MiddleSpikeScore);
-                telemetry.addData("Middle Pixel:  ", "SCORED");
                 break;
             case "RIGHT":
                 bot.followTrajectorySequence(RightSpikeScore);
-                telemetry.addData("Right Pixel:  ", "SCORED");
                 break;
         }
-        telemetry.update();
 
-        //score yellow pixel on board based on vision reading
-        switch (aprilTagID) {
+        //bot.followTrajectorySequence(RightSpikeScore);
+
+        //score pixel
+        switch(aprilTagID){ //TODO Add back when ready
             case 4:
-                bot.followTrajectorySequence(PreloadScore1);
-                telemetry.addData("Left Board Region:  ", "SCORED");
+                bot.followTrajectorySequence(LeftPreloadScore);
                 break;
             case 5:
-                bot.followTrajectorySequence(PreloadScore2);
-                telemetry.addData("Middle Board Region:  ", "SCORED");
+                bot.followTrajectorySequence(MiddlePreloadScore);
                 break;
             case 6:
-                bot.followTrajectorySequence(PreloadScore3);
-                telemetry.addData("Right Board Region:  ", "SCORED");
+                bot.followTrajectorySequence(RightPreloadScore);
                 break;
         }
-        telemetry.update();
-
-        //getting ready to detect stacked pixels/april tags
-        vision.init_stack_detection(hardwareMap);
-        vision.initAprilTag();
-
-        //go to scoring safe spot
-        bot.followTrajectorySequence(SafeSpot1);
-
-        //go to retrieving safe spot
-        bot.followTrajectorySequence(SafeSpot2);
-
-        //strafes to 1 of 2 available stacks
-        double strafeDistance = vision.getStrafeDistance();
-        QuickStrafe(strafeDistance);
-
-        bot.followTrajectorySequence(get2StackedPixels);
-
-        bot.followTrajectorySequence(SafeSpot2);
-
-        bot.followTrajectorySequence(SafeSpot1);
-
-        //TODO check for board availablility (able to find at least 2 tags?)
-        boolean boardAvailable = vision.boardAvailable();
-
-        bot.followTrajectorySequence(scorePixels);
-
-        bot.followTrajectorySequence(SafeSpot1);
-
-        bot.followTrajectorySequence(SafeSpot2);
-
-        //strafes to 1 of 2 available stacks
-//        double strafeDistance = vision.getStrafeDistance();
-//        QuickStrafe(strafeDistance);
-
-        bot.followTrajectorySequence(get2StackedPixels);
-
-        bot.followTrajectorySequence(SafeSpot2);
-
-        bot.followTrajectorySequence(SafeSpot1);
-
-        //TODO check for board availablility (able to find at least 2 tags?)
-
-        bot.followTrajectorySequence(scorePixels);
-
-        bot.followTrajectorySequence(SafeSpot1);
 
         //park robot
-        bot.followTrajectorySequence(park);
+        // bot.followTrajectorySequence(park); //TODO Add back when ready
 
 
 
