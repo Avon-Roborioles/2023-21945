@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 * L means localized -> keeps track of where the bot is on the field
  */
 
-@Autonomous(name="RR Score", group="Park + Score")
+@Autonomous(name="RR Score Plus", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
 
