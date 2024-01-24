@@ -133,11 +133,11 @@ public class Intake {
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(-.4);
-            claw2.setPosition(-.4);
+            claw1.setPosition(1);
+            claw2.setPosition(1); //good
         } else {
-            claw1.setPosition(.4);
-            claw2.setPosition(.4);
+            claw1.setPosition(0);
+            claw2.setPosition(0); //good
         }
     }
     public void closePixelHolder(boolean close){
@@ -505,8 +505,9 @@ public class Intake {
     }
 
     public void getTelemetry(Telemetry telemetry){
-        telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
-        telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
+        telemetry.addData("Claw 1 Pose: ", claw1.getAngle());
+        telemetry.addData("Claw 2 Pose: ", claw2.getAngle());
+        telemetry.addData("Wrist Pose", wristMotor.getCurrentPosition());
         //telemetry.addData("Intake Currently Moving: ", isActive);
 //        //telemetry.addData("Claw Position", claw.getPosition());
 //        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());

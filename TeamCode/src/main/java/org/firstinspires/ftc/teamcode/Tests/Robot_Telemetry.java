@@ -17,6 +17,8 @@ public class Robot_Telemetry extends OpMode {
     public void setTelemetry(){
         drivetrain.getTelemetry(telemetry);
         intake.getTelemetry(telemetry);
+        //intake.init_intake_V2(hardwareMap,"claw1","claw2","wrist");
+        intake.getTelemetry(telemetry);
         launcher.getTelemetry(telemetry);
         arm.getTelemetry(telemetry);
     }
@@ -24,7 +26,8 @@ public class Robot_Telemetry extends OpMode {
     @Override
     public void init() {
         drivetrain.init_drive_motors(hardwareMap);
-        intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+       // intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
         setTelemetry();

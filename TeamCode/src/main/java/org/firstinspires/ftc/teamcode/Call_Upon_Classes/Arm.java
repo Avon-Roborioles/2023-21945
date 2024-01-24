@@ -284,10 +284,10 @@ public class Arm {
 
     public void getTelemetry(Telemetry telemetry){
         //telemetry.addData("Intake Currently Moving: ", isActive);
-        telemetry.addData("Current Arm Target", target);
+        //telemetry.addData("Current Arm Target", target);
         telemetry.addData("Left Arm Motor Position", leftMotor.getCurrentPosition());
         telemetry.addData("Right Arm Motor Position", rightMotor.getCurrentPosition());
-        telemetry.addData("Current Arm Status", armStatus);
+        //telemetry.addData("Current Arm Status", armStatus);
     }
 }
 
