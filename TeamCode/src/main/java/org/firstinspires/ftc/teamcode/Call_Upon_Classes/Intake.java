@@ -83,8 +83,8 @@ public class Intake {
         wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wristMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        claw1.setPosition(0);
-//        claw2.setPosition(0);
+//        claw1.setPosition(.3);
+//        claw2.setPosition(-.3);
     }
 
     //autonomous methods
@@ -119,25 +119,28 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
-                claw1.setPosition(.4);
+                claw1.setPosition(.3);
             } else {
-                claw1.setPosition(-.2);
+                claw1.setPosition(-.3);
             }
         } else { //Done control right claw
             if (open){
-                claw2.setPosition(-.2);
+                claw2.setPosition(-.3);
             } else {
-                claw2.setPosition(.4);
+                claw2.setPosition(.3);
             }
         }
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(.4); //
-            claw2.setPosition(-.2); //-.3
+            clawIsOpen = false;
+            claw1.setPosition(.5); //
+            claw2.setPosition(0); //-.3
+
         } else {
-            claw1.setPosition(-.2); //-.2
-            claw2.setPosition(.4);
+            clawIsOpen = true;
+            claw1.setPosition(.3); //-.2
+            claw2.setPosition(.2);
         }
     }
     public void closePixelHolder(boolean close){
@@ -387,21 +390,21 @@ public class Intake {
         boolean button_b = gamepad2.b;
 
         //open-close claws
-        if(LBumperReader.getState()) {
-            //done close claw1
-            openClawV2(false,true);
-        } else {
-            //Done open claw1
-            openClawV2(true, true);
-        }
-
-        if(RBumperReader.getState()){
-            //Done close claw2
-            openClawV2(false, false);
-        } else {
-            //Done open claw2
-            openClawV2(true, false);
-        }
+//        if(LBumperReader.getState()) {
+//            //done close claw1
+//            openClawV2(false,true);
+//        } else {
+//            //Done open claw1
+//            openClawV2(true, true);
+//        }
+//
+//        if(RBumperReader.getState()){
+//            //Done close claw2
+//            openClawV2(false, false);
+//        } else {
+//            //Done open claw2
+//            openClawV2(true, false);
+//        }
 
         //open-close claws
         if(aReader.getState()){
@@ -422,8 +425,8 @@ public class Intake {
         }
 
         aReader.readValue();
-        RBumperReader.readValue();
-        LBumperReader.readValue();
+//        RBumperReader.readValue();
+//        LBumperReader.readValue();
     }
 
     public void run_intake_main(Gamepad gamepad2){
@@ -507,6 +510,7 @@ public class Intake {
     public void getTelemetry(Telemetry telemetry){
         telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
         telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
+        telemetry.addData("Claw is Open?", clawIsOpen);
         //telemetry.addData("Intake Currently Moving: ", isActive);
 //        //telemetry.addData("Claw Position", claw.getPosition());
 //        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
