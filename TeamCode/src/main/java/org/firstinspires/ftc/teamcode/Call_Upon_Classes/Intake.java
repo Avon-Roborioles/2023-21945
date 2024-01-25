@@ -133,8 +133,8 @@ public class Intake {
     }
     public void openClaws(boolean open){ //Done
         if (open){
-            claw1.setPosition(.4); //
-            claw2.setPosition(-.2); //-.3
+            claw1.setPosition(.2); //.4
+            claw2.setPosition(.2); //-.2
         } else {
             claw1.setPosition(-.2); //-.2
             claw2.setPosition(.4);
