@@ -14,6 +14,7 @@ public class StephensReferences {
 
     public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
 
+    //TODO set to startPose
     static double currentX = 0;
     static double currentY = 0;
     static double currentHeading = Math.toRadians(90);
@@ -28,20 +29,20 @@ public class StephensReferences {
     }
 
     static double poseX(double distance){
+        updatePoseEstimate(currentX + distance,currentY,currentHeading);
         currentX += distance;
-        updatePoseEstimate(currentX,currentY,currentHeading);
         return currentX;
     }
 
     static double poseY(double distance){
+        updatePoseEstimate(currentX + distance,currentY,currentHeading);
         currentY += distance;
-        updatePoseEstimate(currentX,currentY,currentHeading);
         return currentY;
     }
 
-    static double poseHeading(double distance){
-        currentHeading += distance;
-        updatePoseEstimate(currentX,currentY,currentHeading);
+    static double poseHeading(double angle){
+        updatePoseEstimate(currentX + angle,currentY,currentHeading);
+        currentHeading += angle;
         return currentY;
     }
 
@@ -53,7 +54,67 @@ public class StephensReferences {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
-                                .lineToLinearHeading(new Pose2d(poseX(10),poseY(10),poseHeading(Math.toRadians(90))))
+                                .strafeRight(5)
+                                .waitSeconds(.1)
+                                .forward(30)
+                                .waitSeconds(.1)
+                                .turn(Math.toRadians(90))
+
+
+                                .waitSeconds(.1) //------------
+                                .forward(10)
+                                .waitSeconds(.1) //-----------
+                                .back(8)
+                                .waitSeconds(2)
+
+                                //board
+                                .strafeRight(20)
+                                .waitSeconds(.1)
+                                .back(72)
+                                .waitSeconds(.1)
+                                .strafeLeft(20)
+                                .waitSeconds(.1)
+                                .back(3) //score
+                                .waitSeconds(3)
+
+                                //2 pixels
+                                .forward(5)
+                                .waitSeconds(.1)
+                                .strafeRight(20)
+                                .waitSeconds(.1)
+                                .forward(70)
+
+                                .waitSeconds(.1)
+                                .strafeRight(2)
+                                .waitSeconds(.1)
+                                .forward(25)
+                                .waitSeconds(2) //pixel in left claw
+                                .back(5)
+                                .waitSeconds(.1)
+                                .strafeLeft(4)
+                                .waitSeconds(.1)
+                                .forward(5)
+                                .waitSeconds(2) //pixel in right claw
+                                .strafeRight(2)
+                                .waitSeconds(.1)
+
+                                //score 2 pixels
+                                .back(90)
+                                .waitSeconds(.1)
+                                .strafeLeft(20)
+                                .waitSeconds(.1)
+                                .back(10)
+                                .waitSeconds(3) //score
+                                .forward(10)
+                                .waitSeconds(.1)
+                                .strafeRight(20)
+                                .waitSeconds(.1)
+                                .back(20) //end
+
+                                .addTemporalMarker(38.90, () ->{
+                                    System.out.println("Auto Finished!");
+                                })
+
                                 .waitSeconds(10000)
                                 .build()
                 );
@@ -67,5 +128,9 @@ public class StephensReferences {
                 .addEntity(fieldReference)
 
                 .start();
+//        while(meepMeep.getWindowFrame().isActive()){
+//            System.out.println("Current X Pose: ");
+//
+//        }
     }
 }
