@@ -51,7 +51,7 @@ public class StephensReferences {
 
         RoadRunnerBotEntity fieldReference = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
+                .setConstraints(88.2809332, 47.4845458372762, 7.660142060308357, Math.toRadians(259.11086367346934), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
                                 .strafeRight(5)
@@ -65,17 +65,20 @@ public class StephensReferences {
                                 .forward(10)
                                 .waitSeconds(.1) //-----------
                                 .back(8)
-                                .waitSeconds(2)
+                                .waitSeconds(1)
 
-                                //board
                                 .strafeRight(20)
                                 .waitSeconds(.1)
-                                .back(72)
+                                .forward(25)
+                                .waitSeconds(1)
+
+                                //board
+                                .back(95)
                                 .waitSeconds(.1)
                                 .strafeLeft(20)
                                 .waitSeconds(.1)
-                                .back(3) //score
-                                .waitSeconds(3)
+                                .back(5) //score
+                                .waitSeconds(1)
 
                                 //2 pixels
                                 .forward(5)
@@ -88,13 +91,13 @@ public class StephensReferences {
                                 .strafeRight(2)
                                 .waitSeconds(.1)
                                 .forward(25)
-                                .waitSeconds(2) //pixel in left claw
+                                .waitSeconds(1) //pixel in left claw
                                 .back(5)
                                 .waitSeconds(.1)
                                 .strafeLeft(4)
                                 .waitSeconds(.1)
                                 .forward(5)
-                                .waitSeconds(2) //pixel in right claw
+                                .waitSeconds(1) //pixel in right claw
                                 .strafeRight(2)
                                 .waitSeconds(.1)
 
@@ -104,15 +107,15 @@ public class StephensReferences {
                                 .strafeLeft(20)
                                 .waitSeconds(.1)
                                 .back(10)
-                                .waitSeconds(3) //score
+                                .waitSeconds(1.5) //score
                                 .forward(10)
                                 .waitSeconds(.1)
                                 .strafeRight(20)
                                 .waitSeconds(.1)
                                 .back(20) //end
 
-                                .addTemporalMarker(38.90, () ->{
-                                    System.out.println("Auto Finished!");
+                                .addTemporalMarker(30, () ->{
+                                    System.out.println("Auto Time Finished!");
                                 })
 
                                 .waitSeconds(10000)
