@@ -17,13 +17,9 @@ public class AutoBase extends LinearOpMode {
 
     public void init_classes(){
         arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", true);
-        intake.init_intake_main(hardwareMap, "claw", "wrist", "pixelHolder", true);
+        intake.init_intake_V2(hardwareMap, "claw1", "claw2","wrist");
         vision.init_cameras(hardwareMap, "Webcam 1", "Webcam 2");
     }
 
-    public void scorePixel(){
-        arm.auto_score();
-        //intake.auto_score();
-    } //TEST - multi-function method used to score pixel on backboard
 
 }

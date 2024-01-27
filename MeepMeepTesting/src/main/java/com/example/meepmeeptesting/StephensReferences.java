@@ -8,6 +8,8 @@ import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeRedDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+import java.awt.Color;
+
 public class StephensReferences {
 
    public Pose2d startPoseRR = new Pose2d(12,-60.6,Math.toRadians(90));
@@ -109,6 +111,8 @@ public class StephensReferences {
                                 .back(10)
                                 .waitSeconds(1.5) //score
                                 .forward(10)
+
+                                //park
                                 .waitSeconds(.1)
                                 .strafeRight(20)
                                 .waitSeconds(.1)
@@ -121,6 +125,14 @@ public class StephensReferences {
                                 .waitSeconds(10000)
                                 .build()
                 );
+
+//        RoadRunnerBotEntity RRScoreSim = new DefaultBotBuilder(meepMeep)
+//                .setColorScheme(new ColorSchemeBlueDark())
+//                .setConstraints(88.2809332, 47.4845458372762, 7.660142060308357, Math.toRadians(259.11086367346934), 10.5)
+//                .followTrajectorySequence(drive ->
+//                                drive.trajectorySequenceBuilder(startPoseRL)
+//
+//                );
 
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

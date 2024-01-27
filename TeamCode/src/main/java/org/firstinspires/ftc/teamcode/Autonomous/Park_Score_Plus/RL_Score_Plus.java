@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.Autonomous.Park_Score_Plus;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -19,45 +21,49 @@ import java.util.concurrent.TimeUnit;
 
 @Autonomous(name="RL Score Plus", group="Park + Score")
 public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
-    Timing.Timer autoTimer = new Timing.Timer(30, TimeUnit.SECONDS);
-
-    int CycleCount = 0;
-     TrajectorySequence quickStrafe = null;
-
-     /*TODO - uncomment if currentPose object can't be used in certain cases
-    double Xaxis = 0;
-    double Yaxis = 0;
-    double heading = Math.toRadians(0);
-*/
-    //defined poses on the field to use
-    public Pose2d startPose = new Pose2d(0,0,Math.toRadians(90));
-    public Vector2d checkPoint1 = new Vector2d(20,20);
-    public Vector2d checkPoint2 = new Vector2d(-55,15);
-    public Vector2d LeftBoardPose = new Vector2d(45,20); //TODO Update These Board Poses
-    public Pose2d MiddleBoardPose = new Pose2d(45,15,Math.toRadians(180));
-    public Pose2d RightBoardPose = new Pose2d(45, 10,Math.toRadians(180));
-
-    SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
-
-
-    //easy to use methods that update bot pose AND return added/subtracted pose value
-    public double poseX(double distance){
-        bot.updatePoseEstimate();
-        return bot.getPoseEstimate().getX() + distance;
+//    Timing.Timer autoTimer = new Timing.Timer(30, TimeUnit.SECONDS);
+//
+//    int CycleCount = 0;
+//     TrajectorySequence quickStrafe = null;
+//
+//     /*TODO - uncomment if currentPose object can't be used in certain cases
+//    double Xaxis = 0;
+//    double Yaxis = 0;
+//    double heading = Math.toRadians(0);
+//*/
+//    //defined poses on the field to use
+//    public Pose2d startPose = new Pose2d(0,0,Math.toRadians(90));
+//    public Vector2d checkPoint1 = new Vector2d(20,20);
+//    public Vector2d checkPoint2 = new Vector2d(-55,15);
+//    public Vector2d LeftBoardPose = new Vector2d(45,20); //TODO Update These Board Poses
+//    public Pose2d MiddleBoardPose = new Pose2d(45,15,Math.toRadians(180));
+//    public Pose2d RightBoardPose = new Pose2d(45, 10,Math.toRadians(180));
+//
+//
+//
+//    //easy to use methods that update bot pose AND return added/subtracted pose value
+//    public double poseX(double distance){
+//        bot.updatePoseEstimate();
+//        return bot.getPoseEstimate().getX() + distance;
+//    }
+//
+//    public double poseY(double distance){
+//        bot.updatePoseEstimate();
+//        return bot.getPoseEstimate().getY() + distance;
+//    }
+//
+//    public double poseHeading(double degrees){
+//        bot.updatePoseEstimate();
+//        return bot.getPoseEstimate().getHeading() + Math.toRadians(degrees);
+//    }
+//
+    TrajectoryVelocityConstraint slowerSpeed(double speed){
+        return SampleMecanumDrive.getVelocityConstraint(speed, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH);
     }
-
-    public double poseY(double distance){
-        bot.updatePoseEstimate();
-        return bot.getPoseEstimate().getY() + distance;
-    }
-
-    public double poseHeading(double degrees){
-        bot.updatePoseEstimate();
-        return bot.getPoseEstimate().getHeading() + Math.toRadians(degrees);
-    }
-
-
     public void runOpMode() throws InterruptedException {
+       SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
+
+
 
         //important variables for auto - set to random values
         String propPosition = "LEFT";
@@ -255,6 +261,77 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .back(10) //TODO adjust distance - park
                 .build();
 
+        TrajectorySequence FullLeftAuto = bot.trajectorySequenceBuilder(new Pose2d())
+                .forward(22)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(82))
+
+                //moving prop away
+                .waitSeconds(.1) //------------
+                .forward(5)
+                .waitSeconds(.1) //-----------
+                .back(5)
+                .waitSeconds(.5) //waiting to score pixel
+
+                //-------------
+                //scoring purple pixel
+                //--------------
+
+                //TODO get second pixel - split to different TrajectorySquence before Comp
+                .strafeRight(15)
+                .waitSeconds(.1)
+                .forward(14)
+                .waitSeconds(.7)
+
+//                //board
+                .back(65, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+                .waitSeconds(.1)
+               .strafeLeft(15)
+                .waitSeconds(.1)
+                .back(5) //score
+                .waitSeconds(.7)
+//
+//                //2 pixels
+                //.strafeLeft(5)
+                //.waitSeconds(.1)
+                .forward(30,SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - SLOW SPEED!!!
+//                .forward(5)
+//                .waitSeconds(.1)
+//                .strafeLeft(5)
+//                .waitSeconds(.1)
+
+
+                //.forward(70) //TODO - DECREASE SPEED!!!
+//
+//                .waitSeconds(.1)
+//                .strafeRight(2)
+//                .waitSeconds(.1)
+//                .forward(25)
+//                .waitSeconds(1) //pixel in left claw
+//                .back(5)
+//                .waitSeconds(.1)
+//                .strafeLeft(4)
+//                .waitSeconds(.1)
+//                .forward(5)
+//                .waitSeconds(1) //pixel in right claw
+//                .strafeRight(2)
+//                .waitSeconds(.1)
+//
+//                //score 2 pixels
+//                .back(90)
+//                .waitSeconds(.1)
+//                .strafeLeft(20)
+//                .waitSeconds(.1)
+//                .back(10)
+//                .waitSeconds(1.5) //score
+//                .forward(10)
+//
+//                //park
+//                .waitSeconds(.1)
+//                .strafeRight(20)
+//                .waitSeconds(.1)
+//                .back(20) //end
+                .build();
 
         //auto code here
         waitForStart();
@@ -264,30 +341,31 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         aprilTagID = vision.get_Apriltag_id(propPosition,false);
 
         //scores the purple preload pixel based on vision reading
-        switch(propPosition){
-            case "LEFT":
-                bot.followTrajectorySequence(LeftSpikeScoreNL);
-                break;
-            case "MIDDLE":
-                bot.followTrajectorySequence(MiddleSpikeScoreNL);
-                break;
-            case "RIGHT":
-                bot.followTrajectorySequence(RightSpikeScoreNL);
-                break;
-        }
-
-        //score pixel (& park bot if Not Localized - NL)
-        switch(aprilTagID){
-            case 4:
-                bot.followTrajectorySequence(LeftPreloadScoreNL);
-                break;
-            case 5:
-                bot.followTrajectorySequence(MiddlePreloadScoreNL);
-                break;
-            case 6:
-                bot.followTrajectorySequence(RightPreloadScoreNL);
-                break;
-        }
+        bot.followTrajectorySequence(FullLeftAuto);
+//        switch(propPosition){
+//            case "LEFT":
+//                bot.followTrajectorySequence(LeftSpikeScoreNL);
+//                break;
+//            case "MIDDLE":
+//                bot.followTrajectorySequence(MiddleSpikeScoreNL);
+//                break;
+//            case "RIGHT":
+//                bot.followTrajectorySequence(RightSpikeScoreNL);
+//                break;
+//        }
+//
+//        //score pixel (& park bot if Not Localized - NL)
+//        switch(aprilTagID){
+//            case 4:
+//                bot.followTrajectorySequence(LeftPreloadScoreNL);
+//                break;
+//            case 5:
+//                bot.followTrajectorySequence(MiddlePreloadScoreNL);
+//                break;
+//            case 6:
+//                bot.followTrajectorySequence(RightPreloadScoreNL);
+//                break;
+//        }
 
      //end of program
     }
