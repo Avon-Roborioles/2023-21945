@@ -262,6 +262,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .build();
 
         TrajectorySequence FullLeftAuto = bot.trajectorySequenceBuilder(new Pose2d())
+                .addTemporalMarker(0,() ->{
+                    intake.openClaws(true);
+                })
                 .forward(22)
                 .waitSeconds(.1)
                 .turn(Math.toRadians(82))
@@ -286,7 +289,7 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                //board
                 .back(65, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
                 .waitSeconds(.1)
-               .strafeLeft(15)
+               .strafeLeft(12)
                 .waitSeconds(.1)
                 .back(5) //score
                 .waitSeconds(.7)
@@ -294,7 +297,26 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                //2 pixels
                 //.strafeLeft(5)
                 //.waitSeconds(.1)
-                .forward(30,SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - SLOW SPEED!!!
+                .strafeLeft(8)
+                .waitSeconds(.1)
+                .forward(70,SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - SLOW SPEED!!!
+                .waitSeconds(.1)
+                .strafeRight(20)
+                .waitSeconds(.1)
+                .forward(14)
+                .waitSeconds(.1)
+
+                //to board
+                .back(65, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+                .waitSeconds(.1)
+                .strafeLeft(12)
+                .waitSeconds(.1)
+                .back(5) //score
+                .waitSeconds(.1)
+                .strafeLeft(10)
+                .waitSeconds(.1)
+                .back(8)
+
 //                .forward(5)
 //                .waitSeconds(.1)
 //                .strafeLeft(5)
