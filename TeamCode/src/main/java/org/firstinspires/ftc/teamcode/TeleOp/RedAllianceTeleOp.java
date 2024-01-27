@@ -69,7 +69,7 @@ public class RedAllianceTeleOp extends LinearOpMode {
             double rightArmPosition = arm.getRightMotorPosition();
             //intake.run_intake_Power(gamepad2, rightArmPosition);
             //intake.run_intake_Power(gamepad2, gamepad2Ex, a2Reader,1);
-            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,LBumperReader,RBumperReader);
+            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader);
             setTelemetry();
 
         }

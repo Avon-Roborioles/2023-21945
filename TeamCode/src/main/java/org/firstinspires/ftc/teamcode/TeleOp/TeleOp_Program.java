@@ -62,7 +62,7 @@ public class TeleOp_Program extends LinearOpMode {
             //Driver 2 Controls
             arm.run_arm_manual(gamepad2);
             //intake.run_intake_V2();
-            intake.run_intake_default(gamepad2, gamepad2Ex, a2Reader);
+            intake.run_intake_V2(gamepad2, gamepad2Ex, a2Reader);
 
             setTelemetry();
 
