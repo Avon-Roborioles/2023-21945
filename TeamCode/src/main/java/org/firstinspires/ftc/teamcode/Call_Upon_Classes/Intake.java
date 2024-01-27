@@ -42,6 +42,7 @@ public class Intake {
     private int maxWristPosition = 200; //200 is level with ground
     private int wristPosition = 0;
     private boolean wristIsUp = true;
+    private boolean wristState;
     private boolean wristDefault = false;
     public enum wristCommands {
         WRIST_UP,
@@ -163,7 +164,7 @@ public class Intake {
     } //TEST - moves wrist to pos and opens claw to score
 
     public void wrist_down(){
-        wristTarget = -80; //-200
+        wristTarget = -100; //-200
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.5);
@@ -390,6 +391,7 @@ public class Intake {
         boolean button_x = gamepad2.x;
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
+        wristState = yReader.getState();
 
         //open-close claws -- Caused Twitching Problem
 //        if(LBumperReader.getState()) {
@@ -420,14 +422,15 @@ public class Intake {
 
         if(yReader.wasJustPressed()){ //when pressed activate default mode & switch between up or down
             wristDefault = true;
-            if(yReader.getState()){
+            if(wristMotor.getCurrentPosition() > -50){
                 wristIsUp = true;
-            }
+            } else {
                 wristIsUp = false;
+            }
 //                wristTarget = -100;
 //                wristMotor.setTargetPosition(wristTarget);
 //                wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                wristMotor.setPower(.5);
+//                wristMotor.setPower(.5);      }
             }
 
         if(rightY < -0.3 || rightY > 0.3) { //TODO: Add Safety Check In case of Joystick strafe; check if joystick is moving
@@ -453,9 +456,9 @@ public class Intake {
 
         if(wristDefault){ //switch between up and down if wristDefault is activated
             if(wristIsUp){
-                wrist_up();
-            } else {
                 wrist_down();
+            } else {
+                wrist_up();
             }
         }
 
@@ -576,7 +579,9 @@ public class Intake {
         telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
         telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
         telemetry.addData("Wrist Pose: ", wristMotor.getCurrentPosition());
+        telemetry.addData("WristDefault: ", wristDefault);
         telemetry.addData("Wrist Up?: ", wristIsUp);
+        telemetry.addData("Wrist State: ", wristState);
     }
 
 }
