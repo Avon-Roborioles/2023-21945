@@ -68,7 +68,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
             arm.run_arm_manual(gamepad2);
             double rightArmPosition = arm.getRightMotorPosition();
             //intake.run_intake_Power(gamepad2, rightArmPosition);
-            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,LBumperReader,RBumperReader);
+            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader);
 
             setTelemetry();
 

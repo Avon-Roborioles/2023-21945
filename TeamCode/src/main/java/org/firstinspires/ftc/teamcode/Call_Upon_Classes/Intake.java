@@ -122,25 +122,25 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
-                claw1.setPosition(.4);
+                claw1.setPosition(.3);
             } else {
-                claw1.setPosition(-.2);
+                claw1.setPosition(0.6);
             }
         } else { //Done control right claw
             if (open){
-                claw2.setPosition(-.2);
+                claw2.setPosition(.2);
             } else {
-                claw2.setPosition(.4);
+                claw2.setPosition(0);
             }
         }
     }
-    public void openClaws(boolean open){ //Done
-        if (open){
-            claw1.setPosition(.4); //.4
-            claw2.setPosition(-.2); //-.2
+    public void openClaws(boolean close){ //Done
+        if (close){
+            claw1.setPosition(.6); //.4
+            claw2.setPosition(0); //-.2
         } else {
-            claw1.setPosition(-.2); //-.2
-            claw2.setPosition(.4); //.4
+            claw1.setPosition(.3); //-.2
+            claw2.setPosition(.2); //.4
         }
     }
     public void closePixelHolder(boolean close){
@@ -380,7 +380,7 @@ public class Intake {
         //closePixelHolder(true);
     }
 
-    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader, ToggleButtonReader LBumperReader, ToggleButtonReader RBumperReader){
+    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader){
         double ltrigger = gamepad2.left_trigger;
         double rtrigger = gamepad2.right_trigger;
         double rightY = gamepad2.right_stick_y; //was float—
