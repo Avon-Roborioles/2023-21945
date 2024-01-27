@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
-import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
-
-import java.util.concurrent.TimeUnit;
 
 @TeleOp
 public class TeleOp_Program extends LinearOpMode {
@@ -47,6 +45,9 @@ public class TeleOp_Program extends LinearOpMode {
         ToggleButtonReader a2Reader = new ToggleButtonReader(
                 gamepad2Ex, GamepadKeys.Button.A
         );
+        ToggleButtonReader y2Reader = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.Y
+        );
 
         setTelemetry();
 
@@ -62,7 +63,7 @@ public class TeleOp_Program extends LinearOpMode {
             //Driver 2 Controls
             arm.run_arm_manual(gamepad2);
             //intake.run_intake_V2();
-            intake.run_intake_V2(gamepad2, gamepad2Ex, a2Reader);
+            intake.run_intake_V2(gamepad2, gamepad2Ex, a2Reader, y2Reader);
 
             setTelemetry();
 

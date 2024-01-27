@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
@@ -40,7 +41,8 @@ public class Intake {
     private double rightY = 0.0;
     private int maxWristPosition = 200; //200 is level with ground
     private int wristPosition = 0;
-    private boolean holder_up = false;
+    private boolean wristIsUp = true;
+    private boolean wristDefault = false;
     public enum wristCommands {
         WRIST_UP,
         WRIST_DOWN,
@@ -144,16 +146,16 @@ public class Intake {
         }
     }
     public void closePixelHolder(boolean close){
-        if(close){
-            pixelHolder.setPosition(1); //close
-            holder_up = true;
-        } else {
-            pixelHolder.setPosition(0.7); //open
-            holder_up = false;
-        }
+//        if(close){
+//            pixelHolder.setPosition(1); //close
+//            holder_up = true;
+//        } else {
+//            pixelHolder.setPosition(0.7); //open
+//            holder_up = false;
+//        }
     }
     public void wrist_up(){
-        wristTarget = -50; //0
+        wristTarget = -10; //0
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.5);
@@ -161,7 +163,7 @@ public class Intake {
     } //TEST - moves wrist to pos and opens claw to score
 
     public void wrist_down(){
-        wristTarget = 0; //-200
+        wristTarget = -80; //-200
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.5);
@@ -380,7 +382,7 @@ public class Intake {
         //closePixelHolder(true);
     }
 
-    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader){
+    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader, ToggleButtonReader yReader){
         double ltrigger = gamepad2.left_trigger;
         double rtrigger = gamepad2.right_trigger;
         double rightY = gamepad2.right_stick_y; //was float—
@@ -415,16 +417,50 @@ public class Intake {
             openClaws(true);
         }
 
-        //control wrist
-        if (rightY > 0) {
-            wristMotor.setPower(-0.35); //0.25
-        } else if (rightY < 0) {
-            wristMotor.setPower(0.35); //-0.25
-        } else {
-            wristMotor.setPower(0);
+
+        if(yReader.wasJustPressed()){ //when pressed activate default mode & switch between up or down
+            wristDefault = true;
+            if(yReader.getState()){
+                wristIsUp = true;
+            }
+                wristIsUp = false;
+//                wristTarget = -100;
+//                wristMotor.setTargetPosition(wristTarget);
+//                wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                wristMotor.setPower(.5);
+            }
+
+        if(rightY < -0.3 || rightY > 0.3) { //TODO: Add Safety Check In case of Joystick strafe; check if joystick is moving
+            wristDefault = false;
+            //control wrist
+            if (rightY > 0) {
+                //wristDefault = false;
+                wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                wristMotor.setPower(-0.35); //0.25
+            } else if (rightY < 0) {
+                //wristDefault = false;
+                wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                wristMotor.setPower(0.35); //-0.25
+//            } else {
+//                wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                wristMotor.setPower(0);
+//            }
+            }
+        } else if((rightY >= -0.3 && rightY <= 0.3) && wristDefault == false){
+            wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            wristMotor.setPower(0); //small power to hold wrist
+        }
+
+        if(wristDefault){ //switch between up and down if wristDefault is activated
+            if(wristIsUp){
+                wrist_up();
+            } else {
+                wrist_down();
+            }
         }
 
         aReader.readValue();
+        yReader.readValue();
 //        RBumperReader.readValue();
 //        LBumperReader.readValue();
     }
@@ -539,11 +575,8 @@ public class Intake {
     public void getTelemetry(Telemetry telemetry){
         telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
         telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
-        //telemetry.addData("Intake Currently Moving: ", isActive);
-//        //telemetry.addData("Claw Position", claw.getPosition());
-//        telemetry.addData("Wrist Position", wristMotor.getCurrentPosition());
-//        telemetry.addData("Wrist Target", wristMotor.getTargetPosition());
-        //. telemetry.addData("PixelHolder Position", pixelHolder.getPosition());
+        telemetry.addData("Wrist Pose: ", wristMotor.getCurrentPosition());
+        telemetry.addData("Wrist Up?: ", wristIsUp);
     }
 
 }

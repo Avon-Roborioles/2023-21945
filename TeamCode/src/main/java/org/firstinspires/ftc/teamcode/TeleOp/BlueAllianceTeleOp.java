@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
@@ -49,6 +50,9 @@ public class BlueAllianceTeleOp extends LinearOpMode {
         ToggleButtonReader RBumperReader = new ToggleButtonReader(
                 gamepad2Ex, GamepadKeys.Button.RIGHT_BUMPER
         );
+        ToggleButtonReader y2Reader = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.Y
+        );
 
 
 
@@ -68,7 +72,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
             arm.run_arm_manual(gamepad2);
             double rightArmPosition = arm.getRightMotorPosition();
             //intake.run_intake_Power(gamepad2, rightArmPosition);
-            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader);
+            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader, y2Reader);
 
             setTelemetry();
 
