@@ -99,7 +99,7 @@ public class Arm {
 //        rightMotorEx.setPower(0.7);
         armGroup.setRunMode(Motor.RunMode.PositionControl);
         armGroup.setTargetPosition(1600);
-        armGroup.set(0.7);
+        armGroup.set(0.4);
     }
     public void down_auto(){
 //        setArmTargetPosition(0);
@@ -191,27 +191,36 @@ public class Arm {
             armDefault = false;
 
             if (rightMotor.getCurrentPosition() < 1600) {
-                if (leftY > 0.3) {
+                if (leftY < 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(0.6);
-                } else if (leftY < -0.3) {
+                    armGroup.set(0.4);
+                } else if (leftY > 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(-0.5);
-                } else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
+                } /*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(.1);
-                }
+                    armGroup.set(.01);
+                }*/
             } else{
                 if (leftY > 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(-0.7);
+                    armGroup.set(-0.5);
                 } else if (leftY < 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(0.5);
-            } else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
+            } /*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
                 armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(-.1);
+                armGroup.set(-.01);
+            }*/
             }
+        } else if((leftY >= -0.3 && leftY <= 0.3) && armDefault == false){
+
+            if(rightMotor.getCurrentPosition() < 1600){
+                armGroup.setRunMode(Motor.RunMode.RawPower);
+                armGroup.set(.01);
+            } else {
+                armGroup.setRunMode(Motor.RunMode.RawPower);
+                armGroup.set(-.01);
             }
         }
 

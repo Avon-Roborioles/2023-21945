@@ -66,6 +66,9 @@ public class RedAllianceTeleOp extends LinearOpMode {
                 gamepad2Ex, GamepadKeys.Button.DPAD_DOWN
         );
 
+        ToggleButtonReader d_up = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.DPAD_UP
+        );
 
         setTelemetry();
 
