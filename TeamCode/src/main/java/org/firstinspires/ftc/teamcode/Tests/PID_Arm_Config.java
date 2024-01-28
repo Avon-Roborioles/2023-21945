@@ -28,8 +28,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class PID_Arm_Config extends OpMode {
     private PIDController controller;
 
-    public static double p = 0, i = 0, d = 0; //PID variables needed
-    public static double f = 0; //feed forward variable
+    public static double p = 0.0023, i = 0, d = 0.0008; //PID variables needed
+    public static double f = 0.005; //feed forward variable
 
     public static int target = 0; //the variable team drivers will control to move arm
 
@@ -46,10 +46,13 @@ public class PID_Arm_Config extends OpMode {
         leftMotor = hardwareMap.get(DcMotorEx.class,"leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
 
-        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets to 0
-        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//sets to 0
+//        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets to 0
+//        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//sets to 0
+//
+//        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE); //sets leftMotor in reverse
+        //leftMotor.setDirection(DcMotorSimple.Direction.REVERSE); //sets leftMotor in reverse
     }
 
     @Override
@@ -62,11 +65,13 @@ public class PID_Arm_Config extends OpMode {
 
         double power = pid + ff;
 
-        leftMotor.setPower(-power);
+        leftMotor.setPower(power);
         rightMotor.setPower(power);
 
+        telemetry.addData("Left Arm Position: ", -leftArmPos);
         telemetry.addData("Right Arm Position: ", rightArmPos);
         telemetry.addData("Target Position: ", target);
+        telemetry.addData("Power: ", power);
         telemetry.update();
     }
 }

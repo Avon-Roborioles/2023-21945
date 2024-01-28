@@ -98,6 +98,7 @@ public class Arm {
 //        leftMotorEx.setPower(-0.7);
 //        rightMotorEx.setPower(0.7);
         armGroup.setRunMode(Motor.RunMode.PositionControl);
+        armGroup.setPositionTolerance(6000); //TODO Testing - armGroup freaks out w/ small tolerance due to leftMotor being negative when not inverted; having a big tolerance to account for this differance might solve this
         armGroup.setTargetPosition(1600);
         armGroup.set(0.3);
     }
@@ -108,7 +109,8 @@ public class Arm {
 //        leftMotorEx.setPower(-0.7);
 //        rightMotorEx.setPower(0.7);
         armGroup.setRunMode(Motor.RunMode.PositionControl);
-        armGroup.setTargetPosition(100);
+        armGroup.setPositionTolerance(6000);
+        armGroup.setTargetPosition(100); //TODO Testing
         armGroup.set(0.3);
     }
 
@@ -196,7 +198,7 @@ public class Arm {
                     armGroup.set(0.4);
                 } else if (leftY > 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(-0.5);
+                    armGroup.set(-0.4);
                 } /*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(.01);
@@ -224,13 +226,13 @@ public class Arm {
             }
         }
 
-//        if(armDefault){
-//            if(armIsUp){
-//                down_auto();
-//            } else {
-//                up_auto();
-//            }
-//        }
+        if(armDefault){
+            if(armIsUp){
+                down_auto();
+            } else {
+                up_auto();
+            }
+        }
 
         d_down.readValue();
     }
