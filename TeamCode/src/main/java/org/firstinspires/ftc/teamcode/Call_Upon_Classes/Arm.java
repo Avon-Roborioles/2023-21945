@@ -23,6 +23,15 @@ public class Arm {
 
     private MotorGroup armGroup;
 
+    private PIDController controller;
+
+    public static double p = 0.0023, i = 0, d = 0.0008; //PID variables needed
+    public static double f = 0.005; //feed forward variable
+
+    public static int target = 0; //the variable team drivers will control to move arm
+
+    private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
+
     public static double kP = 0;
     public static double kV = 0;
 
@@ -38,8 +47,6 @@ public class Arm {
     private double rightMotorPosition = 0;
     private int maxPosition = 4000; //Done -  find max value
     private int armStandbyPose = 200;
-    private PIDController controller;
-    public static int target = 0; //the variable team drivers will control to move arm
     private boolean armState;
     private boolean armDefault;
     private boolean armIsUp;
@@ -55,6 +62,7 @@ public class Arm {
     public void init_arm_V2(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         leftMotor = new Motor(hardwareMap,"leftMotor");
         rightMotor = new Motor(hardwareMap,"rightMotor");
+        controller = new PIDController(p, i, d);
 
         //leftMotor.setInverted(true); //put in reverse
 
@@ -92,15 +100,23 @@ public class Arm {
 
 
     public void up_auto(){
+        target = 2000;
 //        setArmTargetPosition(2000); //adust value for backboard
 //        leftMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        rightMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        leftMotorEx.setPower(-0.7);
 //        rightMotorEx.setPower(0.7);
-        armGroup.setRunMode(Motor.RunMode.PositionControl);
-        armGroup.setPositionTolerance(6000); //TODO Testing - armGroup freaks out w/ small tolerance due to leftMotor being negative when not inverted; having a big tolerance to account for this differance might solve this
-        armGroup.setTargetPosition(1600);
-        armGroup.set(0.3);
+        controller.setPID(p, i, d);
+        int leftArmPos = leftMotor.getCurrentPosition();
+        int rightArmPos = rightMotor.getCurrentPosition();
+        double pid = controller.calculate(rightArmPos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+        double power = pid + ff;
+
+//        leftMotor.setPower(power);
+//        rightMotor.setPower(power);
+        armGroup.set(power);
     }
     public void down_auto(){
 //        setArmTargetPosition(0);
@@ -108,10 +124,23 @@ public class Arm {
 //        rightMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        leftMotorEx.setPower(-0.7);
 //        rightMotorEx.setPower(0.7);
-        armGroup.setRunMode(Motor.RunMode.PositionControl);
-        armGroup.setPositionTolerance(6000);
-        armGroup.setTargetPosition(100); //TODO Testing
-        armGroup.set(0.3);
+//        armGroup.setRunMode(Motor.RunMode.PositionControl);
+//        armGroup.setPositionTolerance(6000);
+//        armGroup.setTargetPosition(100); //TODO Testing
+//        armGroup.set(0.3);
+        target = 100;
+
+        controller.setPID(p, i, d);
+        int leftArmPos = leftMotor.getCurrentPosition();
+        int rightArmPos = rightMotor.getCurrentPosition();
+        double pid = controller.calculate(rightArmPos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+        double power = pid + ff;
+
+//        leftMotor.setPower(power);
+//        rightMotor.setPower(power);
+        armGroup.set(power);
     }
 
     public void standby_auto(){
