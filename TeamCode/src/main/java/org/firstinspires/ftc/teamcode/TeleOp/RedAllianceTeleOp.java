@@ -35,7 +35,9 @@ public class RedAllianceTeleOp extends LinearOpMode {
         //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
+
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
         GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
 
@@ -59,6 +61,11 @@ public class RedAllianceTeleOp extends LinearOpMode {
                 gamepad2Ex, GamepadKeys.Button.RIGHT_BUMPER
         );
 
+        //TODO - New Features
+        ToggleButtonReader d_down = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.DPAD_DOWN
+        );
+
 
         setTelemetry();
 
@@ -72,7 +79,8 @@ public class RedAllianceTeleOp extends LinearOpMode {
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            arm.run_arm_manual(gamepad2);
+            //arm.run_arm_manual(gamepad2);
+            arm.run_arm_V2(gamepad2,gamepad2Ex, d_down);
             double rightArmPosition = arm.getRightMotorPosition();
             //intake.run_intake_Power(gamepad2, rightArmPosition);
             //intake.run_intake_Power(gamepad2, gamepad2Ex, a2Reader,1);

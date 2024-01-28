@@ -15,7 +15,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm.armCommands;
 
 import com.arcrobotics.ftclib.util.Timing.Timer;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -233,7 +232,7 @@ public class Intake {
 
 
     //Methods of TeleOp Intake Control
-    public void run_intake_PID(Gamepad gamepad2, armCommands armStatus){
+    public void run_intake_PID(Gamepad gamepad2){
 //        //wrist control
 //        rightY = gamepad2.right_stick_y;
 //        wrist.set(rightY);
