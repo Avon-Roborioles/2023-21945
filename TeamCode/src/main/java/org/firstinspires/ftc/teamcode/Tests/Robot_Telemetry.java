@@ -28,7 +28,8 @@ public class Robot_Telemetry extends OpMode {
        // intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap,"claw1", "claw2","wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        arm.init_arm_V2(hardwareMap,"leftMotor", "rightMotor");
         setTelemetry();
     }
 

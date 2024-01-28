@@ -37,6 +37,7 @@ public class Arm {
     private double leftMotorPosition = 0;
     private double rightMotorPosition = 0;
     private int maxPosition = 4000; //Done -  find max value
+    private int armStandbyPose = 200;
     private PIDController controller;
     public static int target = 0; //the variable team drivers will control to move arm
     private boolean armState;
@@ -111,6 +112,12 @@ public class Arm {
         armGroup.set(0.5);
     }
 
+    public void standby_auto(){
+        armGroup.setRunMode(Motor.RunMode.PositionControl);
+        armGroup.setTargetPosition(armStandbyPose);
+        armGroup.set(0.5);
+    }
+
     //Methods of Arm TeleOp control
     public void run_arm_manual(Gamepad gamepad2) {
         double leftY = gamepad2.left_stick_y;
@@ -173,7 +180,7 @@ public class Arm {
 
         if(d_down.wasJustPressed()){ //when pressed activate default mode & check if arm is up or down
             armDefault = true;
-            if(armGroup.getCurrentPosition() > 800){
+            if(rightMotor.getCurrentPosition() > 800){
                 armIsUp = true;
             } else {
                 armIsUp = false;
@@ -234,7 +241,7 @@ public class Arm {
         //telemetry.addData("Current Arm Target", target);
 //        telemetry.addData("Left Arm Motor Position", leftMotorEx.getCurrentPosition());
 //        telemetry.addData("Right Arm Motor Position", rightMotorEx.getCurrentPosition());
-        telemetry.addData("ArmGroup Position: ", armGroup.getCurrentPosition());
+        //telemetry.addData("ArmGroup Position: ", armGroup.);
         telemetry.addData("Left Motor Position: ", leftMotor.getCurrentPosition());
         telemetry.addData("Right Motor Position: ", rightMotor.getCurrentPosition());
         telemetry.addData("Arm Default: ", armDefault);
