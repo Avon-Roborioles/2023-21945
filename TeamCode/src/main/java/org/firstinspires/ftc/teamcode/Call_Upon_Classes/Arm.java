@@ -99,7 +99,7 @@ public class Arm {
 //        rightMotorEx.setPower(0.7);
         armGroup.setRunMode(Motor.RunMode.PositionControl);
         armGroup.setTargetPosition(1600);
-        armGroup.set(0.4);
+        armGroup.set(0.3);
     }
     public void down_auto(){
 //        setArmTargetPosition(0);
@@ -108,8 +108,8 @@ public class Arm {
 //        leftMotorEx.setPower(-0.7);
 //        rightMotorEx.setPower(0.7);
         armGroup.setRunMode(Motor.RunMode.PositionControl);
-        armGroup.setTargetPosition(0);
-        armGroup.set(0.5);
+        armGroup.setTargetPosition(100);
+        armGroup.set(0.3);
     }
 
     public void standby_auto(){
@@ -169,7 +169,7 @@ public class Arm {
 //        rightMotor.setPower(-speed);
     } //Done - just controls speed - test
 
-    public void run_arm_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader d_down){
+    public void run_arm_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader d_down, ToggleButtonReader d_up){
         double ltrigger = gamepad2.left_trigger;
         double rtrigger = gamepad2.right_trigger;
         double leftY = gamepad2.left_stick_y; //was float—
@@ -224,13 +224,13 @@ public class Arm {
             }
         }
 
-        if(armDefault){
-            if(armIsUp){
-                down_auto();
-            } else {
-                up_auto();
-            }
-        }
+//        if(armDefault){
+//            if(armIsUp){
+//                down_auto();
+//            } else {
+//                up_auto();
+//            }
+//        }
 
         d_down.readValue();
     }

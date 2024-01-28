@@ -83,7 +83,7 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
             //Driver 2 Controls
             //arm.run_arm_manual(gamepad2);
-            arm.run_arm_V2(gamepad2,gamepad2Ex, d_down);
+            arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
             //intake.run_intake_Power(gamepad2, rightArmPosition);
             //intake.run_intake_Power(gamepad2, gamepad2Ex, a2Reader,1);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader);
