@@ -13,12 +13,14 @@ public class FieldCentric_Drive extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
+        GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
+
         drivetrain.init_fieldCentric_drive(hardwareMap);
 
         waitForStart();
 
         while(opModeIsActive()){
-            drivetrain.run_fieldCentric_drive(gamepad1);
+            drivetrain.run_fieldCentric_drive(gamepad1Ex);
         }
     }
 }

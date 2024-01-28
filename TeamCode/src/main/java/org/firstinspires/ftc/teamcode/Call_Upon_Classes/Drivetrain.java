@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -30,11 +31,17 @@ public class Drivetrain {
     private double ry;
     private double lt;
     private double rt;
-    private DcMotor leftFront = null;
-    private DcMotor leftRear = null;
-    private DcMotor rightFront = null;
-    private DcMotor rightRear = null;
-    private DcMotor x_encoder = null;
+
+    //normal motor objects
+    private DcMotor leftFront;
+    private DcMotor leftRear;
+    private DcMotor rightFront;
+    private DcMotor rightRear;
+    private DcMotor x_encoder;
+
+    //FTCLib motor objects for FCD (Field-Centric Driving)
+
+
     RevIMU imu;
     MecanumDrive drivetrain;
 
@@ -124,40 +131,17 @@ public class Drivetrain {
 
     //generic fieldCentric drive setup
     public void init_fieldCentric_drive(HardwareMap hardwareMap){
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        //drivetrain = new MecanumDrive(fL, fR, bL, bR);
+        drivetrain = new MecanumDrive(
+                new Motor(hardwareMap, "leftFront", Motor.GoBILDA.RPM_312),
+                new Motor(hardwareMap, "rightFront", Motor.GoBILDA.RPM_312),
+                new Motor(hardwareMap, "leftRear", Motor.GoBILDA.RPM_312),
+                new Motor(hardwareMap, "rightRear", Motor.GoBILDA.RPM_312)
+        );
 
-        leftRear.setDirection(DcMotor.Direction.REVERSE);
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-
-        imu = new RevIMU(hardwareMap, "imu");
-
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-
-        imu.init(parameters);
-
-//         imu = hardwareMap.get(RevIMU.class, "imu");
-//        RevIMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-//                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
-//                RevHubOrientationOnRobot.UsbFacingDirection.UP
-//        ));
-//        imu.initialize(parameters);
-//
-//        imu.init();
-
+        imu = new RevIMU(hardwareMap); //TODO Make sure imu in robot is BNO055IMU
+        imu.init();
     }
-
-//    public void run_ftclib_drive(HardwareMap hardwareMap, GamepadEx gamepad1Ex) {
-//            drivetrain.driveFieldCentric(
-//                    gamepad1Ex.getLeftX(),
-//                    gamepad1Ex.getLeftY(),
-//                    gamepad1Ex.getRightX()),
-//                    imu.getRotation2d().getDegrees(),
-//                    false
-//    };
 
     //Old method running Drivetrain
     public void run_drive_motors(Gamepad gamepad1, Telemetry telemetry){
@@ -199,29 +183,13 @@ public class Drivetrain {
         getTelemetry(telemetry);
     }
 
-    public void run_fieldCentric_drive(Gamepad gamepad1){
-        //tutorial -> https://youtu.be/4rG5G9Mjw-g?si=b2D4wEkw01eRBSOd
+    public void run_fieldCentric_drive(GamepadEx gamepad1Ex){
+        double strafeSpeed = gamepad1Ex.getLeftX();
+        double forwardSpeed = gamepad1Ex.getLeftY();
+        double turnSpeed = gamepad1Ex.getRightX();
+        double gyroAngle = imu.getRotation2d().getDegrees(); //TODO if imu doesn't work, get heading from dead wheels
 
-        double lx = gamepad1.left_stick_x;
-        double ly = gamepad1.left_stick_y;
-        double rx = gamepad1.right_stick_x;
-
-        double max = Math.max(Math.abs(lx) + Math.abs(ly) + Math.abs(rx), 1 );
-
-        double power = 0.2 + (0.6 * gamepad1.right_trigger);
-
-        //double heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        double heading = -imu.getHeading();
-
-        double adjustedLx = -ly * Math.sin(heading) + lx * Math.cos(heading);
-        double adjustedLy = ly * Math.cos(heading) + lx * Math.sin(heading);
-
-        leftFront.setPower(((adjustedLy + adjustedLx + rx) / max) * power);
-        leftRear.setPower(((adjustedLy - adjustedLx + rx) / max) * power);
-        rightFront.setPower(((adjustedLy - adjustedLx - rx) / max) * power);
-        rightRear.setPower(((adjustedLy + adjustedLx - rx) / max) * power);
-
-
+        drivetrain.driveFieldCentric(strafeSpeed,forwardSpeed,turnSpeed,gyroAngle,false);
     }
 
     public void getTelemetry (@NonNull Telemetry telemetry){
