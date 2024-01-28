@@ -175,17 +175,13 @@ public class Drivetrain {
 
     }
 
-    public void run_mecanum_drive(Gamepad gamepad1, Telemetry telemetry, double rightArmPosition){
+    public void run_mecanum_drive(Gamepad gamepad1, Telemetry telemetry){
         lx =gamepad1.left_stick_x; //swtiched with x
         ly =gamepad1.left_stick_y; //switched with y
         rx=gamepad1.right_stick_x;
         double powerLimit = 0.0; //variable that slows down drivetrain based on armPos
 
-        if(rightArmPosition > 1600){
-            powerLimit = 0.5;
-        } else {
-            powerLimit = 1;
-        }
+        powerLimit = 1; //TODO
 
         if (Math.abs(ly)>Math.abs(lx)) {//movement
             leftFront.setPower(-ly -rx * powerLimit); // -+

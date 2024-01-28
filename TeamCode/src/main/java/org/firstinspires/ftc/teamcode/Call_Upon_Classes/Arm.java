@@ -56,7 +56,7 @@ public class Arm {
         leftMotor = new Motor(hardwareMap,"leftMotor");
         rightMotor = new Motor(hardwareMap,"rightMotor");
 
-        leftMotor.setInverted(true); //put in reverse
+        //leftMotor.setInverted(true); //put in reverse
 
         armGroup = new MotorGroup( //RightMotor is leader, LeftMotor follows rightMotor
                 rightMotor,
@@ -187,19 +187,32 @@ public class Arm {
             }
         }
 
-        if(leftY < -0.3 || leftY > 0.3){ //turn off armDefault if moving joystick
+        if(leftY < -0.3 || leftY > 0.3) { //turn off armDefault if moving joystick
             armDefault = false;
 
-            if(leftY > 0){
+            if (rightMotor.getCurrentPosition() < 1600) {
+                if (leftY > 0.3) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(0.6);
+                } else if (leftY < -0.3) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(-0.5);
+                } else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(.1);
+                }
+            } else{
+                if (leftY > 0) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(-0.7);
+                } else if (leftY < 0) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(0.5);
+            } else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
                 armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(0.7);
-            } else if(leftY < 0){
-                armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(-0.5);
+                armGroup.set(-.1);
             }
-        } else if((leftY >= -0.3 && leftY <= 0.3) && armDefault == false){
-            armGroup.setRunMode(Motor.RunMode.RawPower);
-            armGroup.set(.1);
+            }
         }
 
         if(armDefault){
@@ -217,12 +230,6 @@ public class Arm {
     public void setArmTargetPosition(int position){
         leftMotorEx.setTargetPosition(position);
         rightMotorEx.setTargetPosition(position);
-    }
-    public double getRightMotorPosition(){
-        return rightMotorEx.getCurrentPosition();
-    }
-    public double getLeftMotorPosition(){
-        return leftMotorEx.getCurrentPosition();
     }
     public void setPosition(int position){
         setArmTargetPosition(position);
