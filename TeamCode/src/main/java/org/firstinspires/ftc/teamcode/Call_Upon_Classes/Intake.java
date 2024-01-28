@@ -156,18 +156,18 @@ public class Intake {
 //        }
     }
     public void wrist_up(){
-        wristTarget = -10; //0
+        wristTarget = 0; //0
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wristMotor.setPower(.5);
+        wristMotor.setPower(.7);
 
     } //TEST - moves wrist to pos and opens claw to score
 
     public void wrist_down(){
-        wristTarget = -100; //-200
+        wristTarget = -125; //-200
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wristMotor.setPower(.5);
+        wristMotor.setPower(.7);
     }
 
     //manages the pixelHolder based on certain conditions
