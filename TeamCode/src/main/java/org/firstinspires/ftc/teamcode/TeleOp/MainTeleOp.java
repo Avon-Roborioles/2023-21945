@@ -36,6 +36,7 @@ public class MainTeleOp extends LinearOpMode {
         launcher.init_Launcher(hardwareMap, "launcher");
         //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
         arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
+        feedback.init_Timer();
 
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
         GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
@@ -87,6 +88,7 @@ public class MainTeleOp extends LinearOpMode {
             //intake.run_intake_Power(gamepad2, rightArmPosition);
             //intake.run_intake_Power(gamepad2, gamepad2Ex, a2Reader,1);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader);
+            feedback.run_Timer(gamepad1,gamepad2);
             setTelemetry();
 
         }
