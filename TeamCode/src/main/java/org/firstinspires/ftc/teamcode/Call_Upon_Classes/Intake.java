@@ -50,6 +50,10 @@ public class Intake {
         WRIST_DOWN_BACK,
         WRIST_START;
     }
+    public int pixel5 = -120;
+    public int pixel4 = -111;
+    public int pixel3 = -104;
+    public int pixel2 = -97;
     private wristCommands wristStatus = wristCommands.WRIST_START;
     private boolean clawIsOpen = false;
 
@@ -93,27 +97,6 @@ public class Intake {
     }
 
     //autonomous methods
-    public wristCommands getWristStatus(){
-        return wristStatus;
-    } //Done
-    public boolean getClawStatus(){
-        return clawIsOpen;
-    }
-    public void moveWrist(wristCommands command){
-        if(command == wristCommands.WRIST_UP){
-            wristTarget = 100;
-        } else if(command == wristCommands.WRIST_DOWN){
-            wristTarget = 0;
-        }
-        controller.setPID(p, i, d);
-        int wristPos = wristMotor.getCurrentPosition();
-        double pid = controller.calculate(wristPos, wristTarget);
-        double ff = Math.cos(Math.toRadians(wristTarget / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-
-        wristMotor.setPower(power);
-    } //Done - test
     public void openClaw(boolean close) {
         if(close){
             claw.setPosition(.4); //.5
@@ -167,6 +150,29 @@ public class Intake {
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.7);
+    }
+    public void wrist_auto(int pixel){ //adjust wrist pose based on pixel stack height
+        switch(pixel){ //TODO find exact heights with Robot_Telemetry Program
+            case 5:
+                wristTarget = pixel5;
+                break;
+            case 4:
+                wristTarget = pixel4;
+                break;
+            case 3:
+                wristTarget = pixel3;
+                break;
+            case 2:
+                wristTarget = pixel2;
+                break;
+            default:
+                wristTarget = -90;
+                break;
+        }
+        wristMotor.setTargetPosition(wristTarget);
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wristMotor.setPower(.7);
+
     }
 
     //manages the pixelHolder based on certain conditions

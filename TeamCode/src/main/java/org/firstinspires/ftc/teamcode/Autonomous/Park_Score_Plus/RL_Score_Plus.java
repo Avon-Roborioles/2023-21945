@@ -63,8 +63,6 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
     public void runOpMode() throws InterruptedException {
        SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
-
-
         //important variables for auto - set to random values
         String propPosition = "LEFT";
         int aprilTagID = 5;
@@ -73,198 +71,238 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
 
-
-
         TrajectorySequence LeftSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
-                .addTemporalMarker(0, () -> {
-                    intake.openClaws(false);
-                    intake.wrist_up();
-                })
-                .strafeRight(5)
-                .waitSeconds(.5)
-                .forward(20)
-                .waitSeconds(.5)
-                .turn(Math.toRadians(88))
-
-
-                .waitSeconds(.5) //------------
-                .forward(10)
-                .waitSeconds(.5) //-----------
-                .back(10.25)
-                .waitSeconds(5)
-
-                .addTemporalMarker(7, () -> {
-//                    intake.openClaw(false);
+//                .addTemporalMarker(0, () -> {
+//                    intake.openClaws(false);
+//                    intake.wrist_up();
+//                })
+//                .strafeRight(5)
+//                .waitSeconds(.5)
+//                .forward(20)
+//                .waitSeconds(.5)
+//                .turn(Math.toRadians(88))
+//
+//
+//                .waitSeconds(.5) //------------
+//                .forward(10)
+//                .waitSeconds(.5) //-----------
+//                .back(10.25)
+//                .waitSeconds(5)
+//
+//                .addTemporalMarker(7, () -> {
+////                    intake.openClaw(false);
+////                    intake.wrist_down();
 //                    intake.wrist_down();
-                    intake.wrist_down();
-                    intake.openClaws(false);
-                })
-                .addTemporalMarker(8, () -> {
-//                    intake.openClaw(true);
-                    intake.openClawV2(true,true);
-                })
-                .addTemporalMarker(9, () ->{
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(9.3, () -> { //closes claw on way up
-                    intake.openClawV2(false,true);
-                })
-                .turn(Math.toRadians(5))
-                .strafeLeft(25) //25
-
-                //-----------------------
-                .waitSeconds(1)
-                .back(31) //35
+//                    intake.openClaws(false);
+//                })
+//                .addTemporalMarker(8, () -> {
+////                    intake.openClaw(true);
+//                    intake.openClawV2(true,true);
+//                })
+//                .addTemporalMarker(9, () ->{
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(9.3, () -> { //closes claw on way up
+//                    intake.openClawV2(false,true);
+//                })
+//                .turn(Math.toRadians(5))
+//                .strafeLeft(25) //25
+//
+//                //-----------------------
+//                .waitSeconds(1)
+//                .back(31) //35
                 .build();
 
         TrajectorySequence MiddleSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
-                .addTemporalMarker(0, () -> {
-                    intake.openClaws(false);
-                    intake.wrist_up();
-
-                })
-                .forward(24) //16
-                .waitSeconds(.5)
-                .back(8.75)
-                .waitSeconds(5)
-                .addTemporalMarker(3, () -> {
-                    //intake.openClaw(false);
-                    intake.openClaws(false);
-                    intake.wrist_down();
-                })
-                .addTemporalMarker(4, () -> {
-                    //intake.openClaw(true);
-                    intake.openClawV2(true,true);
-                })
-                .addTemporalMarker(5, () ->{
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(5.3, () -> {
-                    intake.openClawV2(false, true);
-                })
-                .back(14)
-                .waitSeconds(1)
-                //----------------------
-                .strafeRight(33)
+//                .addTemporalMarker(0, () -> {
+//                    intake.openClaws(false);
+//                    intake.wrist_up();
+//
+//                })
+//                .forward(24) //16
+//                .waitSeconds(.5)
+//                .back(8.75)
+//                .waitSeconds(5)
+//                .addTemporalMarker(3, () -> {
+//                    //intake.openClaw(false);
+//                    intake.openClaws(false);
+//                    intake.wrist_down();
+//                })
+//                .addTemporalMarker(4, () -> {
+//                    //intake.openClaw(true);
+//                    intake.openClawV2(true,true);
+//                })
+//                .addTemporalMarker(5, () ->{
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(5.3, () -> {
+//                    intake.openClawV2(false, true);
+//                })
+//                .back(14)
+//                .waitSeconds(1)
+//                //----------------------
+//                .strafeRight(33)
                 .build();
 //
         TrajectorySequence RightSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
-                .addTemporalMarker(0, () -> {
-                    intake.openClaws(false);
-                    intake.wrist_up();
-
-                })
-                .forward(20)
-                .waitSeconds(.5)
-                .turn(Math.toRadians(-88))
-                .waitSeconds(.5) //------------
-                .forward(10)
-                .waitSeconds(.5) //-----------
-                .back(10.5)
-                .waitSeconds(4)
-                .addTemporalMarker(6, () -> {
-                    //intake.openClaw(false);
-                    intake.openClaws(false);
-                    intake.wrist_down();
-                })
-                .addTemporalMarker(7, () -> {
-                    //intake.openClaw(true);
-                    intake.openClawV2(true, true);
-                })
-                .addTemporalMarker(8, () ->{
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(8.3, () -> {
-                    intake.openClawV2(false, true);
-                })
-                .forward(3)
-                .waitSeconds(.5)
-                .strafeRight(20) //25
-                .waitSeconds(1)
-                //---------------------
-                .forward(30) //35
+//                .addTemporalMarker(0, () -> {
+//                    intake.openClaws(false);
+//                    intake.wrist_up();
+//
+//                })
+//                .forward(20)
+//                .waitSeconds(.5)
+//                .turn(Math.toRadians(-88))
+//                .waitSeconds(.5) //------------
+//                .forward(10)
+//                .waitSeconds(.5) //-----------
+//                .back(10.5)
+//                .waitSeconds(4)
+//                .addTemporalMarker(6, () -> {
+//                    //intake.openClaw(false);
+//                    intake.openClaws(false);
+//                    intake.wrist_down();
+//                })
+//                .addTemporalMarker(7, () -> {
+//                    //intake.openClaw(true);
+//                    intake.openClawV2(true, true);
+//                })
+//                .addTemporalMarker(8, () ->{
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(8.3, () -> {
+//                    intake.openClawV2(false, true);
+//                })
+//                .forward(3)
+//                .waitSeconds(.5)
+//                .strafeRight(20) //25
+//                .waitSeconds(1)
+//                //---------------------
+//                .forward(30) //35
                 .build();
 
         TrajectorySequence LeftPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
-                .back(30) //TODO adjust distance - get to board
-                .waitSeconds(.1)
-                .strafeRight(10) //TODO adjust - align with left tag
-                .waitSeconds(5)
-                .addTemporalMarker(3,() -> {
-                    arm.up_auto();
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(4,() -> {
-                    intake.openClaws(true); //scores
-                })
-                .addTemporalMarker(4.5, () -> {
-                    arm.down_auto();
-                    intake.openClaws(false);
-                })
-                .strafeLeft(25) //TODO adjust value - get to parking
-                .waitSeconds(.1)
-                .back(10) //TODO adjust distance - park
+//                .back(30) //TODO adjust distance - get to board
+//                .waitSeconds(.1)
+//                .strafeRight(10) //TODO adjust - align with left tag
+//                .waitSeconds(5)
+//                .addTemporalMarker(3,() -> {
+//                    arm.up_auto();
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(4,() -> {
+//                    intake.openClaws(true); //scores
+//                })
+//                .addTemporalMarker(4.5, () -> {
+//                    arm.down_auto();
+//                    intake.openClaws(false);
+//                })
+//                .strafeLeft(25) //TODO adjust value - get to parking
+//                .waitSeconds(.1)
+//                .back(10) //TODO adjust distance - park
                 .build();
 
         TrajectorySequence MiddlePreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
-                //move away from pixel
-                .turn(90)
-                .waitSeconds(.2)
-                .forward(10)
-                .waitSeconds(.1)
-                .strafeLeft(10)
-
-                .waitSeconds(.1)
-                .back(25) //TODO adjust distance - get to board - 5 less than LeftPreloadScoreNL
-                .waitSeconds(.1)
-                .strafeRight(10) //TODO adjust - align with left tag
-                .waitSeconds(5)
-                .addTemporalMarker(6,() -> {
-                    arm.up_auto();
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(7,() -> {
-                    intake.openClaws(true); //scores
-                })
-                .addTemporalMarker(7.5, () -> {
-                    arm.down_auto();
-                    intake.openClaws(false);
-                })
-                .strafeLeft(25) //TODO adjust value - get to parking
-                .waitSeconds(.1)
-                .back(10) //TODO adjust distance - park
+//                //move away from pixel
+//                .turn(90)
+//                .waitSeconds(.2)
+//                .forward(10)
+//                .waitSeconds(.1)
+//                .strafeLeft(10)
+//
+//                .waitSeconds(.1)
+//                .back(25) //TODO adjust distance - get to board - 5 less than LeftPreloadScoreNL
+//                .waitSeconds(.1)
+//                .strafeRight(10) //TODO adjust - align with left tag
+//                .waitSeconds(5)
+//                .addTemporalMarker(6,() -> {
+//                    arm.up_auto();
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(7,() -> {
+//                    intake.openClaws(true); //scores
+//                })
+//                .addTemporalMarker(7.5, () -> {
+//                    arm.down_auto();
+//                    intake.openClaws(false);
+//                })
+//                .strafeLeft(25) //TODO adjust value - get to parking
+//                .waitSeconds(.1)
+//                .back(10) //TODO adjust distance - park
                 .build();
 
         TrajectorySequence RightPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-                .turn(90)
-                .waitSeconds(.05)
-                .turn(88)
-                .waitSeconds(.1)
-                .strafeLeft(10) //TODO - adjust
-                .back(30) //TODO - adjust distance - get to board
-                .waitSeconds(.1)
-                .strafeRight(10) //TODO adjust - align with left tag
-                .waitSeconds(5)
-                .addTemporalMarker(3,() -> {
-                    arm.up_auto();
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(4,() -> {
-                    intake.openClaws(true); //scores
-                })
-                .addTemporalMarker(4.5, () -> {
-                    arm.down_auto();
-                    intake.openClaws(false);
-                })
-                .strafeLeft(25) //TODO adjust value - get to parking
-                .waitSeconds(.1)
-                .back(10) //TODO adjust distance - park
+//                .turn(90)
+//                .waitSeconds(.05)
+//                .turn(88)
+//                .waitSeconds(.1)
+//                .strafeLeft(10) //TODO - adjust
+//                .back(30) //TODO - adjust distance - get to board
+//                .waitSeconds(.1)
+//                .strafeRight(10) //TODO adjust - align with left tag
+//                .waitSeconds(5)
+//                .addTemporalMarker(3,() -> {
+//                    arm.up_auto();
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(4,() -> {
+//                    intake.openClaws(true); //scores
+//                })
+//                .addTemporalMarker(4.5, () -> {
+//                    arm.down_auto();
+//                    intake.openClaws(false);
+//                })
+//                .strafeLeft(25) //TODO adjust value - get to parking
+//                .waitSeconds(.1)
+//                .back(10) //TODO adjust distance - park
                 .build();
 
         TrajectorySequence FullLeftAuto = bot.trajectorySequenceBuilder(new Pose2d())
-                .addTemporalMarker(0,() ->{
-                    intake.openClaws(true);
+
+                //time-based robot functions
+                .addTemporalMarker(0,() ->{ //3.5
+                    intake.openClaws(true); //grip pixels
+                    arm.down();
                 })
+                .addTemporalMarker(3.5, () ->{
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(3.7,() -> {
+                    intake.openClawV2(true,true); //score purple pixel
+                })
+
+                .addTemporalMarker(4,() ->{
+                    intake.openClaws(true); //close claw & wrist up
+                    intake.wrist_up();
+                })
+
+                .addTemporalMarker(5,() -> { //get ready to get pixel from stack
+                    intake.openClawV2(true, true);
+                    intake.wrist_auto(5);
+                    arm.move_auto(5);
+                })
+
+                .addTemporalMarker(6.7,() ->{ //close claw & grip pixel
+                    intake.openClawV2(false,true);
+                })
+
+                .addTemporalMarker(8,() -> { //move arm down while going under gate
+                    arm.down();
+                })
+
+                .addTemporalMarker(11, () -> { //move arm to score position
+                    arm.up();
+                    intake.wrist_up();
+                })
+                .addTemporalMarker(12.5, () -> {//TODO - score pixels - need to fine tune scoring
+                    intake.openClaws(false);
+                })
+                .addTemporalMarker(13.5, () -> { //control intake & arm to go under stage
+                    intake.openClaws(true);
+                    intake.wrist_up();
+                    arm.down();
+                })
+
                 .forward(22)
                 .waitSeconds(.1)
                 .turn(Math.toRadians(80))
@@ -280,18 +318,17 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 //scoring purple pixel
                 //--------------
 
-                //TODO get second pixel - split to different TrajectorySquence before Comp
                 .strafeRight(15)
                 .waitSeconds(.1)
-                .forward(14)
+                .forward(17)
                 .waitSeconds(.7)
 
 //                //board
-                .back(65, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+                .back(63, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
                 .waitSeconds(.1)
                .strafeLeft(17)
                 .waitSeconds(.1)
-                .back(5) //score
+                .back(7) //score
                 .waitSeconds(.7)
 //
 //                //2 pixels
@@ -316,43 +353,6 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .strafeRight(17)
                 .waitSeconds(.1)
                 .back(8)
-
-//                .forward(5)
-//                .waitSeconds(.1)
-//                .strafeLeft(5)
-//                .waitSeconds(.1)
-
-
-                //.forward(70) //TODO - DECREASE SPEED!!!
-//
-//                .waitSeconds(.1)
-//                .strafeRight(2)
-//                .waitSeconds(.1)
-//                .forward(25)
-//                .waitSeconds(1) //pixel in left claw
-//                .back(5)
-//                .waitSeconds(.1)
-//                .strafeLeft(4)
-//                .waitSeconds(.1)
-//                .forward(5)
-//                .waitSeconds(1) //pixel in right claw
-//                .strafeRight(2)
-//                .waitSeconds(.1)
-//
-//                //score 2 pixels
-//                .back(90)
-//                .waitSeconds(.1)
-//                .strafeLeft(20)
-//                .waitSeconds(.1)
-//                .back(10)
-//                .waitSeconds(1.5) //score
-//                .forward(10)
-//
-//                //park
-//                .waitSeconds(.1)
-//                .strafeRight(20)
-//                .waitSeconds(.1)
-//                .back(20) //end
                 .build();
 
         //auto code here

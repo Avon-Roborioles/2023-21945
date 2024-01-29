@@ -38,11 +38,10 @@ public class Arm {
     private double speed = 0.0;
 
     private int scoreHeightHIGH = 1600; //600
-    private int pixel5Height = 150; //TODO Change these values to actual height
-    private int pixel4Height = 120;
-    private int pixel3Height = 90;
-    private int pixel2Height = 60;
-    private int pixel1Height = 30;
+    private int pixel5Height = 90; //TODO Change these values to actual height
+    private int pixel4Height = 60;
+    private int pixel3Height = 30;
+    private int pixel2Height = 15;
     private double leftMotorPosition = 0;
     private double rightMotorPosition = 0;
     private int maxPosition = 4000; //Done -  find max value
@@ -99,13 +98,9 @@ public class Arm {
 
 
 
-    public void up_auto(){
+    public void up(){
         target = 2000;
-//        setArmTargetPosition(2000); //adust value for backboard
-//        leftMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        leftMotorEx.setPower(-0.7);
-//        rightMotorEx.setPower(0.7);
+
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
         int rightArmPos = rightMotor.getCurrentPosition();
@@ -113,22 +108,10 @@ public class Arm {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
-
-//        leftMotor.setPower(power);
-//        rightMotor.setPower(power);
         armGroup.set(power);
     }
-    public void down_auto(){
-//        setArmTargetPosition(0);
-//        leftMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        leftMotorEx.setPower(-0.7);
-//        rightMotorEx.setPower(0.7);
-//        armGroup.setRunMode(Motor.RunMode.PositionControl);
-//        armGroup.setPositionTolerance(6000);
-//        armGroup.setTargetPosition(100); //TODO Testing
-//        armGroup.set(0.3);
-        target = 100;
+    public void down(){
+        target = 20;
 
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
@@ -137,9 +120,34 @@ public class Arm {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
+        armGroup.set(power);
+    }
 
-//        leftMotor.setPower(power);
-//        rightMotor.setPower(power);
+    public void move_auto(int pixel){
+        //logic just like wrist
+        switch(pixel){
+            case 5:
+                target = pixel5Height;
+                break;
+            case 4:
+                target = pixel4Height;
+                break;
+            case 3:
+                target = pixel3Height;
+                break;
+            case 2:
+                target = pixel2Height;
+                break;
+             default:
+                 target = 10;
+        }
+        controller.setPID(p, i, d);
+        int leftArmPos = leftMotor.getCurrentPosition();
+        int rightArmPos = rightMotor.getCurrentPosition();
+        double pid = controller.calculate(rightArmPos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+        double power = pid + ff;
         armGroup.set(power);
     }
 
@@ -257,9 +265,9 @@ public class Arm {
 
         if(armDefault){
             if(armIsUp){
-                down_auto();
+                down();
             } else {
-                up_auto();
+                up();
             }
         }
 

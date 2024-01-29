@@ -56,71 +56,57 @@ public class StephensReferences {
                 .setConstraints(88.2809332, 47.4845458372762, 7.660142060308357, Math.toRadians(259.11086367346934), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
-                                .strafeRight(5)
+                                .forward(22)
                                 .waitSeconds(.1)
-                                .forward(30)
-                                .waitSeconds(.1)
-                                .turn(Math.toRadians(90))
+                                .turn(Math.toRadians(80))
 
-
+                                //moving prop away
                                 .waitSeconds(.1) //------------
-                                .forward(10)
+                                .forward(5)
                                 .waitSeconds(.1) //-----------
-                                .back(8)
-                                .waitSeconds(1)
+                                .back(5)
+                                .waitSeconds(.5) //waiting to score pixel
 
-                                .strafeRight(20)
-                                .waitSeconds(.1)
-                                .forward(25)
-                                .waitSeconds(1)
+                                //-------------
+                                //scoring purple pixel
+                                //--------------
 
-                                //board
-                                .back(95)
+                                //TODO get second pixel - split to different TrajectorySquence before Comp
+                                .strafeRight(15)
                                 .waitSeconds(.1)
-                                .strafeLeft(20)
+                                .forward(14)
+                                .waitSeconds(.7)
+
+//                //board
+                                .back(65) //TODO - DECREASE SPEED to 30!!!!!
+                                .waitSeconds(.1)
+                                .strafeLeft(17)
                                 .waitSeconds(.1)
                                 .back(5) //score
-                                .waitSeconds(1)
-
-                                //2 pixels
-                                .forward(5)
+                                .waitSeconds(.7)
+//
+//                //2 pixels
+                                //.strafeLeft(5)
+                                //.waitSeconds(.1)
+                                .strafeLeft(5)
+                                .waitSeconds(.1)
+                                .forward(60) //TODO - SLOW SPEED to 20!!!
                                 .waitSeconds(.1)
                                 .strafeRight(20)
                                 .waitSeconds(.1)
-                                .forward(70)
-
-                                .waitSeconds(.1)
-                                .strafeRight(2)
-                                .waitSeconds(.1)
-                                .forward(25)
-                                .waitSeconds(1) //pixel in left claw
-                                .back(5)
-                                .waitSeconds(.1)
-                                .strafeLeft(4)
-                                .waitSeconds(.1)
-                                .forward(5)
-                                .waitSeconds(1) //pixel in right claw
-                                .strafeRight(2)
+                                .forward(14)
                                 .waitSeconds(.1)
 
-                                //score 2 pixels
-                                .back(90)
+                                //to board
+                                .back(65) //TODO - DECREASE SPEED to 30!!!!!
                                 .waitSeconds(.1)
-                                .strafeLeft(20)
+                                .strafeLeft(17)
                                 .waitSeconds(.1)
-                                .back(10)
-                                .waitSeconds(1.5) //score
-                                .forward(10)
-
-                                //park
+                                .back(5) //score
                                 .waitSeconds(.1)
-                                .strafeRight(20)
+                                .strafeRight(17)
                                 .waitSeconds(.1)
-                                .back(20) //end
-
-                                .addTemporalMarker(30, () ->{
-                                    System.out.println("Auto Time Finished!");
-                                })
+                                .back(8)
 
                                 .waitSeconds(10000)
                                 .build()
