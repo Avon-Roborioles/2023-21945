@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -15,12 +17,19 @@ public class Haptic_Feedback {
 
     public void init_Timer(){
         teleOpTimer = new Timing.Timer(90, TimeUnit.SECONDS);
+        teleOpTimer.start();
+    }
+    public void getTelemetry(Telemetry telemetry){
+        telemetry.addData("Time Left: ", teleOpTimer.remainingTime());
     }
 
     public void run_Timer(Gamepad gamepad1, Gamepad gamepad2){
-        if(teleOpTimer.remainingTime() == 85){
-            gamepad1.rumbleBlips(3);
-            gamepad2.rumbleBlips(3);
+        if(teleOpTimer.remainingTime() > 84 && teleOpTimer.remainingTime() < 85){
+            gamepad1.rumble(Gamepad.RUMBLE_DURATION_CONTINUOUS);
+            gamepad2.rumble(Gamepad.RUMBLE_DURATION_CONTINUOUS);
+        } else {
+            gamepad1.stopRumble();
+            gamepad2.stopRumble();
         }
     }
 

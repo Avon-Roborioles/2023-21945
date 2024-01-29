@@ -23,6 +23,7 @@ public class MainTeleOp extends LinearOpMode {
         intake.getTelemetry(telemetry);
         launcher.getTelemetry(telemetry);
         arm.getTelemetry(telemetry);
+        feedback.getTelemetry(telemetry);
         telemetry.update();
     }
 
