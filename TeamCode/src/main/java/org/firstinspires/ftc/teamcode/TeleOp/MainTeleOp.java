@@ -4,6 +4,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.*;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 
 @TeleOp(name = "Main TeleOp", group = "TeleOp")
@@ -76,7 +78,7 @@ public class MainTeleOp extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) { //robot loop
-
+            //gamepad1.rumble(Gamepad.RUMBLE_DURATION_CONTINUOUS);
             //Driver 1 Controls - Primary
             //Driver 1 Controls
             //drivetrain.run_mecanum_drive(gamepad1, telemetry);
