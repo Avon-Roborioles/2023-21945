@@ -7,7 +7,7 @@ import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 
-@TeleOp
+@Disabled
 public class BlueAllianceTeleOp extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(); //change to false if driving still isn't fixed
@@ -29,10 +29,12 @@ public class BlueAllianceTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //drivetrain.init_drive_motors(hardwareMap);
-        drivetrain.init_blue_drive_motors(hardwareMap);
+        //drivetrain.init_blue_drive_motors(hardwareMap);
+        drivetrain.init_fieldCentric_drive(hardwareMap);
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        arm.init_arm_V2(hardwareMap,"leftMotor", "rightMotor");
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
         GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
 
@@ -65,11 +67,13 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
             //Driver 1 Controls - Primary
             //Driver 1 Controls
-            drivetrain.run_mecanum_drive(gamepad1, telemetry);
+            //drivetrain.run_mecanum_drive(gamepad1, telemetry);
+            drivetrain.run_fieldCentric_drive(gamepad1Ex);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            arm.run_arm_manual(gamepad2);
+            //arm.run_arm_manual(gamepad2);
+            //arm.run_arm_V2();
             //intake.run_intake_Power(gamepad2, rightArmPosition);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader, y2Reader);
 
