@@ -71,7 +71,7 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
 
-        TrajectorySequence LeftSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
+        //TrajectorySequence LeftSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
 //                .addTemporalMarker(0, () -> {
 //                    intake.openClaws(false);
 //                    intake.wrist_up();
@@ -111,9 +111,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                //-----------------------
 //                .waitSeconds(1)
 //                .back(31) //35
-                .build();
+                //.build();
 
-        TrajectorySequence MiddleSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+       // TrajectorySequence MiddleSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
 //                .addTemporalMarker(0, () -> {
 //                    intake.openClaws(false);
 //                    intake.wrist_up();
@@ -142,9 +142,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                .waitSeconds(1)
 //                //----------------------
 //                .strafeRight(33)
-                .build();
+                //.build();
 //
-        TrajectorySequence RightSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+        //TrajectorySequence RightSpikeScoreNL = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
 //                .addTemporalMarker(0, () -> {
 //                    intake.openClaws(false);
 //                    intake.wrist_up();
@@ -179,9 +179,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                .waitSeconds(1)
 //                //---------------------
 //                .forward(30) //35
-                .build();
+              //  .build();
 
-        TrajectorySequence LeftPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
+        //TrajectorySequence LeftPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
 //                .back(30) //TODO adjust distance - get to board
 //                .waitSeconds(.1)
 //                .strafeRight(10) //TODO adjust - align with left tag
@@ -200,9 +200,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                .strafeLeft(25) //TODO adjust value - get to parking
 //                .waitSeconds(.1)
 //                .back(10) //TODO adjust distance - park
-                .build();
+                //.build();
 
-        TrajectorySequence MiddlePreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
+        //TrajectorySequence MiddlePreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d())
 //                //move away from pixel
 //                .turn(90)
 //                .waitSeconds(.2)
@@ -229,9 +229,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                .strafeLeft(25) //TODO adjust value - get to parking
 //                .waitSeconds(.1)
 //                .back(10) //TODO adjust distance - park
-                .build();
+                //.build();
 
-        TrajectorySequence RightPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
+        //TrajectorySequence RightPreloadScoreNL = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
 //                .turn(90)
 //                .waitSeconds(.05)
 //                .turn(88)
@@ -255,7 +255,7 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                .strafeLeft(25) //TODO adjust value - get to parking
 //                .waitSeconds(.1)
 //                .back(10) //TODO adjust distance - park
-                .build();
+                //.build();
 
         TrajectorySequence FullLeftAuto = bot.trajectorySequenceBuilder(new Pose2d())
 
@@ -290,14 +290,14 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     arm.down();
                 })
 
-                .addTemporalMarker(11, () -> { //move arm to score position
+                .addTemporalMarker(10, () -> { //move arm to score position
                     arm.up();
                     intake.wrist_up();
                 })
-                .addTemporalMarker(12.5, () -> {//TODO - score pixels - need to fine tune scoring
+                .addTemporalMarker(11.2, () -> {//TODO - score pixels - need to fine tune scoring
                     intake.openClaws(false);
                 })
-                .addTemporalMarker(13.5, () -> { //control intake & arm to go under stage
+                .addTemporalMarker(12.7, () -> { //control intake & arm to go under stage
                     intake.openClaws(true);
                     intake.wrist_up();
                     arm.down();
@@ -311,40 +311,40 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.1) //------------
                 .forward(5)
                 .waitSeconds(.1) //-----------
-                .back(5)
+                .back(7)
                 .waitSeconds(.5) //waiting to score pixel
 
                 //-------------
                 //scoring purple pixel
                 //--------------
 
-                .strafeRight(15)
-                .waitSeconds(.1)
-                .forward(17)
-                .waitSeconds(.7)
-
-//                //board
-                .back(63, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
-                .waitSeconds(.1)
-               .strafeLeft(17)
-                .waitSeconds(.1)
-                .back(7) //score
-                .waitSeconds(.7)
-//
-//                //2 pixels
-                //.strafeLeft(5)
-                //.waitSeconds(.1)
-                .strafeLeft(5)
-                .waitSeconds(.1)
-                .forward(60,SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - SLOW SPEED!!!
-                .waitSeconds(.1)
-                .strafeRight(20)
+                .strafeRight(17)
                 .waitSeconds(.1)
                 .forward(14)
-                .waitSeconds(.1)
+                .waitSeconds(.7)
+
+////                //board
+//                .back(55, SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+//                .waitSeconds(.1)
+//               .strafeLeft(17)
+//                .waitSeconds(.1)
+//                .back(9) //score
+//                .waitSeconds(.7)
+////
+////                //2 pixels
+//                //.strafeLeft(5)
+//                //.waitSeconds(.1)
+//                .strafeLeft(5)
+//                .waitSeconds(.1)
+//                .forward(60,SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - SLOW SPEED!!!
+//                .waitSeconds(.1)
+//                .strafeRight(20)
+//                .waitSeconds(.1)
+//                .forward(14)
+//                .waitSeconds(.1)
 
                 //to board
-                .back(65, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+                .back(55, SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
                 .waitSeconds(.1)
                 .strafeLeft(17)
                 .waitSeconds(.1)
@@ -355,6 +355,15 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .back(8)
                 .build();
 
+//        TrajectorySequence FullMiddleAuto = bot.trajectorySequenceBuilder(new Pose2d())
+//                .forward(17)
+//                .waitSeconds(.1)
+//                .
+//
+//                .build();
+
+
+
         //auto code here
         waitForStart();
 
@@ -363,18 +372,18 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         aprilTagID = vision.get_Apriltag_id(propPosition,false);
 
         //scores the purple preload pixel based on vision reading
-        bot.followTrajectorySequence(FullLeftAuto);
-//        switch(propPosition){
-//            case "LEFT":
-//                bot.followTrajectorySequence(LeftSpikeScoreNL);
-//                break;
-//            case "MIDDLE":
-//                bot.followTrajectorySequence(MiddleSpikeScoreNL);
-//                break;
-//            case "RIGHT":
-//                bot.followTrajectorySequence(RightSpikeScoreNL);
-//                break;
-//        }
+        //bot.followTrajectorySequence(FullLeftAuto);
+        switch(propPosition){
+            case "LEFT":
+                bot.followTrajectorySequence(FullLeftAuto);
+                break;
+            case "MIDDLE":
+                bot.followTrajectorySequence(FullLeftAuto);
+                break;
+            case "RIGHT":
+                bot.followTrajectorySequence(FullLeftAuto);
+                break;
+        }
 //
 //        //score pixel (& park bot if Not Localized - NL)
 //        switch(aprilTagID){

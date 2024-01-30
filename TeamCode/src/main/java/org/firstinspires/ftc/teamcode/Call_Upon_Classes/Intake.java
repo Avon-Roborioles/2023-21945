@@ -124,7 +124,7 @@ public class Intake {
             claw1.setPosition(.6); //.4
             claw2.setPosition(0); //-.2
         } else {
-            claw1.setPosition(.3); //-.2
+            claw1.setPosition(.4); //.3
             claw2.setPosition(.2); //.4
         }
     }
@@ -146,7 +146,7 @@ public class Intake {
     } //TEST - moves wrist to pos and opens claw to score
 
     public void wrist_down(){
-        wristTarget = -90; //-200
+        wristTarget = -100; //-200
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.7);

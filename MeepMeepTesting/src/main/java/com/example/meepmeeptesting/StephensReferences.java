@@ -78,26 +78,26 @@ public class StephensReferences {
                                 .waitSeconds(.7)
 
 //                //board
-                                .back(65) //TODO - DECREASE SPEED to 30!!!!!
-                                .waitSeconds(.1)
-                                .strafeLeft(17)
-                                .waitSeconds(.1)
-                                .back(5) //score
-                                .waitSeconds(.7)
+//                                .back(65) //TODO - DECREASE SPEED to 30!!!!!
+//                                .waitSeconds(.1)
+//                                .strafeLeft(17)
+//                                .waitSeconds(.1)
+//                                .back(5) //score
+//                                .waitSeconds(.7)
+////
+////                //2 pixels
+//                                //.strafeLeft(5)
+//                                //.waitSeconds(.1)
+//                                .strafeLeft(5)
+//                                .waitSeconds(.1)
+//                                .forward(60) //TODO - SLOW SPEED to 20!!!
+//                                .waitSeconds(.1)
+//                                .strafeRight(20)
+//                                .waitSeconds(.1)
+//                                .forward(14)
+//                                .waitSeconds(.1)
 //
-//                //2 pixels
-                                //.strafeLeft(5)
-                                //.waitSeconds(.1)
-                                .strafeLeft(5)
-                                .waitSeconds(.1)
-                                .forward(60) //TODO - SLOW SPEED to 20!!!
-                                .waitSeconds(.1)
-                                .strafeRight(20)
-                                .waitSeconds(.1)
-                                .forward(14)
-                                .waitSeconds(.1)
-
-                                //to board
+//                                //to board
                                 .back(65) //TODO - DECREASE SPEED to 30!!!!!
                                 .waitSeconds(.1)
                                 .strafeLeft(17)

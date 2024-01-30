@@ -16,7 +16,8 @@ public class AutoBase extends LinearOpMode {
     }
 
     public void init_classes(){
-        arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", true);
+        //arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", true);
+        arm.init_arm_V2(hardwareMap,"leftMotor", "rightMotor");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2","wrist");
         vision.init_cameras(hardwareMap, "Webcam 1", "Webcam 2");
     }
