@@ -57,9 +57,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //        return bot.getPoseEstimate().getHeading() + Math.toRadians(degrees);
 //    }
 //
-    TrajectoryVelocityConstraint slowerSpeed(double speed){
-        return SampleMecanumDrive.getVelocityConstraint(speed, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH);
-    }
+//    TrajectoryVelocityConstraint slowerSpeed(double speed){
+//        return SampleMecanumDrive.getVelocityConstraint(speed, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH);
+//    }
     public void runOpMode() throws InterruptedException {
        SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
@@ -267,41 +267,44 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .addTemporalMarker(3.5, () ->{
                     intake.wrist_down();
                 })
-                .addTemporalMarker(3.7,() -> {
+                .addTemporalMarker(3.9,() -> {
                     intake.openClawV2(true,true); //score purple pixel
                 })
-
-                .addTemporalMarker(4,() ->{
+//
+                .addTemporalMarker(4.6,() ->{
                     intake.openClaws(true); //close claw & wrist up
                     intake.wrist_up();
                 })
-
-                .addTemporalMarker(5,() -> { //get ready to get pixel from stack
-                    intake.openClawV2(true, true);
-                    intake.wrist_auto(5);
-                    arm.move_auto(5);
-                })
-
-                .addTemporalMarker(6.7,() ->{ //close claw & grip pixel
-                    intake.openClawV2(false,true);
-                })
-
-                .addTemporalMarker(8,() -> { //move arm down while going under gate
-                    arm.down();
-                })
-
-                .addTemporalMarker(10, () -> { //move arm to score position
-                    arm.up();
-                    intake.wrist_up();
-                })
-                .addTemporalMarker(11.2, () -> {//TODO - score pixels - need to fine tune scoring
-                    intake.openClaws(false);
-                })
-                .addTemporalMarker(12.7, () -> { //control intake & arm to go under stage
-                    intake.openClaws(true);
-                    intake.wrist_up();
-                    arm.down();
-                })
+//                .addTemporalMarker(16,() -> {
+//                    arm.up();
+//                })
+//
+//                .addTemporalMarker(5,() -> { //get ready to get pixel from stack
+//                    intake.openClawV2(true, true);
+//                    intake.wrist_auto(5);
+//                    arm.move_auto(5);
+//                })
+//
+//                .addTemporalMarker(6.7,() ->{ //close claw & grip pixel
+//                    intake.openClawV2(false,true);
+//                })
+//
+//                .addTemporalMarker(8,() -> { //move arm down while going under gate
+//                    arm.down();
+//                })
+//
+//                .addTemporalMarker(10, () -> { //move arm to score position
+//                    arm.up();
+//                    intake.wrist_up();
+//                })
+//                .addTemporalMarker(11.2, () -> {//TODO - score pixels - need to fine tune scoring
+//                    intake.openClaws(false);
+//                })
+//                .addTemporalMarker(12.7, () -> { //control intake & arm to go under stage
+//                    intake.openClaws(true);
+//                    intake.wrist_up();
+//                    arm.down();
+//                })
 
                 .forward(22)
                 .waitSeconds(.1)
@@ -317,8 +320,11 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 //-------------
                 //scoring purple pixel
                 //--------------
-
-                .strafeRight(17)
+                .forward(1.59)
+                .waitSeconds(.05)
+                .turn(Math.toRadians(-8))
+                .waitSeconds(.05)
+                .strafeRight(16)
                 .waitSeconds(.1)
                 .forward(14)
                 .waitSeconds(.7)
@@ -344,15 +350,17 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 //                .waitSeconds(.1)
 
                 //to board
-                .back(55, SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+                .turn(Math.toRadians(-5))
                 .waitSeconds(.1)
-                .strafeLeft(17)
+                .back(58, SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)) //TODO - DECREASE SPEED!!!!!
+                .waitSeconds(.1)
+                .strafeLeft(14.5)
                 .waitSeconds(.1)
                 .back(5) //score
                 .waitSeconds(.1)
-                .strafeRight(17)
+                .strafeRight(10.5)
                 .waitSeconds(.1)
-                .back(8)
+                .back(10)
                 .build();
 
 //        TrajectorySequence FullMiddleAuto = bot.trajectorySequenceBuilder(new Pose2d())

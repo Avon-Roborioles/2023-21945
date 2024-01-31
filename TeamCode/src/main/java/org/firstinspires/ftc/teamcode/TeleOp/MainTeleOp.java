@@ -21,7 +21,7 @@ public class MainTeleOp extends LinearOpMode {
 
     //updates telemetry for all robot functions
     public void setTelemetry(){
-        drivetrain.getTelemetry(telemetry);
+        //drivetrain.getTelemetry(telemetry);
         intake.getTelemetry(telemetry);
         launcher.getTelemetry(telemetry);
         arm.getTelemetry(telemetry);
@@ -33,7 +33,8 @@ public class MainTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //drivetrain.init_drive_motors(hardwareMap);
         //drivetrain.init_red_drive_motors(hardwareMap);
-        drivetrain.init_fieldCentric_drive(hardwareMap);
+        //drivetrain.init_fieldCentric_drive(hardwareMap);
+        drivetrain.init_red_drive_motors(hardwareMap);
         //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
@@ -82,7 +83,9 @@ public class MainTeleOp extends LinearOpMode {
             //Driver 1 Controls - Primary
             //Driver 1 Controls
             //drivetrain.run_mecanum_drive(gamepad1, telemetry);
-            drivetrain.run_fieldCentric_drive(gamepad1Ex);
+            //drivetrain.init_red_drive_motors(hardwareMap);
+            drivetrain.run_drive_motors(gamepad1,telemetry);
+            //drivetrain.run_fieldCentric_drive(gamepad1Ex);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls

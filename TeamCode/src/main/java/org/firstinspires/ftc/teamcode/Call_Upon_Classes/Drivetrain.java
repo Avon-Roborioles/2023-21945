@@ -206,7 +206,7 @@ public class Drivetrain {
 //        telemetry.addData("fr power: ", rightFront.getPower());
 //        telemetry.addData("bl power: ", leftRear.getPower());
 //        telemetry.addData("br power: ", rightRear.getPower());
-        telemetry.addData("IMU Value: ", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        //telemetry.addData("IMU Value: ", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
         //telemetry.update();
 //        telemetry.addData("X Dead Wheel Encoder Value: ",x_encoder.getCurrentPosition());
