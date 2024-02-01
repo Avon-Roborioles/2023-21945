@@ -198,7 +198,7 @@ public class Drivetrain {
         double gyroAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
                 //imu.getRotation2d().getDegrees(); //TODO if imu doesn't work, get heading from dead wheels
 
-        drivetrain.driveFieldCentric(strafeSpeed,forwardSpeed,turnSpeed,gyroAngle,false);
+        drivetrain.driveFieldCentric(strafeSpeed,forwardSpeed,turnSpeed,gyroAngle,true);
     }
 
     public void getTelemetry (@NonNull Telemetry telemetry){

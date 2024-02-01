@@ -59,8 +59,8 @@ public class Arm {
     }
 
     public void init_arm_V2(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
-        leftMotor = new Motor(hardwareMap,"leftMotor");
-        rightMotor = new Motor(hardwareMap,"rightMotor");
+        leftMotor = new Motor(hardwareMap,leftMotorName);
+        rightMotor = new Motor(hardwareMap,rightMotorName);
         controller = new PIDController(p, i, d);
 
         //leftMotor.setInverted(true); //put in reverse
@@ -230,10 +230,13 @@ public class Arm {
             armDefault = false;
 
             if (rightMotor.getCurrentPosition() < 1600) {
-                if (leftY < 0) {
+                if (leftY < 0 && rtrigger > 0) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(1);
+                } else if(leftY < 0){
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(0.4);
-                } else if (leftY > 0) {
+                }else if (leftY > 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(-0.4);
                 } /*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
@@ -244,13 +247,17 @@ public class Arm {
                 if (leftY > 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(-0.5);
-                } else if (leftY < 0) {
+                } else if (leftY < 0 && rtrigger > 0.1) {
+                    armGroup.setRunMode(Motor.RunMode.RawPower);
+                    armGroup.set(1);
+            } else if(leftY > 0) {
                     armGroup.setRunMode(Motor.RunMode.RawPower);
                     armGroup.set(0.5);
-            } /*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
+                }/*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
                 armGroup.setRunMode(Motor.RunMode.RawPower);
                 armGroup.set(-.01);
             }*/
+
             }
         } else if((leftY >= -0.3 && leftY <= 0.3) && armDefault == false){
 

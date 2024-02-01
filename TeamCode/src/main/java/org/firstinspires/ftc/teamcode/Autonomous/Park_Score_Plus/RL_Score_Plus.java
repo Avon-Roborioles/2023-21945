@@ -264,7 +264,7 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     intake.openClaws(true); //grip pixels
                     arm.down();
                 })
-                .addTemporalMarker(3.5, () ->{
+                .addTemporalMarker(3.5, () -> {
                     intake.wrist_down();
                 })
                 .addTemporalMarker(3.9,() -> {
@@ -275,9 +275,9 @@ public class RL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     intake.openClaws(true); //close claw & wrist up
                     intake.wrist_up();
                 })
-//                .addTemporalMarker(16,() -> {
-//                    arm.up();
-//                })
+                .addTemporalMarker(16,() ->{
+                    arm.up();
+                })
 //
 //                .addTemporalMarker(5,() -> { //get ready to get pixel from stack
 //                    intake.openClawV2(true, true);

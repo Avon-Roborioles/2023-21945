@@ -4,11 +4,10 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.*;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 
-@TeleOp(name = "Main TeleOp", group = "TeleOp")
+@TeleOp(name = "MainTeleOp", group = "TeleOp")
 public class MainTeleOp extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(); //change to false if driving still isn't fixed
@@ -33,8 +32,7 @@ public class MainTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //drivetrain.init_drive_motors(hardwareMap);
         //drivetrain.init_red_drive_motors(hardwareMap);
-        //drivetrain.init_fieldCentric_drive(hardwareMap);
-        drivetrain.init_red_drive_motors(hardwareMap);
+        drivetrain.init_fieldCentric_drive(hardwareMap);
         //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
@@ -78,22 +76,14 @@ public class MainTeleOp extends LinearOpMode {
 
         waitForStart();
 
-        while(opModeIsActive()) { //robot loop
-            //gamepad1.rumble(Gamepad.RUMBLE_DURATION_CONTINUOUS);
-            //Driver 1 Controls - Primary
+        while(opModeIsActive()) {
             //Driver 1 Controls
-            //drivetrain.run_mecanum_drive(gamepad1, telemetry);
-            //drivetrain.init_red_drive_motors(hardwareMap);
-            drivetrain.run_drive_motors(gamepad1,telemetry);
-            //drivetrain.run_fieldCentric_drive(gamepad1Ex);
+            drivetrain.run_fieldCentric_drive(gamepad1Ex);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            //arm.run_arm_manual(gamepad2);
             arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
-            //intake.run_intake_Power(gamepad2, rightArmPosition);
-            //intake.run_intake_Power(gamepad2, gamepad2Ex, a2Reader,1);
-            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader);
+            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader,LBumperReader,RBumperReader);
             feedback.run_Timer(gamepad1,gamepad2);
             setTelemetry();
 

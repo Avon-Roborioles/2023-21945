@@ -7,7 +7,7 @@ import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 
-@Disabled
+@TeleOp(name = "BlueAllianceTeleOp", group = "TeleOp")
 public class BlueAllianceTeleOp extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(); //change to false if driving still isn't fixed
@@ -75,7 +75,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
             //arm.run_arm_manual(gamepad2);
             //arm.run_arm_V2();
             //intake.run_intake_Power(gamepad2, rightArmPosition);
-            intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader, y2Reader);
+            //intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader, y2Reader);
 
             setTelemetry();
 

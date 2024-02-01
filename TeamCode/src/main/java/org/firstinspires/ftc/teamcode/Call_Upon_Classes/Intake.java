@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
@@ -43,6 +42,9 @@ public class Intake {
     private boolean wristIsUp = true;
     private boolean wristState;
     private boolean wristDefault = false;
+    private boolean LState;
+    private boolean RState;
+    private boolean clawDefault = false;
     public enum wristCommands {
         WRIST_UP,
         WRIST_DOWN,
@@ -55,7 +57,9 @@ public class Intake {
     public int pixel3 = -104;
     public int pixel2 = -97;
     private wristCommands wristStatus = wristCommands.WRIST_START;
-    private boolean clawIsOpen = false;
+    private boolean clawsAreClosed = true;
+    private boolean claw1Open = true;
+    private boolean claw2Open = true;
 
     //Methods of intake initialization
     public void init_intake_teleOp(HardwareMap hardwareMap, String clawName, String wristName, String pixelHolderName){
@@ -107,23 +111,37 @@ public class Intake {
     public void openClawV2(boolean open, boolean leftClaw){ //Done
         if(leftClaw){ //done - control left claw
             if (open){
+                claw1Open = true;
+                //clawIsOpen = true;
                 claw1.setPosition(.4);
             } else {
+                claw1Open = false;
+                //clawIsOpen = false;
                 claw1.setPosition(0.6);
             }
         } else { //Done control right claw
             if (open){
+                claw2Open = true;
+                //clawIsOpen = true;
                 claw2.setPosition(.2);
             } else {
+                claw2Open = false;
+              //  clawIsOpen = false;
                 claw2.setPosition(0);
             }
         }
     }
     public void openClaws(boolean close){ //Done
         if (close){
+           // clawIsOpen = false;
+            claw1Open = false;
+            claw2Open = false;
             claw1.setPosition(.6); //.4
             claw2.setPosition(0); //-.2
         } else {
+           // clawIsOpen = true;
+            claw1Open = true;
+            claw2Open = true;
             claw1.setPosition(.4); //.3
             claw2.setPosition(.2); //.4
         }
@@ -146,7 +164,7 @@ public class Intake {
     } //TEST - moves wrist to pos and opens claw to score
 
     public void wrist_down(){
-        wristTarget = -115; //-200
+        wristTarget = -120; //-200
         wristMotor.setTargetPosition(wristTarget);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setPower(.7);
@@ -388,41 +406,48 @@ public class Intake {
         //closePixelHolder(true);
     }
 
-    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader, ToggleButtonReader yReader){
-        double ltrigger = gamepad2.left_trigger;
-        double rtrigger = gamepad2.right_trigger;
+    public void run_intake_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader, ToggleButtonReader yReader, ToggleButtonReader LBumper, ToggleButtonReader RBumper){
         double rightY = gamepad2.right_stick_y; //was float—
-        boolean button_a = gamepad2.a;
-        boolean button_x = gamepad2.x;
-        boolean button_y = gamepad2.y;
-        boolean button_b = gamepad2.b;
         wristState = yReader.getState();
 
-        //open-close claws -- Caused Twitching Problem
-//        if(LBumperReader.getState()) {
-//            //done close claw1
-//            openClawV2(false,true);
-//        } else {
-//            //Done open claw1
-//            openClawV2(true, true);
-//        }
-//
-//        if(RBumperReader.getState()){
-//            //Done close claw2
-//            openClawV2(false, false);
-//        } else {
-//            //Done open claw2
-//            openClawV2(true, false);
-//        }
-
         //open-close claws
-        if(aReader.getState()){
-            //done close both claws
-            openClaws(false);
-        } else {
-            //Done open both claws
-            openClaws(true);
+//        if(aReader.getState()){
+//            //done close both claws
+//            openClaws(false);
+//        } else {
+//            //Done open both claws
+//            openClaws(true);
+//        }
+        if(aReader.wasJustPressed()){
+            clawDefault = true;
+            if(claw1.getPosition() == 0.4 || claw2.getPosition() == 0.2){
+                clawsAreClosed = true;
+            } else {
+                clawsAreClosed = false;
+            }
         }
+
+        if(LBumper.wasJustPressed()){
+            clawDefault = false;
+            LState = LBumper.getState();
+            if(claw1Open){
+                openClawV2(false,true);
+            } else {
+                openClawV2(true,true);
+            }
+        }
+
+        if(RBumper.wasJustPressed()){
+            RState = RBumper.getState();
+            clawDefault = false;
+            if(claw2Open){
+                openClawV2(false,false);
+            } else {
+                openClawV2(true,false);
+            }
+        }
+
+
 
 
         if(yReader.wasJustPressed()){ //when pressed activate default mode & switch between up or down
@@ -459,18 +484,27 @@ public class Intake {
             wristMotor.setPower(0); //small power to hold wrist
         }
 
-        if(wristDefault){ //switch between up and down if wristDefault is activated
-            if(wristIsUp){
+        if(wristDefault) { //switch between up and down if wristDefault is activated
+            if (wristIsUp) {
                 wrist_down();
             } else {
                 wrist_up();
             }
         }
 
+        if(clawDefault){
+            if(clawsAreClosed){
+                openClaws(true);
+            } else {
+                openClaws(false);
+            }
+        }
+
         aReader.readValue();
         yReader.readValue();
-//        RBumperReader.readValue();
-//        LBumperReader.readValue();
+        LBumper.readValue();
+        RBumper.readValue();
+
     }
 
     public void run_intake_default(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader aReader) {
@@ -583,6 +617,10 @@ public class Intake {
     public void getTelemetry(Telemetry telemetry){
         telemetry.addData("Claw 1 Pose: ", claw1.getPosition());
         telemetry.addData("Claw 2 Pose: ", claw2.getPosition());
+        telemetry.addData("Claws Closed?: ", clawsAreClosed);
+        telemetry.addData("L2Bumper State: ", LState);
+        telemetry.addData("R2Bumper State: ",RState);
+        telemetry.addData("ClawDefault: ", clawDefault);
         telemetry.addData("Wrist Pose: ", wristMotor.getCurrentPosition());
         telemetry.addData("WristDefault: ", wristDefault);
         telemetry.addData("Wrist Up?: ", wristIsUp);
