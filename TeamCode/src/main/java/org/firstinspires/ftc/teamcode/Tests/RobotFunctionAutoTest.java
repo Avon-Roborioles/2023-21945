@@ -19,6 +19,8 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
         init_classes();
 
         TrajectorySequence test = bot.trajectorySequenceBuilder(new Pose2d())
+
+                .turn(Math.toRadians(-0.1)) //added in so it does read this test as empty
                 .addTemporalMarker(0.1,() -> {
                     intake.wrist_down();
                 })
