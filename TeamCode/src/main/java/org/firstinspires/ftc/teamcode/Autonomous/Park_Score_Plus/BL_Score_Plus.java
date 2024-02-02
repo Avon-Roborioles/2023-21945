@@ -38,10 +38,17 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     arm.down();
                 })
 
+                .waitSeconds(10)
                 .build();
 
         //TODO
         TrajectorySequence FullRightAuto = bot.trajectorySequenceBuilder(new Pose2d())
+                .addTemporalMarker(0,() ->{ //3.5
+                    intake.closeClaws(true); //grip pixels
+                    arm.down();
+                })
+
+                .waitSeconds(10)
                 .build();
 
         //auto code here
