@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
 
-@TeleOp(name = "MainTeleOp", group = "TeleOp")
-public class MainTeleOp extends LinearOpMode {
+@TeleOp(name = "RedAllianceTeleOp", group = "TeleOp")
+public class RedAllianceTeleOp extends LinearOpMode {
     //creating objects for robot functions
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain(); //change to false if driving still isn't fixed
     private final Intake intake = new Intake();
@@ -79,6 +79,7 @@ public class MainTeleOp extends LinearOpMode {
         while(opModeIsActive()) {
             //Driver 1 Controls
             drivetrain.run_fieldCentric_drive(gamepad1Ex);
+            //drivetrain.run_drive_motors(gamepad1,telemetry);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls

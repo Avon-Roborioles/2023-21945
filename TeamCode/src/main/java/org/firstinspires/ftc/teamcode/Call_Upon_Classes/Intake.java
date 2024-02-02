@@ -131,7 +131,7 @@ public class Intake {
             }
         }
     }
-    public void openClaws(boolean close){ //Done
+    public void closeClaws(boolean close){ //Done
         if (close){
            // clawIsOpen = false;
             claw1Open = false;
@@ -494,9 +494,9 @@ public class Intake {
 
         if(clawDefault){
             if(clawsAreClosed){
-                openClaws(true);
+                closeClaws(true);
             } else {
-                openClaws(false);
+                closeClaws(false);
             }
         }
 
@@ -518,10 +518,10 @@ public class Intake {
 
         if(aReader.getState()){
             //done close both claws
-            openClaws(false);
+            closeClaws(false);
         } else {
             //Done open both claws
-            openClaws(true);
+            closeClaws(true);
         }
 
         //control wrist

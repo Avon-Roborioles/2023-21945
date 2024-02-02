@@ -153,9 +153,9 @@ public class Drivetrain {
 
     //Old method running Drivetrain
     public void run_drive_motors(Gamepad gamepad1, Telemetry telemetry){
-        lx =-1 * gamepad1.left_stick_y; //switched left_stick y with left stick x
-        ly =gamepad1.left_stick_x;
-        rx=gamepad1.right_stick_x;
+        lx = gamepad1.left_stick_x; //switched left_stick y with left stick x
+        ly = gamepad1.left_stick_y;
+        rx = gamepad1.right_stick_x;
         denominator = Math.max(Math.abs(lx)+Math.abs(ly)+Math.abs(rx), 1);
 
         leftFront.setPower((lx + ly +rx)/denominator);

@@ -1,12 +1,7 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
-import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -24,11 +19,11 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
                 })
 
                 .addTemporalMarker(0.2,() -> {
-                    intake.openClaws(false);
+                    intake.closeClaws(false);
                 })
 
                 .addTemporalMarker(0.7,() -> {
-                    intake.openClaws(true);
+                    intake.closeClaws(true);
                 })
 
                 .addTemporalMarker(1.1,() -> {
@@ -48,13 +43,13 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
                 })
 
                 .addTemporalMarker(3.6,() -> {
-                    intake.openClaws(true);
+                    intake.closeClaws(true);
                 })
 
                 .addTemporalMarker(4.4,() -> {
                     arm.down();
                 })
-                .turn(Math.toRadians(-0.1)) //added in so it does read this test as empty
+                .waitSeconds(100)
                 .build();
 
         waitForStart();
