@@ -28,7 +28,35 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     arm.down();
                 })
 
+                .forward(22)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(80))
 
+                //moving prop away
+                .waitSeconds(.1) //------------
+                .forward(5)
+                .waitSeconds(.1) //-----------
+                .back(7)
+                .waitSeconds(.5) //waiting to score pixel
+                .strafeRight(10)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-175))
+
+                //get to board
+                .back(20)
+                .waitSeconds(.1)
+                .strafeRight(15) //TODO adjust value
+                .waitSeconds(.1) //raise arm and get ready to score
+                .back(5)
+                .waitSeconds(.8) //score pixel
+                .forward(5)
+                .waitSeconds(.1)
+
+                //park
+                .strafeRight(10)
+                .waitSeconds(.1)
+                .back(10)
+                .waitSeconds(10)
                 .build();
 
         //TODO
@@ -38,6 +66,27 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     arm.down();
                 })
 
+                //score spike pixel
+                .forward(24)
+                .waitSeconds(0.1)
+                .back(8.75)
+                .waitSeconds(.7) //score purple pixel
+                .back(5)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-80))
+
+                //get to board
+                .back(13)
+                .waitSeconds(.1) //get ready to score
+                .back(5)
+                .waitSeconds(.7) //score yellow pixel
+                .forward(5)
+                .waitSeconds(.1)
+
+                //park
+                .strafeRight(13)
+                .waitSeconds(.1)
+                .back(10)
                 .waitSeconds(10)
                 .build();
 
@@ -48,6 +97,31 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     arm.down();
                 })
 
+                //score purple pixel
+                .strafeLeft(5)
+                .waitSeconds(.1)
+                .forward(22)
+                .waitSeconds(.05)
+                .turn(Math.toRadians(-85))
+                .waitSeconds(.1)
+                .forward(5)
+                .waitSeconds(.1)
+                .back(3)
+                .waitSeconds(.7) //score pixel
+
+                //go to backdrop
+                .back(20)
+                .waitSeconds(.5) //raise arm & get ready to score
+                .strafeRight(10)
+                .waitSeconds(.7) //raise arm & get ready to score
+                .back(5)
+                .waitSeconds(.7) //score pixels
+                .forward(5) //lower arm & raise wrist
+
+                //park
+                .waitSeconds(.1)
+                .strafeRight(10)
+                .back(10)
                 .waitSeconds(10)
                 .build();
 
@@ -56,7 +130,7 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         //gets propPosition and needed april tag from vision class
         propPosition = vision.getPropPosition();
-        aprilTagID = vision.get_Apriltag_id(propPosition,false);
+        aprilTagID = vision.get_Apriltag_id(propPosition,true);
 
         //scores the purple preload pixel based on vision reading
         //bot.followTrajectorySequence(FullLeftAuto);
