@@ -100,6 +100,30 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     arm.down();
                 })
 
+                //score purple pixel
+                .forward(2)
+                .waitSeconds(.05)
+                .strafeRight(6)
+                .forward(26)
+                .waitSeconds(.1)
+                .back(3)
+                .waitSeconds(.7) //score pixel
+
+                //go to backdrop
+                .strafeRight(10)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(80))
+                .waitSeconds(.1)
+                .strafeRight(10)
+                .waitSeconds(.7) //raise arm & get ready to score
+                .back(5)
+                .waitSeconds(.7) //score pixels
+                .forward(5)
+
+                //park
+                .waitSeconds(.1)
+                .strafeLeft(12)
+                .back(10)
                 .waitSeconds(10)
                 .build();
 
