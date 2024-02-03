@@ -131,7 +131,6 @@ public class Drivetrain {
 
     //generic fieldCentric drive setup
     public void init_fieldCentric_drive(HardwareMap hardwareMap){
-        //drivetrain = new MecanumDrive(fL, fR, bL, bR);
         drivetrain = new MecanumDrive(
                 new Motor(hardwareMap, "leftFront", Motor.GoBILDA.RPM_312),
                 new Motor(hardwareMap, "rightFront", Motor.GoBILDA.RPM_312),

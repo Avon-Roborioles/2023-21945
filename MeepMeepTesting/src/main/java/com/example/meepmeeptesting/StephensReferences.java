@@ -24,6 +24,10 @@ public class StephensReferences {
 
     static Pose2d currentPose = new Pose2d(currentX,currentY,currentHeading); //Used in replacement of bot.getPoseEstimate()
 
+    static void setStartPose(Pose2d startPose){
+        currentPose = startPose;
+    }
+
     static void updatePoseEstimate(double x, double y,double heading){ //Used in replacement of bot.updatePoseEstimate()
         currentPose.plus(new Pose2d(x,y,heading));
         currentX = currentPose.getX();
@@ -51,6 +55,7 @@ public class StephensReferences {
 
     public static void main(String[] args){
         MeepMeep meepMeep = new MeepMeep(600);
+        setStartPose(startPoseRL);
 
         RoadRunnerBotEntity fieldReference = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
@@ -119,19 +124,22 @@ public class StephensReferences {
                                 .strafeRight(17)
                                 .waitSeconds(.1)
                                 .back(8)
-
                                 .waitSeconds(10000)
                                 .build()
                 );
 
-
+        //-------------------------Red Left Auto----------------------------//
         RoadRunnerBotEntity RLLeft = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(88.2809332, 47.4845458372762, 7.660142060308357, Math.toRadians(259.11086367346934), 10.5)
                         .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(startPoseRL)
                                         //TODO add code here
-
+                                        .lineToLinearHeading(new Pose2d(poseX(0),poseY(30),Math.toRadians(180)))
+                                        .waitSeconds(.1)
+                                        .lineToConstantHeading(new Vector2d(poseX(-5),poseY(0)))
+                                        .waitSeconds(.1)
+                                        .lineToConstantHeading(new Vector2d(poseX(5),poseY(0)))
                                         .waitSeconds(10)
                                         .build()
                         );
@@ -158,6 +166,7 @@ public class StephensReferences {
                                 .build()
                 );
 
+        //-------------------------Red Right Auto----------------------------//
         RoadRunnerBotEntity RRLeft = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(88.2809332, 47.4845458372762, 7.660142060308357, Math.toRadians(259.11086367346934), 10.5)
@@ -191,6 +200,7 @@ public class StephensReferences {
                                 .build()
                 );
 
+        //-------------------------Blue Left Auto----------------------------//
         RoadRunnerBotEntity BLLeft = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(88.2809332, 47.4845458372762, 7.660142060308357, Math.toRadians(259.11086367346934), 10.5)
@@ -223,6 +233,8 @@ public class StephensReferences {
                                 .waitSeconds(10)
                                 .build()
                 );
+
+        //-------------------------Blue Right Auto----------------------------//
 
         RoadRunnerBotEntity BRLeft = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
@@ -263,12 +275,7 @@ public class StephensReferences {
                 .setBackgroundAlpha(0.95f)
 
                 //program to run
-                .addEntity(fieldReference)
-
+                .addEntity(RLLeft)
                 .start();
-//        while(meepMeep.getWindowFrame().isActive()){
-//            System.out.println("Current X Pose: ");
-//
-//        }
     }
 }

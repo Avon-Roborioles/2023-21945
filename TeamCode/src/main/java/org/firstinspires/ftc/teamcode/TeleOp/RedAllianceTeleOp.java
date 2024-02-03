@@ -31,8 +31,8 @@ public class RedAllianceTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //drivetrain.init_drive_motors(hardwareMap);
-        //drivetrain.init_red_drive_motors(hardwareMap);
-        drivetrain.init_fieldCentric_drive(hardwareMap);
+        drivetrain.init_red_drive_motors(hardwareMap);
+       // drivetrain.init_fieldCentric_drive(hardwareMap);
         //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
@@ -78,8 +78,8 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
         while(opModeIsActive()) {
             //Driver 1 Controls
-            drivetrain.run_fieldCentric_drive(gamepad1Ex);
-            //drivetrain.run_drive_motors(gamepad1,telemetry);
+            //drivetrain.run_fieldCentric_drive(gamepad1Ex);
+            drivetrain.run_drive_motors(gamepad1,telemetry);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
