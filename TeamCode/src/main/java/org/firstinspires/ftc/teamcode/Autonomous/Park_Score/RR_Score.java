@@ -25,8 +25,9 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
                 .addTemporalMarker(0, () -> {
-                    intake.openClaw(false);
-                    intake.closePixelHolder(true);
+                    //intake.openClaw(false);
+                    //intake.closePixelHolder(true);
+                    intake.closeClaws(true);
                 })
                 .strafeRight(5)
                 .waitSeconds(.5)
@@ -39,16 +40,19 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .forward(10)
                 .waitSeconds(.5) //-----------
                 .back(10.25)
-                .waitSeconds(5)
+                .waitSeconds(6)
 
                 .addTemporalMarker(7, () -> {
-                    intake.openClaw(false);
+                    //intake.openClaw(false);
+                    intake.openClawV2(true,true);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(8, () -> {
-                    intake.openClaw(true);
+                .addTemporalMarker(9, () -> {
+                    //intake.openClaw(true);
+                    intake.openClawV2(true,true);
                 })
-                .addTemporalMarker(9, () ->{
+                .addTemporalMarker(12, () ->{
+                    intake.closeClaws(true);
                     intake.wrist_up();
                 })
                 .turn(Math.toRadians(5))
@@ -61,22 +65,25 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
-                    intake.openClaw(false);
-                    intake.closePixelHolder(true);
+                   // intake.openClaw(false);
+                    intake.closeClaws(true);
+                    //intake.closePixelHolder(true);
 
                 })
                 .forward(24) //16
                 .waitSeconds(.5)
                 .back(8.75)
-                .waitSeconds(5)
+                .waitSeconds(6)
                 .addTemporalMarker(3, () -> {
-                    intake.openClaw(false);
+                    //intake.openClaw(false);
+                    intake.openClawV2(true,true);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(4, () -> {
-                    intake.openClaw(true);
+                .addTemporalMarker(6, () -> {
+                    //intake.openClaw(true);
+                    intake.closeClaws(true);
                 })
-                .addTemporalMarker(5, () ->{
+                .addTemporalMarker(7, () ->{
                     intake.wrist_up();
                 })
                 .back(14)
@@ -87,8 +94,9 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 //
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
-                    intake.openClaw(false);
-                    intake.closePixelHolder(true);
+                    //intake.openClaw(false);
+                    intake.closeClaws(true);
+                    //intake.closePixelHolder(true);
 
                 })
                 .forward(20)
@@ -98,15 +106,17 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .forward(10)
                 .waitSeconds(.5) //-----------
                 .back(10.5)
-                .waitSeconds(4)
+                .waitSeconds(3)
                 .addTemporalMarker(6, () -> {
-                    intake.openClaw(false);
+                    //intake.openClaw(false);
+                    intake.openClawV2(true,true);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(7, () -> {
-                    intake.openClaw(true);
+                .addTemporalMarker(8, () -> {
+                    //intake.openClaw(true);
+                    intake.closeClaws(true);
                 })
-                .addTemporalMarker(8, () ->{
+                .addTemporalMarker(9, () ->{
                     intake.wrist_up();
                 })
                 .forward(3)

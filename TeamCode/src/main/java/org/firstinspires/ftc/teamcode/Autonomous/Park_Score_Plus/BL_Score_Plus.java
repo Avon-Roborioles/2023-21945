@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-//@Autonomous(name="BL Score Plus", group="Park + Score Plus")
-@Disabled
+@Autonomous(name="BL Score Plus", group="Park + Score Plus")
+//@Disabled
 public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
         init_classes();
@@ -27,8 +27,33 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     intake.closeClaws(true); //grip pixels
                     arm.down();
                 })
+                .addTemporalMarker(3.5, () -> {
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(3.9,() -> {
+                    intake.openClawV2(true,false); //score purple pixel
+                })
+//
+                .addTemporalMarker(4.6,() ->{
+                    intake.closeClaws(true); //close claw & wrist up
+                    intake.wrist_up();
+                })
+                .addTemporalMarker(8,() ->{
+                    arm.up();
+                    intake.wrist_up();
+                })
 
-                .forward(22)
+                .addTemporalMarker(16.7,() -> {
+                    intake.openClawV2(true,false);
+                })
+
+                .addTemporalMarker(17.2,() -> {
+                    intake.closeClaws(true);
+                    intake.wrist_up();
+                    arm.down();
+                })
+
+                .forward(20)
                 .waitSeconds(.1)
                 .turn(Math.toRadians(80))
 
@@ -36,14 +61,14 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.1) //------------
                 .forward(5)
                 .waitSeconds(.1) //-----------
-                .back(7)
+                .back(5)
                 .waitSeconds(.5) //waiting to score pixel
                 .strafeRight(10)
                 .waitSeconds(.1)
-                .turn(Math.toRadians(-175))
+                .turn(Math.toRadians(-160))
 
                 //get to board
-                .back(20)
+                .back(15)
                 .waitSeconds(.1)
                 .strafeRight(15) //TODO adjust value
                 .waitSeconds(.1) //raise arm and get ready to score

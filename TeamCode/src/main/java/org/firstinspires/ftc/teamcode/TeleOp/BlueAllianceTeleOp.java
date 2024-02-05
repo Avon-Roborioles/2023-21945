@@ -19,14 +19,14 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
 
     //updates telemetry for all robot functions
-    public void setTelemetry(){
-        //drivetrain.getTelemetry(telemetry);
-        intake.getTelemetry(telemetry);
-        launcher.getTelemetry(telemetry);
-        arm.getTelemetry(telemetry);
-        feedback.getTelemetry(telemetry);
-        telemetry.update();
-    }
+//    public void setTelemetry(){
+//        //drivetrain.getTelemetry(telemetry);
+//        intake.getTelemetry(telemetry);
+//        launcher.getTelemetry(telemetry);
+//        arm.getTelemetry(telemetry);
+//        feedback.getTelemetry(telemetry);
+//        telemetry.update();
+//    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,8 +36,8 @@ public class BlueAllianceTeleOp extends LinearOpMode {
         //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
-        //arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
-        arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
+        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        //arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
         feedback.init_Timer();
 
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
@@ -72,21 +72,22 @@ public class BlueAllianceTeleOp extends LinearOpMode {
                 gamepad2Ex, GamepadKeys.Button.DPAD_UP
         );
 
-        setTelemetry();
+       // setTelemetry();
 
         waitForStart();
 
         while(opModeIsActive()) {
             //Driver 1 Controls
             //drivetrain.run_fieldCentric_drive(gamepad1Ex);
-            drivetrain.run_drive_motors(gamepad1,telemetry);
+            drivetrain.run_mecanum_drive(gamepad1,telemetry);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
+           // arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
+            arm.run_arm_manual(gamepad2);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader,LBumperReader,RBumperReader);
             feedback.run_Timer(gamepad1,gamepad2);
-            setTelemetry();
+            //setTelemetry();
 
         }
     }
