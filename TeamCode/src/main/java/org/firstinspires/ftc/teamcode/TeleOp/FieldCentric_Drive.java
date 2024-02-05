@@ -22,7 +22,6 @@ public class FieldCentric_Drive extends LinearOpMode{
 
         while(opModeIsActive()){
             drivetrain.run_fieldCentric_drive(gamepad1Ex);
-            drivetrain.getTelemetry(telemetry);
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Park;
+package org.firstinspires.ftc.teamcode.Autonomous.OLD.Park;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name="BR Park", group="Park Programs")
-public class BR_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
+@Autonomous(name="RL Park", group="Park Programs")
+public class RL_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
         init_classes();
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
@@ -15,11 +15,11 @@ public class BR_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
         TrajectorySequence BASIC = bot.trajectorySequenceBuilder(new Pose2d())
                 .waitSeconds(0.5)
                 .forward(24)
-                .turn(Math.toRadians(90))
+                .waitSeconds(0.5)
+                .turn(Math.toRadians(-90))
                 .waitSeconds(0.5)
                 .forward(40)
-
-//                .turn(Math.toRadians(88)) //turns right 88 degrees
+//                .turn(Math.toRadians(-88)) //turns right 88 degrees
 //                .waitSeconds(0.5)
 //                .forward(50)
                 .build();
