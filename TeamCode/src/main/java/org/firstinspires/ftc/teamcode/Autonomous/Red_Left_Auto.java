@@ -9,14 +9,17 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Autonomous(name = "Red Left Auto", group = "auto")
 public class Red_Left_Auto extends AutoBase{
     public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
-    public static Pose2d checkpoint1;
-    public static Pose2d checkpoint2;
-    public static Pose2d LeftBoardPose;
-    public static Pose2d MiddleBoardPose;
-    public static Pose2d RightBoardPose;
+    public static Pose2d checkpoint1 = new Pose2d(-36,-11,Math.toRadians(-180));
+    public static Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));
+    public static Pose2d LeftBoardPose = new Pose2d(47,-28,Math.toRadians(-180));
+    public static Pose2d MiddleBoardPose = new Pose2d(47,-34,Math.toRadians(-180));
+    public static Pose2d RightBoardPose = new Pose2d(47,-40,Math.toRadians(-180));
 
     public void runOpMode() throws  InterruptedException{
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
+
+        //tells bot where it is on the field
+        bot.setPoseEstimate(startPoseRL);
 
         //important variables for auto - set to random values
         String propPosition = "LEFT";
