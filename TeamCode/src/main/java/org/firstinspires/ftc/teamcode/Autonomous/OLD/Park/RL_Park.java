@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode.Autonomous.OLD.Park;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name="RL Park", group="Park Programs")
+@Disabled
+//@Autonomous(name="RL Park", group="Park Programs")
 public class RL_Park extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
     public void runOpMode() throws InterruptedException {
         init_classes();
