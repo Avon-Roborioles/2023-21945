@@ -9,6 +9,11 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Autonomous(name = "Red Left Auto", group = "auto")
 public class Red_Left_Auto extends AutoBase{
     public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
+    public static Pose2d checkpoint1;
+    public static Pose2d checkpoint2;
+    public static Pose2d LeftBoardPose;
+    public static Pose2d MiddleBoardPose;
+    public static Pose2d RightBoardPose;
 
     public void runOpMode() throws  InterruptedException{
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
@@ -55,5 +60,31 @@ public class Red_Left_Auto extends AutoBase{
         //TODO
         TrajectorySequence Park = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
+
+
+        waitForStart();
+
+
+        //gets propPosition and needed april tag from vision class
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition,false);
+
+        //scores the purple preload pixel based on vision reading
+        switch(propPosition){
+            case "LEFT":
+                bot.followTrajectorySequence(Left_Spike_Score);
+                break;
+            case "MIDDLE":
+                bot.followTrajectorySequence(Middle_Spike_Score);
+                break;
+            case "RIGHT":
+                bot.followTrajectorySequence(Right_Spike_Score);
+                break;
+        }
+
+        //go to checkpoint 1
+        bot.followTrajectorySequence(CheckPoint1);
+
+
     }
 }

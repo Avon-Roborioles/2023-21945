@@ -7,100 +7,95 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class Red_Left_Sim {
+    //useful coordinates on the field to use
     public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
+    public static Pose2d checkpoint1 = new Pose2d(-36,-11,Math.toRadians(-180));
+    public static Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));
+    public static Pose2d LeftBoardPose = new Pose2d(47,-28,Math.toRadians(-180));
+    public static Pose2d MiddleBoardPose = new Pose2d(47,-34,Math.toRadians(-180));
+    public static Pose2d RightBoardPose = new Pose2d(47,-40,Math.toRadians(-180));
 
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
+        String[] propPoses = {"LEFT", "MIDDLE", "RIGHT"};
 
-        //TODO
-        RoadRunnerBotEntity Left_Spike_Score = new DefaultBotBuilder(meepMeep)
+        String propPosition = propPoses[(int)(Math.random() * 3)];
+        System.out.println("Randomized Prop Position: " + propPosition);
+
+
+        RoadRunnerBotEntity PoseReferences = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                .waitSeconds(1)
+                                .lineToLinearHeading(checkpoint1)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkpoint2)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(LeftBoardPose)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(MiddleBoardPose)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(RightBoardPose)
+                                .waitSeconds(.1)
+                                .splineToLinearHeading(checkpoint2,checkpoint2.getHeading())
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkpoint1)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(startPoseRL)
+                                .waitSeconds(1000)
                                 .build()
                 );
 
         //TODO
-        RoadRunnerBotEntity Middle_Spike_Score = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity Red_Left_PlusL = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                .waitSeconds(10)
                                 .build()
                 );
 
         //TODO
-        RoadRunnerBotEntity Right_Spike_Score = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity Red_Left_PlusM = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                .waitSeconds(10)
                                 .build()
                 );
 
         //TODO
-        RoadRunnerBotEntity CheckPoint1 = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity Red_Left_PlusR = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                .waitSeconds(10)
                                 .build()
                 );
 
-        //TODO
-        RoadRunnerBotEntity CheckPoint2 = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity RL_Spike = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                .waitSeconds(10)
                                 .build()
                 );
 
-        //TODO
-        RoadRunnerBotEntity Middle_Preload = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity RL_Park = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                .waitSeconds(10)
                                 .build()
                 );
 
-        //TODO
-        RoadRunnerBotEntity Right_Preload = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRL)
-                                .build()
-                );
-
-        //TODO - scores on left side of board
-        RoadRunnerBotEntity Board_Score = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRL)
-                                .build()
-                );
-
-        //TODO
-        RoadRunnerBotEntity Pixel_Stack = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRL)
-                                .build()
-                );
-
-        //TODO
-        RoadRunnerBotEntity Park = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRL)
-                                .build()
-                );
 
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
@@ -108,7 +103,7 @@ public class Red_Left_Sim {
                 .setBackgroundAlpha(0.95f)
 
                 //program to run
-                .addEntity()
+                .addEntity(PoseReferences)
                 .start();
     }
     }
