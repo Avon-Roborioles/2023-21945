@@ -281,6 +281,7 @@ public class Arm {
         d_down.readValue();
     }
 
+    //simple arm function to make robot hang
     public void hang(){
         armGroup.setRunMode(Motor.RunMode.RawPower);
         armGroup.set(-1);
