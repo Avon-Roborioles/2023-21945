@@ -281,6 +281,11 @@ public class Arm {
         d_down.readValue();
     }
 
+    public void hang(){
+        armGroup.setRunMode(Motor.RunMode.RawPower);
+        armGroup.set(-1);
+    }
+
     //Auto Methods
     public void setArmTargetPosition(int position){
         leftMotorEx.setTargetPosition(position);

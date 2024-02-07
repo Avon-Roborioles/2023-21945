@@ -192,6 +192,16 @@ public class Intake {
         wristMotor.setPower(.7);
 
     }
+    public void score_spike() throws InterruptedException {
+        wrist_down();
+        Thread.sleep(300);
+        openClawV2(true,true);
+        Thread.sleep(300);
+        wrist_up();
+        Thread.sleep(100);
+        closeClaws(true);
+
+    }
 
     //manages the pixelHolder based on certain conditions
     public void runAutoPixelHolder(boolean override){
