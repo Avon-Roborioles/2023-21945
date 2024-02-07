@@ -17,12 +17,14 @@ public class Red_Left_Sim {
     public static Pose2d checkpoint1 = new Pose2d(-36,-11,Math.toRadians(-180));
     public static Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));
     public static Pose2d LeftSpikePose = new Pose2d(-45,-28,Math.toRadians(-180));
-    public static Pose2d MiddleSpikePose;
+    public static Pose2d MiddleSpikePose = new Pose2d(-36,-8,Math.toRadians(-90));
     public static Pose2d RightSpikePose;
     public static Pose2d ThirdStack = new Pose2d(-54,checkpoint1.getY() + 2, checkpoint1.getHeading());
-    public static Pose2d LeftBoardPose = new Pose2d(47,-28,Math.toRadians(-180));
-    public static Pose2d MiddleBoardPose = new Pose2d(47,-34,Math.toRadians(-180));
-    public static Pose2d RightBoardPose = new Pose2d(47,-40,Math.toRadians(-180));
+    public static Pose2d LeftBoardPose = new Pose2d(43,-28,Math.toRadians(-180));
+    public static Pose2d MiddleBoardPose = new Pose2d(43,-34,Math.toRadians(-180));
+    public static Pose2d RightBoardPose = new Pose2d(43,-40,Math.toRadians(-180));
+
+    public static Pose2d ParkSpot = new Pose2d(57,-8,Math.toRadians(-180));
 
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
@@ -69,28 +71,28 @@ public class Red_Left_Sim {
                                     System.out.println("CLOSE CLAWS");
                                 })
 
-                                //get to stack
-                                .lineToLinearHeading(ThirdStack)
-                                .waitSeconds(.7)
-                                .addSpatialMarker(new Vector2d(-55.3,-7.8),()->{
-                                    System.out.println(" ");
-                                    System.out.println("RAISE ARM TO PIXEL5");
-                                    System.out.println("MOVE CLAW TO PIXEL5");
-                                    System.out.println("OPEN LEFT CLAW");
-                                })
-
-                                //pickup white pixel
-                                //.forward(3)
-                                .lineToConstantHeading(new Vector2d(ThirdStack.getX() - 3, ThirdStack.getY()))
-                                .addSpatialMarker(new Vector2d(ThirdStack.getX() +20, ThirdStack.getY()),()->{
-                                    System.out.println(" ");
-                                    System.out.println("CLOSE LEFT CLAW");
-                                })
-                                .waitSeconds(.7)
-
-                                //get back to checkpoint 1
-                                .lineToLinearHeading(checkpoint1)
-                                .waitSeconds(.1)
+//                                //get to stack
+//                                .lineToLinearHeading(ThirdStack)
+//                                .waitSeconds(.7)
+//                                .addSpatialMarker(new Vector2d(-55.3,-7.8),()->{
+//                                    System.out.println(" ");
+//                                    System.out.println("RAISE ARM TO PIXEL5");
+//                                    System.out.println("MOVE CLAW TO PIXEL5");
+//                                    System.out.println("OPEN LEFT CLAW");
+//                                })
+//
+//                                //pickup white pixel
+//                                //.forward(3)
+//                                .lineToConstantHeading(new Vector2d(ThirdStack.getX() - 3, ThirdStack.getY()))
+//                                .addSpatialMarker(new Vector2d(ThirdStack.getX() +20, ThirdStack.getY()),()->{
+//                                    System.out.println(" ");
+//                                    System.out.println("CLOSE LEFT CLAW");
+//                                })
+//                                .waitSeconds(.7)
+//
+//                                //get back to checkpoint 1
+//                                .lineToLinearHeading(checkpoint1)
+//                                .waitSeconds(.1)
 
                                 //get to checkpoint 2
                                 .lineToLinearHeading(checkpoint2)
@@ -103,6 +105,7 @@ public class Red_Left_Sim {
                                 })
                                 .waitSeconds(.1)
                                 .back(5)
+                                .waitSeconds(3)
                                 .forward(5)
 //                                .waitSeconds(1)
 //                                .strafeRight(10)
@@ -128,29 +131,151 @@ public class Red_Left_Sim {
                 );
 
         //TODO
-        RoadRunnerBotEntity Red_Left_PlusL = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity Red_Left_AutoL = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
+                                //close claw
+                                .addSpatialMarker(startPoseRL.vec(),() ->{
+                                    System.out.println(" ");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+
+                                //score spike
+                                .lineToLinearHeading(LeftSpikePose)
+                                .addSpatialMarker(LeftSpikePose.vec(),() ->{
+                                    System.out.println(" ");
+                                    System.out.println("WRIST DOWN");
+                                })
+                                .waitSeconds(.1)
+                                .back(11)
+                                .addSpatialMarker(new Vector2d(LeftSpikePose.getX() + 11,LeftSpikePose.getY()),() ->{
+                                    System.out.println(" ");
+                                    System.out.println("OPEN LEFT CLAW");
+                                })
+                                .waitSeconds(.7) //wait to score spike
+                                .back(2) //move a bit so we don't pickup pixel again
+                                .waitSeconds(.1)
 
 
-                                .waitSeconds(10)
+                                //get to checkpoint 1 + raise wrist + get ready to pickup pixel
+                                .lineToLinearHeading(checkpoint1)
+                                .waitSeconds(.7)
+                                .addSpatialMarker(new Vector2d(-32.2,-17.6),()->{
+                                    System.out.println(" ");
+                                    System.out.println("RAISE WRIST");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .lineToLinearHeading(checkpoint2)
+                                .waitSeconds(.1)
+
+                                //score on left Area of board
+                                .lineToLinearHeading(LeftBoardPose)
+                                .addSpatialMarker(checkpoint2.vec(),()->{
+                                    System.out.println(" ");
+                                    System.out.println("ARM UP");
+                                })
+                                .waitSeconds(.1)
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println(" ");
+                                    System.out.println("OPEN RIGHT CLAW");
+                                })
+                                .waitSeconds(.7)
+                                .forward(5)
+                                .waitSeconds(.1)
+
+
+                                //park
+                                .lineToConstantHeading(new Vector2d(LeftBoardPose.getX(), ParkSpot.getY()))
+                                .addDisplacementMarker(()->{
+                                    System.out.println(" ");
+                                    System.out.println("ARM DOWN");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(ParkSpot)
+
+                                //FINISH
+                                .waitSeconds(100)
                                 .build()
                 );
 
         //TODO
-        RoadRunnerBotEntity Red_Left_PlusM = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity Red_Left_AutoM = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRL)
-                                .waitSeconds(10)
+                                //close claw
+                                .addSpatialMarker(startPoseRL.vec(),() ->{
+                                    System.out.println(" ");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+
+                                //score spike
+                                .lineToLinearHeading(MiddleSpikePose)
+                                .addDisplacementMarker(40,()->{
+                                    System.out.println(" ");
+                                    System.out.println("WRIST DOWN");
+                                })
+
+                                .waitSeconds(.1)
+
+                                .forward(5)
+                                .addDisplacementMarker(55,() ->{
+                                    System.out.println(" ");
+                                    System.out.println("OPEN LEFT CLAW");
+                                })
+                                .waitSeconds(1)
+
+                               .back(4)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkpoint1)
+                                .addDisplacementMarker(()->{
+                                    System.out.println(" ");
+                                    System.out.println("WRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+
+
+                                //get to board
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkpoint2)
+                                .waitSeconds(.1)
+
+                                //score on left Area of board
+                                .lineToLinearHeading(MiddleBoardPose)
+                                .addSpatialMarker(checkpoint2.vec(),()->{
+                                    System.out.println("ARM UP");
+                                })
+                                .waitSeconds(.1)
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println(" ");
+                                    System.out.println("OPEN RIGHT CLAW");
+                                })
+                                .waitSeconds(.7)
+                                .forward(5)
+                                .waitSeconds(.1)
+//
+//
+//                                //park
+                                .lineToConstantHeading(new Vector2d(MiddleBoardPose.getX(), ParkSpot.getY()))
+                                .addDisplacementMarker(()->{
+                                    System.out.println("ARM DOWN");
+                                })
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(ParkSpot)
+
+                                //FINISH
+                                .waitSeconds(1000)
                                 .build()
                 );
 
         //TODO
-        RoadRunnerBotEntity Red_Left_PlusR = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity Red_Left_AutoR = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
@@ -158,25 +283,6 @@ public class Red_Left_Sim {
                                 .waitSeconds(10)
                                 .build()
                 );
-
-        RoadRunnerBotEntity RL_Spike = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRL)
-                                .waitSeconds(10)
-                                .build()
-                );
-
-        RoadRunnerBotEntity RL_Park = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRL)
-                                .waitSeconds(10)
-                                .build()
-                );
-
 
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
@@ -184,7 +290,7 @@ public class Red_Left_Sim {
                 .setBackgroundAlpha(0.95f)
 
                 //program to run
-                .addEntity(PoseReferences)
+                .addEntity(Red_Left_AutoM)
                 .start();
     }
     }
