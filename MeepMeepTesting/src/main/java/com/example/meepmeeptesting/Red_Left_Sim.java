@@ -90,7 +90,7 @@ public class Red_Left_Sim {
                                     System.out.println(" ");
                                     System.out.println("ARM UP");
                                 })
-                                .waitSeconds(.1)
+                                .waitSeconds(.7)
                                 .back(5)
                                 .addDisplacementMarker(()->{
                                     System.out.println(" ");
@@ -138,7 +138,7 @@ public class Red_Left_Sim {
                                 .waitSeconds(.1)
 
                                 .forward(5)
-                                .addDisplacementMarker(45,() ->{
+                                .addDisplacementMarker(50,() ->{
                                     System.out.println(" ");
                                     System.out.println("OPEN LEFT CLAW");
                                 })
@@ -164,7 +164,7 @@ public class Red_Left_Sim {
                                 .addSpatialMarker(checkpoint2.vec(),()->{
                                     System.out.println("ARM UP");
                                 })
-                                .waitSeconds(.1)
+                                .waitSeconds(.7)
                                 .back(5)
                                 .addDisplacementMarker(()->{
                                     System.out.println(" ");
@@ -261,37 +261,31 @@ public class Red_Left_Sim {
                                 .build()
                 );
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
+        switch(propPosition){
+            case "LEFT":
+                meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                         .setDarkMode(true)
                         .setBackgroundAlpha(0.95f)
                         //program to run
                         .addEntity(Red_Left_AutoL)
                         .start();
-//        switch(propPosition){
-//            case "LEFT":
-//                meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
-//                        .setDarkMode(true)
-//                        .setBackgroundAlpha(0.95f)
-//                        //program to run
-//                        .addEntity(Red_Left_AutoL)
-//                        .start();
-//                break;
-//            case "RIGHT":
-//                meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
-//                        .setDarkMode(true)
-//                        .setBackgroundAlpha(0.95f)
-//                        //program to run
-//                        .addEntity(Red_Left_AutoR)
-//                        .start();
-//                break;
-//            default:
-//                meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
-//                        .setDarkMode(true)
-//                        .setBackgroundAlpha(0.95f)
-//                        //program to run
-//                        .addEntity(Red_Left_AutoM)
-//                        .start();
-//                break;
-//        }
+                break;
+            case "RIGHT":
+                meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
+                        .setDarkMode(true)
+                        .setBackgroundAlpha(0.95f)
+                        //program to run
+                        .addEntity(Red_Left_AutoR)
+                        .start();
+                break;
+            default:
+                meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
+                        .setDarkMode(true)
+                        .setBackgroundAlpha(0.95f)
+                        //program to run
+                        .addEntity(Red_Left_AutoM)
+                        .start();
+                break;
+        }
     }
     }

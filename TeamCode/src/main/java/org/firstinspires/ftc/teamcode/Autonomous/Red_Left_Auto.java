@@ -46,14 +46,13 @@ public class Red_Left_Auto extends AutoBase{
         TrajectorySequence CheckPoint2 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
         //TODO
-        TrajectorySequence Middle_Preload = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
         //TODO
-        TrajectorySequence Right_Preload = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
-
-        //TODO -scores on the left side of the board
-        TrajectorySequence Board_Score = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        //TODO
+        TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
 
         //TODO
@@ -67,6 +66,7 @@ public class Red_Left_Auto extends AutoBase{
 
         waitForStart();
 
+        //***************AUTO CODE STARTS***************
 
         //gets propPosition and needed april tag from vision class
         propPosition = vision.getPropPosition();
@@ -87,6 +87,25 @@ public class Red_Left_Auto extends AutoBase{
 
         //go to checkpoint 1
         bot.followTrajectorySequence(CheckPoint1);
+
+        //go to checkpoint 2
+        bot.followTrajectorySequence(CheckPoint2);
+
+        //score pixel on board based on prop Pose
+        switch(aprilTagID){
+            case 4:
+                bot.followTrajectorySequence(LeftBoardScore);
+                break;
+            case 5:
+                bot.followTrajectorySequence(MiddleBoardScore);
+                break;
+            case 6:
+                bot.followTrajectorySequence(RightBoardScore);
+                break;
+        }
+
+        //park bot
+        bot.followTrajectorySequence(Park);
 
 
     }
