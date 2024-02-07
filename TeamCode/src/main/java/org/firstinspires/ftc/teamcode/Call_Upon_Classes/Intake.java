@@ -117,7 +117,7 @@ public class Intake {
             } else {
                 claw1Open = false;
                 //clawIsOpen = false;
-                claw1.setPosition(0.6);
+                claw1.setPosition(0.55); //0.6
             }
         } else { //Done control right claw
             if (open){
@@ -127,7 +127,7 @@ public class Intake {
             } else {
                 claw2Open = false;
               //  clawIsOpen = false;
-                claw2.setPosition(0);
+                claw2.setPosition(0.05); //0
             }
         }
     }
@@ -136,8 +136,8 @@ public class Intake {
            // clawIsOpen = false;
             claw1Open = false;
             claw2Open = false;
-            claw1.setPosition(.6); //.4
-            claw2.setPosition(0); //-.2
+            claw1.setPosition(.55); //.6
+            claw2.setPosition(0.05); //0
         } else {
            // clawIsOpen = true;
             claw1Open = true;
