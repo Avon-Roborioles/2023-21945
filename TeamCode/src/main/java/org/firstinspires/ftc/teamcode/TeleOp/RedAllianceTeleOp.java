@@ -30,6 +30,7 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry.speak("The Raven is Initializing!");
         //drivetrain.init_drive_motors(hardwareMap);
         drivetrain.init_red_drive_motors(hardwareMap);
        // drivetrain.init_fieldCentric_drive(hardwareMap);
@@ -75,6 +76,7 @@ public class RedAllianceTeleOp extends LinearOpMode {
         //setTelemetry();
 
         waitForStart();
+        telemetry.speak("The Raven is ready to go!");
 
         while(opModeIsActive()) {
             //Driver 1 Controls

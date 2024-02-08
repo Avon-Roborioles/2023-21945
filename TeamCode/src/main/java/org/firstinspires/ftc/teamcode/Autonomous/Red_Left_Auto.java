@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -52,6 +53,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("WRIST DOWN");
                     telemetry.addLine(" ");
                     telemetry.addLine("WRIST DOWN");
+                    telemetry.update();
                     intake.wrist_down();
                 })
                 .waitSeconds(.1)
@@ -61,6 +63,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("OPEN LEFT CLAW");
                     telemetry.addLine(" ");
                     telemetry.addLine("OPEN LEFT CLAW");
+                    telemetry.update();
                     intake.openClawV2(true,true);
                 })
                 .waitSeconds(.7) //wait to score spike
@@ -76,6 +79,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("CLOSE CLAWS");
                     telemetry.addLine(" ");
                     telemetry.addLine("CLOSE CLAWS");
+                    telemetry.update();
                     intake.closeClaws(true);
                 })
 
@@ -86,6 +90,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("WRIST DOWN");
                     telemetry.addLine(" ");
                     telemetry.addLine("WRIST DOWN");
+                    telemetry.update();
                     intake.wrist_down();
                 })
 
@@ -97,6 +102,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("OPEN LEFT CLAW");
                     telemetry.addLine(" ");
                     telemetry.addLine("OPEN LEFT CLAW");
+                    telemetry.update();
                     intake.openClawV2(true,true);
                 })
                 .waitSeconds(1)
@@ -113,6 +119,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("CLOSE CLAWS");
                     telemetry.addLine(" ");
                     telemetry.addLine("CLOSE CLAWS");
+                    telemetry.update();
                     intake.closeClaws(true);
                 })
 
@@ -123,6 +130,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("WRIST DOWN");
                     telemetry.addLine(" ");
                     telemetry.addLine("WRIST DOWN");
+                    telemetry.update();
                     intake.wrist_down();
                 })
 
@@ -134,6 +142,7 @@ public class Red_Left_Auto extends AutoBase{
 //                    System.out.println("OPEN LEFT CLAW");
                     telemetry.addLine(" ");
                     telemetry.addLine("OPEN LEFT CLAW");
+                    telemetry.update();
                     intake.openClawV2(true,true);
                 })
                 .waitSeconds(1)
@@ -143,34 +152,122 @@ public class Red_Left_Auto extends AutoBase{
 
                 .build();
 
-        //TODO
+        //TEST
         TrajectorySequence CheckPoint1 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .lineToLinearHeading(checkpoint1)
                 .addDisplacementMarker(10,()->{
                     telemetry.addLine(" ");
-                    //telemetry.a
+                    telemetry.addLine("GOING TO CHECKPOINT 1");
+                    telemetry.update();
                 })
                 .build();
 
-        //TODO
+        //TEST
         TrajectorySequence CheckPoint2 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .lineToLinearHeading(checkpoint2)
+                .addDisplacementMarker(10,()->{
+                    telemetry.addLine(" ");
+                    telemetry.addLine("GOING TO CHECKPOINT 2");
+                    telemetry.update();
+                })
                 .build();
-        //TODO
+        //TEST
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                //score on left Area of board
+                .lineToLinearHeading(LeftBoardPose)
+                .addSpatialMarker(checkpoint2.vec(),()->{
+//                    System.out.println(" ");
+//                    System.out.println("ARM UP");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("ARM UP");
+                    telemetry.update();
+                    arm.up();
+                })
+                .waitSeconds(.7)
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN RIGHT CLAW");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("OPEN RIGHT CLAW");
+                    telemetry.update();
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(.7)
+                .forward(5)
+                .waitSeconds(.1)
                 .build();
+
         //TODO
         TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .lineToLinearHeading(MiddleBoardPose)
+                .addSpatialMarker(checkpoint2.vec(),()->{
+                    //System.out.println("ARM UP");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("ARM UP");
+                    telemetry.update();
+                    arm.up();
+                })
+                .waitSeconds(.7)
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN RIGHT CLAW");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("OPEN RIGHT CLAW");
+                    telemetry.update();
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(.7)
+                .forward(5)
+                .waitSeconds(.1)
                 .build();
         //TODO
         TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                //score on left Area of board
+                .lineToLinearHeading(RightBoardPose)
+                .addSpatialMarker(checkpoint2.vec(),()->{
+                    //System.out.println("ARM UP");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("ARM UP");
+                    telemetry.update();
+                    arm.up();
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(165,()->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN RIGHT CLAW");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("OPEN RIGHT CLAW");
+                    telemetry.update();
+                    intake.openClawV2(true, false);
+                })
+                .waitSeconds(.7)
+                .forward(5)
+                .waitSeconds(.1)
                 .build();
 
         //TODO
-        TrajectorySequence Pixel_Stack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                .build();
+//        TrajectorySequence Pixel_Stack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+//                .build();
 
         //TODO
         TrajectorySequence Park = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .lineToLinearHeading(checkpoint2)
+                .addDisplacementMarker(()->{
+//                    System.out.println(" ");
+//                    System.out.println("ARM DOWN");
+//                    System.out.println("CLOSE CLAWS");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("ARM DOWN");
+                    telemetry.addLine("CLOSE CLAWS");
+                    telemetry.update();
+                    arm.down();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(ParkSpot)
                 .build();
 
 

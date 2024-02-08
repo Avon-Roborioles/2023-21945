@@ -102,7 +102,8 @@ public class Red_Left_Sim {
 
 
                                 //park
-                                .lineToConstantHeading(new Vector2d(LeftBoardPose.getX(), ParkSpot.getY()))
+                                //.lineToConstantHeading(new Vector2d(LeftBoardPose.getX(), ParkSpot.getY()))
+                                .lineToLinearHeading(checkpoint2)
                                 .addDisplacementMarker(()->{
                                     System.out.println(" ");
                                     System.out.println("ARM DOWN");
@@ -159,7 +160,7 @@ public class Red_Left_Sim {
                                 .lineToLinearHeading(checkpoint2)
                                 .waitSeconds(.1)
 
-                                //score on left Area of board
+                                //score on Middle Area of board
                                 .lineToLinearHeading(MiddleBoardPose)
                                 .addSpatialMarker(checkpoint2.vec(),()->{
                                     System.out.println("ARM UP");
@@ -176,7 +177,8 @@ public class Red_Left_Sim {
 //
 //
 //                                //park
-                                .lineToConstantHeading(new Vector2d(MiddleBoardPose.getX(), ParkSpot.getY()))
+                                //.lineToConstantHeading(new Vector2d(MiddleBoardPose.getX(), ParkSpot.getY()))
+                                .lineToLinearHeading(checkpoint2)
                                 .addDisplacementMarker(()->{
                                     System.out.println("ARM DOWN");
                                 })
@@ -248,7 +250,8 @@ public class Red_Left_Sim {
 //
 //
 //                                //park
-                                .lineToConstantHeading(new Vector2d(RightBoardPose.getX(), ParkSpot.getY()))
+                                //.lineToConstantHeading(new Vector2d(RightBoardPose.getX(), ParkSpot.getY()))
+                                .lineToLinearHeading(checkpoint2)
                                 .addDisplacementMarker(()->{
                                     System.out.println(" ");
                                     System.out.println("ARM DOWN");
