@@ -177,7 +177,19 @@ public class Red_Right_Sim {
                                     System.out.println(" ");
                                     System.out.println("OPEN LEFT CLAW");
                                 })
+                                .waitSeconds(.1)
 
+                                //get to checkopoint
+                                .splineToLinearHeading(RightBoardPose, RightBoardPose.getHeading())
+                                .waitSeconds(.1)
+                                .back(5)
+                                .waitSeconds(.7)
+                                .forward(5)
+                                .waitSeconds(.7)
+
+                                .lineToLinearHeading(new Pose2d(ParkSpot.getX() - 10,ParkSpot.getY(), ParkSpot.getHeading()))
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(ParkSpot)
 
                                 .waitSeconds(1000)
                                 .build()
@@ -191,7 +203,7 @@ public class Red_Right_Sim {
                         .setDarkMode(true)
                         .setBackgroundAlpha(0.95f)
                         //program to run
-                        .addEntity(Red_Right_AutoR)
+                        .addEntity(Red_Right_AutoL)
                         .start();
                 break;
             case "RIGHT":
@@ -207,7 +219,7 @@ public class Red_Right_Sim {
                         .setDarkMode(true)
                         .setBackgroundAlpha(0.95f)
                         //program to run
-                        .addEntity(Red_Right_AutoR)
+                        .addEntity(Red_Right_AutoM)
                         .start();
                 break;
         }
