@@ -47,7 +47,7 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.openClawV2(true,true);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(9, () -> {
+                .addTemporalMarker(11, () -> {
                     //intake.openClaw(true);
                     intake.openClawV2(true,true);
                 })
@@ -79,11 +79,11 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.openClawV2(true,true);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(9, () -> {
                     //intake.openClaw(true);
                     intake.closeClaws(true);
                 })
-                .addTemporalMarker(7, () ->{
+                .addTemporalMarker(10, () ->{
                     intake.wrist_up();
                 })
                 .back(14)
@@ -112,11 +112,11 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.openClawV2(true,true);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(8, () -> {
+                .addTemporalMarker(10, () -> {
                     //intake.openClaw(true);
                     intake.closeClaws(true);
                 })
-                .addTemporalMarker(9, () ->{
+                .addTemporalMarker(12, () ->{
                     intake.wrist_up();
                 })
                 .forward(3)
