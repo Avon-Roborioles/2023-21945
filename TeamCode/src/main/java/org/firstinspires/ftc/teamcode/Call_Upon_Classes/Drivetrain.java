@@ -39,6 +39,8 @@ public class Drivetrain {
     private DcMotor rightFront;
     private DcMotor rightRear;
     private DcMotor x_encoder;
+    RevHubOrientationOnRobot.LogoFacingDirection logoDirection;
+    RevHubOrientationOnRobot.UsbFacingDirection usbDirection;
 
     //FTCLib motor objects for FCD (Field-Centric Driving)
 
@@ -130,18 +132,32 @@ public class Drivetrain {
     } //Done
 
     //generic fieldCentric drive setup
-    public void init_fieldCentric_drive(HardwareMap hardwareMap){
-        drivetrain = new MecanumDrive(
-                new Motor(hardwareMap, "leftFront", Motor.GoBILDA.RPM_312),
-                new Motor(hardwareMap, "rightFront", Motor.GoBILDA.RPM_312),
-                new Motor(hardwareMap, "leftRear", Motor.GoBILDA.RPM_312),
-                new Motor(hardwareMap, "rightRear", Motor.GoBILDA.RPM_312)
-        );
-
+    public void init_fieldCentric_drive(HardwareMap hardwareMap,boolean redAlliance){
+        //fL,fR,bL, bR
         imu = hardwareMap.get(IMU.class, "imu");
 
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.UP;
+        if(redAlliance) { //setup imu & wheels to RedAlliance Config
+            logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD; //left
+            usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.UP;
+
+            drivetrain = new MecanumDrive(
+                    new Motor(hardwareMap, "rightFront", Motor.GoBILDA.RPM_312),
+                    new Motor(hardwareMap, "rightRear", Motor.GoBILDA.RPM_312),
+                    new Motor(hardwareMap, "leftFront", Motor.GoBILDA.RPM_312),
+                    new Motor(hardwareMap, "leftRear", Motor.GoBILDA.RPM_312)
+            );
+        } else { //setup imu & wheels to BlueAlliance Config
+            logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.FORWARD; //left
+            usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.UP;
+
+            drivetrain = new MecanumDrive(
+                    new Motor(hardwareMap, "leftRear", Motor.GoBILDA.RPM_312),
+                    new Motor(hardwareMap, "leftFront", Motor.GoBILDA.RPM_312),
+                    new Motor(hardwareMap, "rightRear", Motor.GoBILDA.RPM_312),
+                    new Motor(hardwareMap, "rightFront", Motor.GoBILDA.RPM_312)
+            );
+        }
+
 
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 

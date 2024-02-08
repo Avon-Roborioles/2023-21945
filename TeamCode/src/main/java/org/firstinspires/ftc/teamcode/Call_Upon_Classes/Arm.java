@@ -158,9 +158,11 @@ public class Arm {
     }
 
     //Methods of Arm TeleOp control
-    public void run_arm_manual(Gamepad gamepad2) {
+    public void run_arm_manual(Gamepad gamepad2, ToggleButtonReader d_down) {
         double leftY = gamepad2.left_stick_y;
         float rightTrigger = gamepad2.right_trigger;
+
+
 
 //        // Limits
 //        if (leftMotor.getCurrentPosition() >= 180 && speed > 0) {
@@ -204,9 +206,16 @@ public class Arm {
                 rightMotorEx.setPower(-0.09);
             }
         }
+
+
 //        leftMotor.setPower(speed);
 //        rightMotor.setPower(-speed);
+        d_down.readValue();
     } //Done - just controls speed - test
+
+
+
+
 
     public void run_arm_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader d_down, ToggleButtonReader d_up){
         double ltrigger = gamepad2.left_trigger;
@@ -272,9 +281,12 @@ public class Arm {
 
         if(armDefault){
             if(armIsUp){
-                down();
+                //down();
+                armGroup.setRunMode(Motor.RunMode.RawPower);
+                armGroup.set(-0.7);
             } else {
-                up();
+                armGroup.setRunMode(Motor.RunMode.RawPower);
+                armGroup.set(-0.7);
             }
         }
 
@@ -284,7 +296,7 @@ public class Arm {
     //simple arm function to make robot hang
     public void hang(){
         armGroup.setRunMode(Motor.RunMode.RawPower);
-        armGroup.set(-1);
+        armGroup.set(-0.7);
     }
 
     //Auto Methods

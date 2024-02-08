@@ -11,9 +11,15 @@ public class Red_Left_Auto extends AutoBase{
     public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
     public static Pose2d checkpoint1 = new Pose2d(-36,-11,Math.toRadians(-180));
     public static Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));
-    public static Pose2d LeftBoardPose = new Pose2d(47,-28,Math.toRadians(-180));
-    public static Pose2d MiddleBoardPose = new Pose2d(47,-34,Math.toRadians(-180));
-    public static Pose2d RightBoardPose = new Pose2d(47,-40,Math.toRadians(-180));
+    public static Pose2d LeftSpikePose = new Pose2d(-45,-28,Math.toRadians(-180));
+    public static Pose2d MiddleSpikePose = new Pose2d(-36,-8,Math.toRadians(-90));
+    public static Pose2d RightSpikePose = new Pose2d(-40,-30,Math.toRadians(0));
+    public static Pose2d ThirdStack = new Pose2d(-54,checkpoint1.getY() + 2, checkpoint1.getHeading());
+    public static Pose2d LeftBoardPose = new Pose2d(39,-28,Math.toRadians(-180));
+    public static Pose2d MiddleBoardPose = new Pose2d(39,-34,Math.toRadians(-180));
+    public static Pose2d RightBoardPose = new Pose2d(39,-40,Math.toRadians(-180));
+
+    public static Pose2d ParkSpot = new Pose2d(57,-8,Math.toRadians(-180));
 
     public void runOpMode() throws  InterruptedException{
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
@@ -26,20 +32,124 @@ public class Red_Left_Auto extends AutoBase{
         int aprilTagID = 5;
 
         init_classes(); //initiates robot functions
-        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
+        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop - red only
 
-        //TODO
+        //TEST
         TrajectorySequence Left_Spike_Score = bot.trajectorySequenceBuilder(startPoseRL)
+                .addSpatialMarker(startPoseRL.vec(),() ->{
+                    //System.out.println(" ");
+                    //System.out.println("CLOSE CLAWS");
+                    intake.closeClaws(true);
+                    telemetry.addLine("CLOSE CLAWS");
+                    telemetry.update();
+
+                })
+
+                //score spike
+                .lineToLinearHeading(LeftSpikePose)
+                .addDisplacementMarker(30,() ->{
+//                    System.out.println(" ");
+//                    System.out.println("WRIST DOWN");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("WRIST DOWN");
+                    intake.wrist_down();
+                })
+                .waitSeconds(.1)
+                .back(11)
+                .addDisplacementMarker(45,() ->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN LEFT CLAW");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("OPEN LEFT CLAW");
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(.7) //wait to score spike
+                .back(2) //move a bit so we don't pickup pixel again
+                .waitSeconds(.1)
                 .build();
-        //TODO
+
+        //TEST
         TrajectorySequence Middle_Spike_Score = bot.trajectorySequenceBuilder(startPoseRL)
+                //close claw
+                .addSpatialMarker(startPoseRL.vec(),() ->{
+//                    System.out.println(" ");
+//                    System.out.println("CLOSE CLAWS");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("CLOSE CLAWS");
+                    intake.closeClaws(true);
+                })
+
+                //score spike
+                .lineToLinearHeading(MiddleSpikePose)
+                .addDisplacementMarker(40,()->{
+//                    System.out.println(" ");
+//                    System.out.println("WRIST DOWN");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("WRIST DOWN");
+                    intake.wrist_down();
+                })
+
+                .waitSeconds(.1)
+
+                .forward(5)
+                .addDisplacementMarker(50,() ->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN LEFT CLAW");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("OPEN LEFT CLAW");
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(1)
+
+                .back(4)
+                .waitSeconds(.1)
                 .build();
-        //TODO
+
+        //TEST
         TrajectorySequence Right_Spike_Score = bot.trajectorySequenceBuilder(startPoseRL)
+                //close claw
+                .addSpatialMarker(startPoseRL.vec(),() ->{
+//                    System.out.println(" ");
+//                    System.out.println("CLOSE CLAWS");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("CLOSE CLAWS");
+                    intake.closeClaws(true);
+                })
+
+                //score spike
+                .lineToLinearHeading(RightSpikePose)
+                .addDisplacementMarker(30,()->{
+//                    System.out.println(" ");
+//                    System.out.println("WRIST DOWN");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("WRIST DOWN");
+                    intake.wrist_down();
+                })
+
+                .waitSeconds(.1)
+
+                .forward(5)
+                .addDisplacementMarker(35,() ->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN LEFT CLAW");
+                    telemetry.addLine(" ");
+                    telemetry.addLine("OPEN LEFT CLAW");
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(1)
+
+                .back(7)
+                .waitSeconds(.1)
+
                 .build();
 
         //TODO
         TrajectorySequence CheckPoint1 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .lineToLinearHeading(checkpoint1)
+                .addDisplacementMarker(10,()->{
+                    telemetry.addLine(" ");
+                    //telemetry.a
+                })
                 .build();
 
         //TODO

@@ -84,7 +84,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
             //Driver 2 Controls
            // arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
-            arm.run_arm_manual(gamepad2);
+            arm.run_arm_manual(gamepad2, d_down);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader,LBumperReader,RBumperReader);
             feedback.run_Timer(gamepad1,gamepad2);
             //setTelemetry();
