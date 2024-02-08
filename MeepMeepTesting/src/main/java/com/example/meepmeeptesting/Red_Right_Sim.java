@@ -17,7 +17,7 @@ public class Red_Right_Sim {
     public static Pose2d MiddleBoardPose = new Pose2d(39,-34,Math.toRadians(-180));
     public static Pose2d RightBoardPose = new Pose2d(39,-40,Math.toRadians(-180));
 
-    public static Pose2d ParkSpot = new Pose2d(57,-60,Math.toRadians(-180));
+    public static Pose2d ParkSpot = new Pose2d(57,-59,Math.toRadians(-180));
 
     public static void main(String[] args){
         MeepMeep meepMeep = new MeepMeep(600);
@@ -104,18 +104,46 @@ public class Red_Right_Sim {
                                 .strafeRight(5)
                                 .waitSeconds(.1)
                                 .lineToLinearHeading(MiddleSpikePose)
+                                .addDisplacementMarker(50,()->{
+                                    System.out.print(" ");
+                                    System.out.println("WRIST DOWN");
+                                })
                                 .waitSeconds(.1)
                                 .forward(3)
+                                .addDisplacementMarker(56,()->{
+                                    System.out.print(" ");
+                                    System.out.println("OPEN LEFT CLAW");
+                                })
                                 .waitSeconds(.5)
                                 .back(3)
                                 .waitSeconds(.1)
 
                                 //get to board
                                 .strafeLeft(12)
+                                .addDisplacementMarker(63,()->{
+                                    System.out.print(" ");
+                                    System.out.println("CLOSE CLAWS");
+                                })
                                 .splineToLinearHeading(MiddleBoardPose, MiddleSpikePose.getHeading())
+
+                                .addDisplacementMarker(80,()->{
+                                    System.out.print(" ");
+                                    System.out.println("ARM UP");
+                                })
+
+                                .addDisplacementMarker(105,()->{
+                                    System.out.print(" ");
+                                    System.out.print("OPEN RIGHT CLAW");
+                                })
 
                                 //score spike
                                 .back(5)
+                                .addDisplacementMarker(115,()->{
+                                    System.out.println(" ");
+                                    System.out.println("ARM DOWN");
+                                    System.out.println("CLOSE CLAWS");
+
+                                })
                                 .waitSeconds(.7)
                                 .forward(5)
 
