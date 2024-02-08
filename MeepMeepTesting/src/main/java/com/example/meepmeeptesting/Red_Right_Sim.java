@@ -12,7 +12,7 @@ public class Red_Right_Sim {
     public static Pose2d checkpoint2 = new Pose2d(34,-58,Math.toRadians(-180));
     public static Pose2d LeftSpikePose = new Pose2d(14,-34,Math.toRadians(-180));
     public static Pose2d MiddleSpikePose = new Pose2d(14,-10,Math.toRadians(-90));
-    public static Pose2d RightSpikePose = new Pose2d(-11,-30,Math.toRadians(0));
+    public static Pose2d RightSpikePose = new Pose2d(35,-30,Math.toRadians(-180));
     public static Pose2d LeftBoardPose = new Pose2d(39,-28,Math.toRadians(-180));
     public static Pose2d MiddleBoardPose = new Pose2d(39,-34,Math.toRadians(-180));
     public static Pose2d RightBoardPose = new Pose2d(39,-40,Math.toRadians(-180));
@@ -161,6 +161,23 @@ public class Red_Right_Sim {
                 .setConstraints(60,60,Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPoseRR)
+                                //close claw
+                                .addSpatialMarker(startPoseRR.vec(),() ->{
+                                    System.out.println(" ");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+
+                                //score spike
+                                .splineToSplineHeading(RightSpikePose, RightSpikePose.getHeading())
+                                .waitSeconds(.7)
+                                .forward(8)
+                                .waitSeconds(.7)
+                                .back(8)
+                                .addDisplacementMarker(60,()->{
+                                    System.out.println(" ");
+                                    System.out.println("OPEN LEFT CLAW");
+                                })
+
 
                                 .waitSeconds(1000)
                                 .build()
@@ -174,7 +191,7 @@ public class Red_Right_Sim {
                         .setDarkMode(true)
                         .setBackgroundAlpha(0.95f)
                         //program to run
-                        .addEntity(Red_Right_AutoM)
+                        .addEntity(Red_Right_AutoR)
                         .start();
                 break;
             case "RIGHT":
@@ -182,7 +199,7 @@ public class Red_Right_Sim {
                         .setDarkMode(true)
                         .setBackgroundAlpha(0.95f)
                         //program to run
-                        .addEntity(Red_Right_AutoM)
+                        .addEntity(Red_Right_AutoR)
                         .start();
                 break;
             default:
@@ -190,7 +207,7 @@ public class Red_Right_Sim {
                         .setDarkMode(true)
                         .setBackgroundAlpha(0.95f)
                         //program to run
-                        .addEntity(Red_Right_AutoM)
+                        .addEntity(Red_Right_AutoR)
                         .start();
                 break;
         }
