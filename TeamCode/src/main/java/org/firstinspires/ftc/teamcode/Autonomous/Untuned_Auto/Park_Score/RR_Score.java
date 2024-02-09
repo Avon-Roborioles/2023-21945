@@ -58,30 +58,6 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .strafeLeft(21)
                 .waitSeconds(.1)
                 .back(22)
-
-//                .addTemporalMarker(7, () -> {
-//                    //intake.openClaw(false);
-//                    intake.openClawV2(true,true);
-//                    intake.wrist_down();
-//                })
-//                .addTemporalMarker(11, () -> {
-//                    //intake.openClaw(true);
-//                    //intake.openClawV2(true,true);
-//                    intake.wrist_up();
-//                })
-//                .addTemporalMarker(12, () ->{
-//                    intake.closeClaws(true);
-//                    intake.wrist_up();
-//                })
-//                .turn(Math.toRadians(5))
-//                .waitSeconds(.1)
-//                .back(5)
-//                .waitSeconds(.1)
-//                .strafeLeft(21) //25
-//
-//                //-----------------------
-//                .waitSeconds(1)
-//                .back(27) //35
                 .build();
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
@@ -109,10 +85,9 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .back(14)
                 .waitSeconds(1)
-                //----------------------
                 .strafeRight(33)
                 .build();
-//
+
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
                     //intake.openClaw(false);
@@ -145,21 +120,6 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 
                 .build();
 
-//        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
-//
-//        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
-//
-//        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
-//
-//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(90))) //TODO
-//                .lineToLinearHeading(new Pose2d(0,10,Math.toRadians(90)))
-//                .waitSeconds(.7)
-//                .lineToLinearHeading(new Pose2d(30, 0, Math.toRadians(90)))
-//                .build();
-
         //auto code here
         waitForStart();
 
@@ -179,28 +139,5 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 bot.followTrajectorySequence(RightSpikeScore);
                 break;
         }
-
-        //bot.followTrajectorySequence(RightSpikeScore);
-
-        //score pixel
-        //bot.followTrajectorySequence(LeftPreloadScore);
-//        switch(aprilTagID){ //TODO Add back when ready
-//            case 4:
-//                bot.followTrajectorySequence(LeftPreloadScore);
-//                break;
-//            case 5:
-//                bot.followTrajectorySequence(MiddlePreloadScore);
-//                break;
-//            case 6:
-//                bot.followTrajectorySequence(RightPreloadScore);
-//                break;
-//        }
-
-        //park robot
-       // bot.followTrajectorySequence(park); //TODO Add back when ready
-
-
-
-
     }
 }
