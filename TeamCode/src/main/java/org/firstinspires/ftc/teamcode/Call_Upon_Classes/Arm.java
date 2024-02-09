@@ -162,16 +162,6 @@ public class Arm {
         double leftY = gamepad2.left_stick_y;
         float rightTrigger = gamepad2.right_trigger;
 
-
-
-//        // Limits
-//        if (leftMotor.getCurrentPosition() >= 180 && speed > 0) {
-//            speed = 0;
-//            armStatus = armCommands.SCORE;
-//        } else if (leftMotor.getCurrentPosition() <= 0 && speed < 0) {
-//            speed = 0;
-//            armStatus = armCommands.GROUND;
-//        }
         if(rightMotorEx.getCurrentPosition() < 1600) {
             if (leftY < 0) {
                 leftMotorEx.setPower(-0.5);
@@ -188,33 +178,22 @@ public class Arm {
             }
         } else {
             if (leftY > 0) {
-//                leftMotor.setPower(-0.3);
-//                rightMotor.setPower(0.3);
                 leftMotorEx.setPower(0.5);
                 rightMotorEx.setPower(-0.5);
             } else if (leftY < 0 && rightTrigger > 0.8) {
                 leftMotorEx.setPower(1);
                 leftMotorEx.setPower(-1);
             } else if (leftY < 0) {
-//                leftMotor.setPower(0.3);
-//                rightMotor.setPower(-0.3);
                 leftMotorEx.setPower(-0.3);
                 rightMotorEx.setPower(0.3);
-
             } else {
                 leftMotorEx.setPower(0.09); //small bit of power for brakes
                 rightMotorEx.setPower(-0.09);
             }
         }
 
-
-//        leftMotor.setPower(speed);
-//        rightMotor.setPower(-speed);
         d_down.readValue();
     } //Done - just controls speed - test
-
-
-
 
 
     public void run_arm_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader d_down, ToggleButtonReader d_up){
@@ -226,69 +205,11 @@ public class Arm {
         boolean button_y = gamepad2.y;
         boolean button_b = gamepad2.b;
 
-        if(d_down.wasJustPressed()){ //when pressed activate default mode & check if arm is up or down
-            armDefault = true;
-            if(rightMotor.getCurrentPosition() > 800){
-                armIsUp = true;
-            } else {
-                armIsUp = false;
-            }
-        }
+        //armDefault Logic
 
-        if(leftY < -0.3 || leftY > 0.3) { //turn off armDefault if moving joystick
-            armDefault = false;
+        //TeleOp Control logic
 
-            if (rightMotor.getCurrentPosition() < 1600) {
-                if (leftY < 0 && rtrigger > 0) {
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(1);
-                } else if(leftY < 0){
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(0.4);
-                }else if (leftY > 0) {
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(-0.4);
-                } /*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(.01);
-                }*/
-            } else{
-                if (leftY > 0) {
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(-0.5);
-                } else if (leftY < 0 && rtrigger > 0.1) {
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(1);
-            } else if(leftY > 0) {
-                    armGroup.setRunMode(Motor.RunMode.RawPower);
-                    armGroup.set(0.5);
-                }/*else if ((leftY >= -0.3 && leftY <= 0.3) && armDefault == false) {
-                armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(-.01);
-            }*/
-
-            }
-        } else if((leftY >= -0.3 && leftY <= 0.3) && armDefault == false){
-
-            if(rightMotor.getCurrentPosition() < 1600){
-                armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(.01);
-            } else {
-                armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(-.01);
-            }
-        }
-
-        if(armDefault){
-            if(armIsUp){
-                //down();
-                armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(-0.7);
-            } else {
-                armGroup.setRunMode(Motor.RunMode.RawPower);
-                armGroup.set(-0.7);
-            }
-        }
+        //
 
         d_down.readValue();
     }

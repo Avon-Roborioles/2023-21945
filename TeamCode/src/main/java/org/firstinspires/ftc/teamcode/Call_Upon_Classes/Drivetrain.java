@@ -166,21 +166,6 @@ public class Drivetrain {
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
 
-    //Old method running Drivetrain
-    public void run_drive_motors(Gamepad gamepad1, Telemetry telemetry){
-        lx = -1 * gamepad1.left_stick_x; // left stick x
-        ly = gamepad1.left_stick_x; //left stick y
-        rx = gamepad1.left_stick_y;//right stick x
-        denominator = Math.max(Math.abs(lx)+Math.abs(ly)+Math.abs(rx), 1);
-
-        leftFront.setPower((lx + ly +rx)/denominator);
-        leftRear.setPower((lx + ly * strafe_set -rx* strafe_set )/denominator);
-        rightFront.setPower((lx - ly -rx)/denominator);
-        rightRear.setPower((lx - ly * strafe_set +rx* strafe_set )/denominator);
-
-        getTelemetry(telemetry);
-
-    }
 
     public void run_mecanum_drive(Gamepad gamepad1, Telemetry telemetry){
         lx =gamepad1.left_stick_x; //swtiched with x
