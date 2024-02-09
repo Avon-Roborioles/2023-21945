@@ -1,11 +1,15 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.Tuned_Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-public class Blue_Right_Auto extends AutoBase{
+//@Autonomous(name="Blue Right Auto", group="auto")
+@Disabled
+public class Blue_Right_Auto extends AutoBase {
     public static Pose2d startPoseBR = new Pose2d(11.7,60,Math.toRadians(-90));
 
     public void runOpMode() throws  InterruptedException{

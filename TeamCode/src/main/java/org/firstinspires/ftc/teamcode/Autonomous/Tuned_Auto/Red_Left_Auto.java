@@ -1,14 +1,17 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.Tuned_Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Red Left Auto", group = "auto")
-public class Red_Left_Auto extends AutoBase{
+//@Autonomous(name = "Red Left Auto", group = "auto")
+@Disabled
+public class Red_Left_Auto extends AutoBase {
     public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
     public static Pose2d checkpoint1 = new Pose2d(-36,-11,Math.toRadians(-180));
     public static Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));

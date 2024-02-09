@@ -1,14 +1,10 @@
-package org.firstinspires.ftc.teamcode.Autonomous.OLD.Park_Score;
+package org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-
-import java.util.concurrent.TimeUnit;
 
 @Autonomous(name="RL Score", group="Park + Score")
 public class RL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{

@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.Autonomous.OLD.Park_Score_Plus;
+package org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score_Plus;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
