@@ -19,121 +19,109 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
+        //TEST
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
                 .addTemporalMarker(0, () -> {
-//                    intake.openClaw(false);
-//                    intake.closePixelHolder(true);
-                    intake.closeClaws(true);
-                })
-                .strafeRight(5)
-                .waitSeconds(.5)
-                .forward(20)
-                .waitSeconds(.5)
-                .turn(Math.toRadians(85))
-
-
-                .waitSeconds(.5) //------------
-                .forward(10)
-                .waitSeconds(.5) //-----------
-                .back(11.5)
-                .waitSeconds(5)
-
-                .addTemporalMarker(7, () -> {
                     //intake.openClaw(false);
-                    intake.openClawV2(true,true);
-                    intake.wrist_down();
-                })
-                .addTemporalMarker(8, () -> {
-                   // intake.openClaw(true);
                     intake.closeClaws(true);
-                })
-                .addTemporalMarker(9, () ->{
                     intake.wrist_up();
                 })
-                .turn(Math.toRadians(5))
-                .strafeLeft(23) //25
-
-                //-----------------------
-                .waitSeconds(1)
-                .forward(28) //35 - back
+                .forward(18)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-80))
+                .addDisplacementMarker(()->{
+                    intake.wrist_down();
+                })
+                .waitSeconds(.7)
+                .back(16)
+                .addDisplacementMarker(()->{
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(.7)
+                .back(5)
+                .addDisplacementMarker(()->{
+                    intake.closeClaws(true);
+                    intake.wrist_up();
+                })
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-11))
+                .waitSeconds(.1)
+                .strafeRight(21)
+                .waitSeconds(.1)
+                .back(15)
                 .build();
 
+        //TEST
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
-//                    intake.openClaw(false);
-//                    intake.closePixelHolder(true);
+                    // intake.openClaw(false);
                     intake.closeClaws(true);
+                    //intake.closePixelHolder(true);
 
                 })
                 .forward(24) //16
                 .waitSeconds(.5)
-                .back(9.5)
-                .waitSeconds(5)
+                .back(8.75)
+                .waitSeconds(2)
                 .addTemporalMarker(3, () -> {
                     //intake.openClaw(false);
-                    intake.openClawV2(true,true);
+                    intake.openClawV2(true,false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(4, () -> {
+                .addTemporalMarker(5, () -> {
                     //intake.openClaw(true);
                     intake.closeClaws(true);
                 })
-                .addTemporalMarker(5, () ->{
+                .addTemporalMarker(6, () ->{
                     intake.wrist_up();
                 })
-                .back(16)
+                .back(14)
+                .waitSeconds(.1)
+                .turn(-80)
                 .waitSeconds(1)
-                //----------------------
-                .turn(Math.toRadians(5))
-                .strafeLeft(35) //strafeRight
+                //.strafeLeft(33)
+                .back(33)
                 .build();
-//
+
+        //TEST
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
                 .addTemporalMarker(0, () -> {
-                    //intake.openClaw(false);
                     intake.closeClaws(true);
-                    intake.closePixelHolder(true);
-
-                })
-                .forward(18)
-                .waitSeconds(.5)
-                .turn(Math.toRadians(-88))
-                .waitSeconds(.5) //------------
-                .forward(10)
-                .waitSeconds(.5) //-----------
-                .back(8.5)
-                .waitSeconds(4)
-                .addTemporalMarker(6, () -> {
-                    //intake.openClaw(false);
-                    intake.openClawV2(true,true);
-                    intake.wrist_down();
-                })
-                .addTemporalMarker(7, () -> {
-                    //intake.openClaw(true);
-                    intake.closeClaws(true);
-                })
-                .addTemporalMarker(8, () ->{
                     intake.wrist_up();
                 })
-                .forward(3)
-                .waitSeconds(.5)
-                .strafeRight(20) //25
-                .waitSeconds(1)
-                //---------------------
-                .back(28) //35 - forward
-                .build();
+                //get to spike
+                .strafeLeft(5)
+                .waitSeconds(.1)
+                .forward(18) //17
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-80))
+                .addDisplacementMarker(()->{
+                    intake.wrist_down();
+                })
 
-//        TrajectorySequence LeftPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
-//
-//        TrajectorySequence MiddlePreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
-//
-//        TrajectorySequence RightPreloadScore = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
-//
-//        TrajectorySequence park = bot.trajectorySequenceBuilder(new Pose2d()) //TODO
-//                .build();
+                //score spike
+                .waitSeconds(.1) //------------
+                .forward(8)
+                .waitSeconds(.7) //-----------
+                .back(5)
+                .addDisplacementMarker(()->{
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(.7)
+
+                //park
+                .turn(Math.toRadians(-11))
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(()->{
+                    intake.closeClaws(true);
+                    intake.wrist_up();
+                })
+                .waitSeconds(.1)
+                .strafeRight(21)
+                .waitSeconds(.1)
+                .back(22)
+                .build();
 
         //auto code here
         waitForStart();
@@ -154,24 +142,6 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 bot.followTrajectorySequence(RightSpikeScore);
                 break;
         }
-
-        //score pixel
-        //bot.followTrajectorySequence(LeftPreloadScore);
-//        switch(aprilTagID){ //TODO Add back when ready
-//            case 4:
-//                bot.followTrajectorySequence(LeftPreloadScore);
-//                break;
-//            case 5:
-//                bot.followTrajectorySequence(MiddlePreloadScore);
-//                break;
-//            case 6:
-//                bot.followTrajectorySequence(RightPreloadScore);
-//                break;
-//        }
-
-        //park robot
-        //bot.followTrajectorySequence(park); //TODO Add back when ready
-
 
 
 
