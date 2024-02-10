@@ -47,7 +47,7 @@ public class Arm {
     private int maxPosition = 4000; //Done -  find max value
     private int armStandbyPose = 200;
     private boolean armState;
-    private boolean armDefault;
+    private boolean armDefault = false;
     private boolean armIsUp;
 
     //Methods of Arm Initialization
@@ -162,34 +162,43 @@ public class Arm {
         double leftY = gamepad2.left_stick_y;
         float rightTrigger = gamepad2.right_trigger;
 
-        if(rightMotorEx.getCurrentPosition() < 1600) {
-            if (leftY < 0) {
-                leftMotorEx.setPower(-0.5);
-                rightMotorEx.setPower(0.5);
-            } else if (leftY > 0 && rightTrigger > 0.8) {
-                leftMotorEx.setPower(-1);
-                leftMotorEx.setPower(1);
-            } else if (leftY > 0) {
-                leftMotorEx.setPower(0.3);
-                rightMotorEx.setPower(-0.3);
+        if(d_down.wasJustPressed()){
+            armDefault = true;
+        }
+
+        if(leftY > 0 || leftY < 0) {
+            armDefault = false;
+            if (rightMotorEx.getCurrentPosition() < 1600) {
+                if (leftY < 0) {
+                    leftMotorEx.setPower(-0.5);
+                    rightMotorEx.setPower(0.5);
+                } else if (leftY > 0) {
+                    leftMotorEx.setPower(0.3);
+                    rightMotorEx.setPower(-0.3);
+                }
             } else {
+                if (leftY > 0) {
+                    leftMotorEx.setPower(0.5);
+                    rightMotorEx.setPower(-0.5);
+                } else if (leftY < 0) {
+                    leftMotorEx.setPower(-0.3);
+                    rightMotorEx.setPower(0.3);
+                }
+            }
+        } else if(armDefault == false){
+             if(rightMotorEx.getCurrentPosition() < 1600) {
                 leftMotorEx.setPower(-0.04); //small bit of power for brakes
                 rightMotorEx.setPower(0.04);
-            }
-        } else {
-            if (leftY > 0) {
-                leftMotorEx.setPower(0.5);
-                rightMotorEx.setPower(-0.5);
-            } else if (leftY < 0 && rightTrigger > 0.8) {
-                leftMotorEx.setPower(1);
-                leftMotorEx.setPower(-1);
-            } else if (leftY < 0) {
-                leftMotorEx.setPower(-0.3);
-                rightMotorEx.setPower(0.3);
             } else {
-                leftMotorEx.setPower(0.09); //small bit of power for brakes
-                rightMotorEx.setPower(-0.09);
-            }
+                 leftMotorEx.setPower(0.09); //small bit of power for brakes
+                 rightMotorEx.setPower(-0.09);
+             }
+        }
+
+        //hang
+        if(armDefault){
+            leftMotorEx.setPower(0.8);
+            rightMotorEx.setPower(-.8);
         }
 
         d_down.readValue();
@@ -209,7 +218,9 @@ public class Arm {
 
         //TeleOp Control logic
 
-        //
+        //Set point Logic
+
+        //stack level logic
 
         d_down.readValue();
     }

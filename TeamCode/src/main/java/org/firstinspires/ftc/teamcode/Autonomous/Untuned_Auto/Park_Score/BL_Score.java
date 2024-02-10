@@ -26,14 +26,14 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.closeClaws(true);
                     intake.wrist_up();
                 })
-                .forward(18)
+                .forward(20)
                 .waitSeconds(.1)
                 .turn(Math.toRadians(-80))
                 .addDisplacementMarker(()->{
                     intake.wrist_down();
                 })
                 .waitSeconds(.7)
-                .back(16)
+                .back(13)
                 .addDisplacementMarker(()->{
                     intake.openClawV2(true,false);
                 })
@@ -46,9 +46,9 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.1)
                 .turn(Math.toRadians(-11))
                 .waitSeconds(.1)
-                .strafeRight(21)
+                .strafeRight(18)
                 .waitSeconds(.1)
-                .back(15)
+                .back(9)
                 .build();
 
         //TEST
@@ -77,7 +77,7 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .back(14)
                 .waitSeconds(.1)
-                .turn(-80)
+                .turn(Math.toRadians(-80))
                 .waitSeconds(1)
                 //.strafeLeft(33)
                 .back(33)

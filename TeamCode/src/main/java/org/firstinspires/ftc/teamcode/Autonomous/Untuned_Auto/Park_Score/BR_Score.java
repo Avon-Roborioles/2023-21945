@@ -31,7 +31,7 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.1)
                 .forward(18) //17
                 .waitSeconds(.1)
-                .turn(Math.toRadians(80))
+                .turn(Math.toRadians(75))
                 .addDisplacementMarker(()->{
                     intake.wrist_down();
                 })
@@ -84,8 +84,11 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.wrist_up();
                 })
                 .back(14)
+                .waitSeconds(10)
+//                .turn(Math.toRadians(-80))
 //                .waitSeconds(1)
-//                .strafeRight(33)
+//                //.strafeLeft(33)
+//                .back(33)
                 .build();
 
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
@@ -95,26 +98,33 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.wrist_up();
                 })
                 .forward(18)
+//                .addDisplacementMarker(()->{
+//                    intake.wrist_down();
+//                })
                 .waitSeconds(.1)
-                .turn(Math.toRadians(80))
+                .turn(Math.toRadians(-80))
+
+                .waitSeconds(.7)
+                .forward(8)
+                .waitSeconds(.7)
+                .back(8)
                 .addDisplacementMarker(()->{
                     intake.wrist_down();
-                })
-                .waitSeconds(.7)
-                .back(16)
-                .addDisplacementMarker(()->{
                     intake.openClawV2(true,false);
                 })
-                .waitSeconds(.7)
-                .back(5)
+                .waitSeconds(.1)
+                .back(3)
                 .addDisplacementMarker(()->{
                     intake.closeClaws(true);
-                    intake.wrist_up();
                 })
-                .waitSeconds(.1)
-                .turn(Math.toRadians(11))
-                .waitSeconds(.1)
-                .strafeLeft(21)
+//                .addDisplacementMarker(()->{
+//                    intake.closeClaws(true);
+//                    intake.wrist_up();
+//                })
+//                .waitSeconds(.1)
+//                .turn(Math.toRadians(11))
+//                .waitSeconds(.1)
+//                .strafeRight(21)
 //                .waitSeconds(.1)
 //                .back(15)
 

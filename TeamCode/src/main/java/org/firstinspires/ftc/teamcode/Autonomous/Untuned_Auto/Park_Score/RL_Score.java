@@ -28,27 +28,20 @@ public class RL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .forward(18)
                 .waitSeconds(.1)
-                .turn(Math.toRadians(-80))
+                .turn(Math.toRadians(75))
+                .waitSeconds(.7)
+                .forward(8)
+                .waitSeconds(.7)
+                .back(9)
                 .addDisplacementMarker(()->{
                     intake.wrist_down();
-                })
-                .waitSeconds(.7)
-                .back(16)
-                .addDisplacementMarker(()->{
                     intake.openClawV2(true,false);
                 })
                 .waitSeconds(.7)
-                .back(5)
+                .back(3)
                 .addDisplacementMarker(()->{
                     intake.closeClaws(true);
-                    intake.wrist_up();
                 })
-                .waitSeconds(.1)
-                .turn(Math.toRadians(-11))
-                .waitSeconds(.1)
-                .strafeRight(21)
-//                .waitSeconds(.1)
-//                .back(15)
                 .build();
 
         //TEST
@@ -68,19 +61,15 @@ public class RL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.openClawV2(true,false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(5, () -> {
+                .addTemporalMarker(5.5, () -> {
                     //intake.openClaw(true);
                     intake.closeClaws(true);
                 })
-                .addTemporalMarker(6, () ->{
+                .addTemporalMarker(6.5, () ->{
                     intake.wrist_up();
                 })
-                .back(14)
-                .waitSeconds(.1)
-                .turn(-80)
-//                .waitSeconds(1)
-//                //.strafeLeft(33)
-//                .back(33)
+                .back(5)
+                .waitSeconds(10)
                 .build();
 
         //TEST
@@ -108,17 +97,18 @@ public class RL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.openClawV2(true,false);
                 })
                 .waitSeconds(.7)
+                .back(5)
 
                 //park
-                .turn(Math.toRadians(-11))
-                .waitSeconds(.1)
-                .back(5)
-                .addDisplacementMarker(()->{
-                    intake.closeClaws(true);
-                    intake.wrist_up();
-                })
-                .waitSeconds(.1)
-                .strafeRight(21)
+//                .turn(Math.toRadians(-11))
+//                .waitSeconds(.1)
+//                .back(5)
+//                .addDisplacementMarker(()->{
+//                    intake.closeClaws(true);
+//                    intake.wrist_up();
+//                })
+//                .waitSeconds(.1)
+//                .strafeRight(21)
 //                .waitSeconds(.1)
 //                .back(22)
                 .build();
