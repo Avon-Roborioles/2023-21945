@@ -140,14 +140,19 @@ public class BR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
-                bot.followTrajectorySequence(LeftSpikeScore);
+                bot.followTrajectorySequenceAsync(LeftSpikeScore);
                 break;
             case "MIDDLE":
-                bot.followTrajectorySequence(MiddleSpikeScore);
+                bot.followTrajectorySequenceAsync(MiddleSpikeScore);
                 break;
             case "RIGHT":
-                bot.followTrajectorySequence(RightSpikeScore);
+                bot.followTrajectorySequenceAsync(RightSpikeScore);
                 break;
+        }
+
+        while(opModeIsActive()){
+            bot.update(); //handles RR logic
+            arm.update(); //handles Arm PID control
         }
     }
 }

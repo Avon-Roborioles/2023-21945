@@ -121,7 +121,7 @@ public class Arm {
     }
 
     public void down(){
-        target = 20;
+        target = 0;
 
 //        controller.setPID(p, i, d);
 //        int leftArmPos = leftMotor.getCurrentPosition();
@@ -133,7 +133,7 @@ public class Arm {
 //        armGroup.set(power);
     }
 
-    public void move_auto(int pixel){
+    public void stackPose(int pixel){
         //logic just like wrist
         switch(pixel){
             case 5:
@@ -167,7 +167,7 @@ public class Arm {
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
         int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(rightArmPos, target);
+        double pid = controller.calculate(rightArmPos, target); //uses rightArm
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
