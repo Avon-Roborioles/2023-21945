@@ -6,16 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-/*
- * NL means not localized -> doesn't keep track of where the bot is on the field
- * L means localized -> keeps track of where the bot is on the field
- */
-
 @Autonomous(name="RR Score Plus", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
-
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
         //important variables for auto - set to random values
         String propPosition = "LEFT";
@@ -24,108 +17,108 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         init_classes(); //initiates robot functions
         vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
-        //TODO
-        TrajectorySequence FullLeftAuto = bot.trajectorySequenceBuilder(new Pose2d())
-                .addTemporalMarker(0,() ->{ //3.5
-                    intake.closeClaws(true); //grip pixels
-                    arm.down();
-                })
+        SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
-                .forward(22)
+        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(new Pose2d()) //Done testing
+                .addTemporalMarker(0, () -> {
+                    //intake.openClaw(false);
+                    //intake.closePixelHolder(true);
+                    intake.closeClaws(true);
+                    intake.wrist_up();
+                })
+                //get to spike
+                .strafeRight(5)
+                .waitSeconds(.1)
+                .forward(18) //17
                 .waitSeconds(.1)
                 .turn(Math.toRadians(80))
+                .addDisplacementMarker(()->{
+                    intake.wrist_down();
+                })
 
-                //moving prop away
+                //score spike
                 .waitSeconds(.1) //------------
-                .forward(5)
-                .waitSeconds(.1) //-----------
-                .back(7)
-                .waitSeconds(.5) //waiting to score pixel
-
-                //get to board
-                .back(20)
-                .waitSeconds(.1)
-                .strafeRight(15) //TODO adjust value
-                .waitSeconds(.1) //raise arm and get ready to score
+                .forward(8)
+                .waitSeconds(.7) //-----------
                 .back(5)
-                .waitSeconds(.8) //score pixel
-                .forward(5)
-                .waitSeconds(.1)
+                .addDisplacementMarker(()->{
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(.7)
 
                 //park
-                .strafeLeft(16)
+                .turn(Math.toRadians(11))
                 .waitSeconds(.1)
-                .back(10)
-                .waitSeconds(10) //added in case we might get index out of bounds exception error - time based robot functions longer than actual auto movement
+                .back(5)
+                .addDisplacementMarker(()->{
+                    intake.closeClaws(true);
+                    intake.wrist_up();
+                })
+                .waitSeconds(.1)
+                .strafeLeft(21)
+                .waitSeconds(.1)
+                .back(22)
                 .build();
 
-        //TODO
-        TrajectorySequence FullMiddleAuto = bot.trajectorySequenceBuilder(new Pose2d())
-                .addTemporalMarker(0,() ->{ //3.5
-                    intake.closeClaws(true); //grip pixels
-                    arm.down();
+        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+                .addTemporalMarker(0, () -> {
+                    // intake.openClaw(false);
+                    intake.closeClaws(true);
+                    //intake.closePixelHolder(true);
+
                 })
-
-                //score spike pixel
-                .forward(24)
-                .waitSeconds(0.1)
-                .back(8.75)
-                .waitSeconds(.7) //score purple pixel
-
-
-                //get to board
-                .strafeRight(13)
-                .waitSeconds(.1)
-                .turn(Math.toRadians(80))
-                .waitSeconds(.1)
-                .strafeRight(13)
-                .waitSeconds(.7) //raise arm & be ready to score
-                .back(5)
+                .forward(24) //16
                 .waitSeconds(.5)
-                .forward(5)
-                .waitSeconds(.1)
-
-                //park
-                .strafeLeft(13)
-                .waitSeconds(.1)
-                .back(10)
-                .waitSeconds(10)
+                .back(8.75)
+                .waitSeconds(2)
+                .addTemporalMarker(3, () -> {
+                    //intake.openClaw(false);
+                    intake.openClawV2(true,false);
+                    intake.wrist_down();
+                })
+                .addTemporalMarker(5, () -> {
+                    //intake.openClaw(true);
+                    intake.closeClaws(true);
+                })
+                .addTemporalMarker(6, () ->{
+                    intake.wrist_up();
+                })
+                .back(14)
+                .waitSeconds(1)
+                .strafeRight(33)
                 .build();
 
-        //TODO
-        TrajectorySequence FullRightAuto = bot.trajectorySequenceBuilder(new Pose2d())
-                .addTemporalMarker(0,() ->{ //3.5
-                    intake.closeClaws(true); //grip pixels
-                    arm.down();
+        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(0))) //Done testing
+                .addTemporalMarker(0, () -> {
+                    //intake.openClaw(false);
+                    intake.closeClaws(true);
+                    intake.wrist_up();
                 })
-
-                //score purple pixel
-                .forward(2)
-                .waitSeconds(.05)
-                .strafeRight(6)
-                .forward(26)
-                .waitSeconds(.1)
-                .back(3)
-                .waitSeconds(.7) //score pixel
-
-                //go to backdrop
-                .strafeRight(10)
+                .forward(18)
                 .waitSeconds(.1)
                 .turn(Math.toRadians(80))
-                .waitSeconds(.1)
-                .strafeRight(10)
-                .waitSeconds(.7) //raise arm & get ready to score
+                .addDisplacementMarker(()->{
+                    intake.wrist_down();
+                })
+                .waitSeconds(.7)
+                .back(16)
+                .addDisplacementMarker(()->{
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(.7)
                 .back(5)
-                .waitSeconds(.7) //score pixels
-                .forward(5)
-
-                //park
+                .addDisplacementMarker(()->{
+                    intake.closeClaws(true);
+                    intake.wrist_up();
+                })
                 .waitSeconds(.1)
-                .strafeLeft(12)
-                .back(10)
-                .waitSeconds(10)
-                .build();
+                .turn(Math.toRadians(11))
+                .waitSeconds(.1)
+                .strafeLeft(21)
+                .waitSeconds(.1)
+                .back(15)
 
+                .build();
 
         //auto code here
         waitForStart();
@@ -135,32 +128,16 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         aprilTagID = vision.get_Apriltag_id(propPosition,false);
 
         //scores the purple preload pixel based on vision reading
-        //bot.followTrajectorySequence(FullLeftAuto);
         switch(propPosition){
             case "LEFT":
-                bot.followTrajectorySequence(FullLeftAuto);
+                bot.followTrajectorySequence(LeftSpikeScore);
                 break;
             case "MIDDLE":
-                bot.followTrajectorySequence(FullMiddleAuto);
+                bot.followTrajectorySequence(MiddleSpikeScore);
                 break;
             case "RIGHT":
-                bot.followTrajectorySequence(FullRightAuto);
+                bot.followTrajectorySequence(RightSpikeScore);
                 break;
         }
-//
-//        //score pixel (& park bot if Not Localized - NL)
-//        switch(aprilTagID){
-//            case 4:
-//                bot.followTrajectorySequence(LeftPreloadScoreNL);
-//                break;
-//            case 5:
-//                bot.followTrajectorySequence(MiddlePreloadScoreNL);
-//                break;
-//            case 6:
-//                bot.followTrajectorySequence(RightPreloadScoreNL);
-//                break;
-//        }
-
-        //end of program
     }
 }
