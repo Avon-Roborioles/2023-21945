@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Tests;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -12,6 +13,8 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
         init_classes();
+
+        bot.setPoseEstimate(PoseStorage.startPoseRL);
 
         TrajectorySequence test = bot.trajectorySequenceBuilder(new Pose2d())
                 .addTemporalMarker(0.1,() -> {
@@ -54,7 +57,13 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
 
         waitForStart();
 
-        bot.followTrajectorySequence(test);
+        bot.followTrajectorySequenceAsync(test);
+
+        while(opModeIsActive()){
+            bot.update(); //handles pathing logic
+            arm.update(); //handles arm PID controller
+
+        }
 
     }
     }

@@ -28,7 +28,11 @@ public class ArmTest extends LinearOpMode {
             } else {
                 arm.down();
             }
+
+            arm.update();
             d_down.readValue();
         }
+
+
     }
 }

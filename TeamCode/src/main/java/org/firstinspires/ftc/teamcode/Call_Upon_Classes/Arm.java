@@ -18,6 +18,15 @@ public class Arm {
     private DcMotorEx leftMotorEx = null;
     private DcMotorEx rightMotorEx = null;
 
+    //enum armStates for arm
+    public enum armStates {
+        SCORE,
+        STACK5,
+        STACK4,
+        STACK3,
+        STACK2
+    }
+
     private Motor leftMotor;
     private Motor rightMotor;
 
@@ -28,7 +37,7 @@ public class Arm {
     public static double p = 0.0023, i = 0, d = 0.0008; //PID variables needed
     public static double f = 0.005; //feed forward variable
 
-    public static int target = 0; //the variable team drivers will control to move arm
+    public int target = 0; //the variable team drivers will control to move arm
 
     private final double ticks_in_degree = 700 / 180.0; //need to check motors to be accurate
 
@@ -101,26 +110,27 @@ public class Arm {
     public void up(){
         target = 2000;
 
-        controller.setPID(p, i, d);
-        int leftArmPos = leftMotor.getCurrentPosition();
-        int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(rightArmPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-        armGroup.set(power);
+//        controller.setPID(p, i, d);
+//        int leftArmPos = leftMotor.getCurrentPosition();
+//        int rightArmPos = rightMotor.getCurrentPosition();
+//        double pid = controller.calculate(rightArmPos, target);
+//        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+//
+//        double power = pid + ff;
+//        armGroup.set(power);
     }
+
     public void down(){
         target = 20;
 
-        controller.setPID(p, i, d);
-        int leftArmPos = leftMotor.getCurrentPosition();
-        int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(rightArmPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-
-        double power = pid + ff;
-        armGroup.set(power);
+//        controller.setPID(p, i, d);
+//        int leftArmPos = leftMotor.getCurrentPosition();
+//        int rightArmPos = rightMotor.getCurrentPosition();
+//        double pid = controller.calculate(rightArmPos, target);
+//        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+//
+//        double power = pid + ff;
+//        armGroup.set(power);
     }
 
     public void move_auto(int pixel){
@@ -141,6 +151,19 @@ public class Arm {
              default:
                  target = 10;
         }
+
+//        controller.setPID(p, i, d);
+//        int leftArmPos = leftMotor.getCurrentPosition();
+//        int rightArmPos = rightMotor.getCurrentPosition();
+//        double pid = controller.calculate(rightArmPos, target);
+//        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+//
+//        double power = pid + ff;
+//        armGroup.set(power);
+    }
+
+    //method to update PID controller for arm in auto
+    public void update(){
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
         int rightArmPos = rightMotor.getCurrentPosition();
@@ -149,12 +172,6 @@ public class Arm {
 
         double power = pid + ff;
         armGroup.set(power);
-    }
-
-    public void standby_auto(){
-        armGroup.setRunMode(Motor.RunMode.PositionControl);
-        armGroup.setTargetPosition(armStandbyPose);
-        armGroup.set(0.5);
     }
 
     //Methods of Arm TeleOp control
