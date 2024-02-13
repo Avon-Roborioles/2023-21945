@@ -142,22 +142,22 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     intake.wrist_up();
                     intake.closeClaws(true);
                 })
-                .waitSeconds(.7)
-                .back(5)
-                .addDisplacementMarker(()->{
-                    intake.openClawV2(true,true);
-                })
-                .waitSeconds(.7)
-                .forward(5)
-                .addDisplacementMarker(()->{
-                    state.set("Park");
-                    arm.down();
-                    intake.closeClaws(true);
-                })
-                .waitSeconds(.7)
-                .lineToLinearHeading(new Pose2d(PoseStorage.ParkSpotRR.getX()-20,PoseStorage.ParkSpotRR.getY(),PoseStorage.ParkSpotRR.getHeading()))
-                .waitSeconds(.1)
-                .lineToLinearHeading(PoseStorage.ParkSpotRR)
+//                .waitSeconds(.7)
+//                .back(5)
+//                .addDisplacementMarker(()->{
+//                    intake.openClawV2(true,true);
+//                })
+//                .waitSeconds(.7)
+//                .forward(5)
+//                .addDisplacementMarker(()->{
+//                    state.set("Park");
+//                    arm.down();
+//                    intake.closeClaws(true);
+//                })
+//                .waitSeconds(.7)
+//                .lineToLinearHeading(new Pose2d(PoseStorage.ParkSpotRR.getX()-20,PoseStorage.ParkSpotRR.getY(),PoseStorage.ParkSpotRR.getHeading()))
+//                .waitSeconds(.1)
+//                .lineToLinearHeading(PoseStorage.ParkSpotRR)
                 .build();
 
         //TODO

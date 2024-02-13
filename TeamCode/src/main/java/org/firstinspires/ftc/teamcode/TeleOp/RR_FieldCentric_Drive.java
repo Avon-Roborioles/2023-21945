@@ -4,26 +4,43 @@
 */
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
 @TeleOp(name="RR FieldCentric Drive", group="TeleOp")
 //@Disabled
 public class RR_FieldCentric_Drive extends LinearOpMode{
-    private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Drivetrain drivetrain = new Drivetrain();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
-
-        drivetrain.init_fieldCentric_drive(hardwareMap,true);
+        SampleMecanumDrive drivetrain = new SampleMecanumDrive(hardwareMap);
+        drivetrain.setPoseEstimate(PoseStorage.startPoseRL);
 
         waitForStart();
 
         while(opModeIsActive()){
-            drivetrain.run_fieldCentric_drive(gamepad1Ex);
+            drivetrain.update();
+            Pose2d poseEstimate = drivetrain.getPoseEstimate();
 
-            //telemetry
+            Vector2d input = new Vector2d(
+                    -gamepad1.left_stick_y,
+                    -gamepad1.left_stick_x
+            ).rotated(-poseEstimate.getHeading());
+
+// Pass in the rotated input + right stick value for rotation
+// Rotation is not part of the rotated input thus must be passed in separately
+            drivetrain.setWeightedDrivePower(
+                    new Pose2d(
+                            input.getX(),
+                            input.getY(),
+                            -gamepad1.right_stick_x
+                    )
+            );
+
         }
     }
 }
