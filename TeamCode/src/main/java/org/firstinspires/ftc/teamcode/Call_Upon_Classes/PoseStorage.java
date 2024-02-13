@@ -12,21 +12,26 @@ public class PoseStorage {
 
     public static final Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
 
+    public static Pose2d startPoseRR = new Pose2d(12, -60.6, Math.toRadians(90));
+
     public static final Pose2d checkpointStack = new Pose2d(-36,-11,Math.toRadians(-180));
 
     public static final Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));
 
-    public static final Pose2d LeftSpikePose = new Pose2d(-45,-28,Math.toRadians(-180));
+    public static final Pose2d LeftSpikePoseRL = new Pose2d(-45,-28,Math.toRadians(-180));
 
-    public static final Pose2d MiddleSpikePose = new Pose2d(-36,-8,Math.toRadians(-90));
+    public static final Pose2d MiddleSpikePoseRL = new Pose2d(-36,-8,Math.toRadians(-90));
 
-    public static final Pose2d RightSpikePose = new Pose2d(-40,-30,Math.toRadians(0));
+    public static final Pose2d RightSpikePoseRL = new Pose2d(-40,-30,Math.toRadians(0));
 
-    public static final Pose2d ThirdStack = new Pose2d(-54,checkpointStack.getY() + 2, checkpointStack.getHeading());
+    public static final Pose2d ThirdStackR = new Pose2d(-54,checkpointStack.getY() + 2, checkpointStack.getHeading());
 
-    public static final Pose2d LeftBoardPose = new Pose2d(39,-28,Math.toRadians(-180));
+    public static final Pose2d LeftBoardPoseR = new Pose2d(39,-28,Math.toRadians(-180));
 
-    public static final Pose2d MiddleBoardPose = new Pose2d(39,-34,Math.toRadians(-180));
+    public static final Pose2d MiddleBoardPoseR = new Pose2d(39,-34,Math.toRadians(-180));
 
-    public static final Pose2d RightBoardPose = new Pose2d(39,-40,Math.toRadians(-180));
+    public static final Pose2d RightBoardPoseR = new Pose2d(39,-40,Math.toRadians(-180));
+
+    public static Pose2d ParkSpotRR = new Pose2d(57,-59,Math.toRadians(-180));
+
 }

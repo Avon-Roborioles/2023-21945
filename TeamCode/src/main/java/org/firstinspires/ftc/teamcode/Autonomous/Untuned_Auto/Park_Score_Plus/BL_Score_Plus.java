@@ -123,6 +123,18 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .back(22)
                 .build();
 
+        //TODO
+        TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(LeftSpikeScore.end())
+                .build();
+
+        //TODO
+        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(MiddleSpikeScore.end())
+                .build();
+
+        //TODO
+        TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(RightSpikeScore.end())
+                .build();
+
         //auto code here
         waitForStart();
 
@@ -143,9 +155,12 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 break;
         }
 
+
         while(opModeIsActive()){
             bot.update(); //handles RR logic
             arm.update(); //handles Arm PID control
+            telemetry.addData("Detected Prop Position: ", propPosition);
+            telemetry.addData("Corresponding April Tag:",aprilTagID);
         }
 
     }
