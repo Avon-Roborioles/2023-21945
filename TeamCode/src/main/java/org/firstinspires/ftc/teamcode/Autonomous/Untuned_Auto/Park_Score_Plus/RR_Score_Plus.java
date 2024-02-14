@@ -153,7 +153,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         //TODO
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(LeftSpikeScore.end())
-                .lineToLinearHeading(new Pose2d(PoseStorage.LeftBoardPoseR.getX()-20,PoseStorage.LeftBoardPoseR.getY(),PoseStorage.LeftBoardPoseR.getHeading()))
+                .lineToLinearHeading(new Pose2d(PoseStorage.LeftBoardPoseR.getX(),PoseStorage.LeftBoardPoseR.getY(),PoseStorage.LeftBoardPoseR.getHeading()))
                 .addDisplacementMarker(()->{
                     //state.set("Score Yellow Pixel on Left Board Region");
                     arm.up();
@@ -180,7 +180,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         //TODO
         TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(MiddleSpikeScore.end())
-                .lineToLinearHeading(new Pose2d(PoseStorage.MiddleBoardPoseR.getX()-20,PoseStorage.MiddleBoardPoseR.getY(),PoseStorage.MiddleBoardPoseR.getHeading()))
+                .lineToLinearHeading(new Pose2d(PoseStorage.MiddleBoardPoseR.getX(),PoseStorage.MiddleBoardPoseR.getY(),PoseStorage.MiddleBoardPoseR.getHeading()))
                 .addDisplacementMarker(()->{
                     //state.set("Score Yellow Pixel on Middle Board Region");
                     arm.up();
@@ -207,7 +207,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         //TODO
         TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(RightSpikeScore.end())
-                .lineToLinearHeading(new Pose2d(PoseStorage.RightBoardPoseR.getX()-20,PoseStorage.RightBoardPoseR.getY(),PoseStorage.RightBoardPoseR.getHeading()))
+                .lineToLinearHeading(new Pose2d(PoseStorage.RightBoardPoseR.getX(),PoseStorage.RightBoardPoseR.getY(),PoseStorage.RightBoardPoseR.getHeading()))
                 .addDisplacementMarker(()->{
                     //state.set("Score Yellow Pixel on Board");
                     arm.up();
