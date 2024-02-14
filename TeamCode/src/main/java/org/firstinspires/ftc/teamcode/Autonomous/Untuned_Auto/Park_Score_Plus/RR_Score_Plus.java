@@ -91,6 +91,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     intake.wrist_up();
                 })
                 .back(5)
+                .waitSeconds(10)
 
                 //park
 //                .back(14)
@@ -195,6 +196,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         switch(propPosition){
             case "LEFT":
                 bot.followTrajectorySequenceAsync(LeftSpikeScore);
+                bot.followTrajectorySequenceAsync(LeftBoardScore);
                 break;
             case "MIDDLE":
                 bot.followTrajectorySequenceAsync(MiddleSpikeScore);
@@ -205,17 +207,17 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         }
 
         //scores yellow pixel on preload pixel
-        switch(aprilTagID){
-            case 4:
-                bot.followTrajectorySequenceAsync(LeftBoardScore);
-                break;
-            case 6:
-                bot.followTrajectorySequenceAsync(MiddleBoardScore);
-                break;
-            default:
-                bot.followTrajectorySequenceAsync(RightBoardScore);
-                break;
-        }
+//        switch(aprilTagID){
+//            case 4:
+//                bot.followTrajectorySequenceAsync(LeftBoardScore);
+//                break;
+//            case 6:
+//                bot.followTrajectorySequenceAsync(MiddleBoardScore);
+//                break;
+//            default:
+//                bot.followTrajectorySequenceAsync(RightBoardScore);
+//                break;
+//        }
 
         while(opModeIsActive()){
             bot.update(); //handles RR logic
@@ -223,6 +225,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
             telemetry.addData("Detected Prop Position: ", propPosition);
             telemetry.addData("Corresponding April Tag:",aprilTagID);
             telemetry.addData("Current Objective: ",state);
+            telemetry.update();
         }
     }
 }

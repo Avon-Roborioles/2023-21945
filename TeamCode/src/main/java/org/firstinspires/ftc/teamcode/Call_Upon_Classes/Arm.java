@@ -27,8 +27,8 @@ public class Arm {
         STACK2
     }
 
-    private Motor leftMotor;
-    private Motor rightMotor;
+    private DcMotorEx leftMotor;
+    private DcMotorEx rightMotor;
 
     private MotorGroup armGroup;
 
@@ -69,18 +69,27 @@ public class Arm {
     }
 
     public void init_arm_V2(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
-        leftMotor = new Motor(hardwareMap,leftMotorName);
-        rightMotor = new Motor(hardwareMap,rightMotorName);
+//        leftMotor = new Motor(hardwareMap,leftMotorName);
+//        rightMotor = new Motor(hardwareMap,rightMotorName);
+//        controller = new PIDController(p, i, d);
+//
+//        //leftMotor.setInverted(true); //put in reverse
+//
+//        armGroup = new MotorGroup( //RightMotor is leader, LeftMotor follows rightMotor
+//                rightMotor,
+//                leftMotor
+//        );
+//
+//        armGroup.resetEncoder();
+//        armGroup.setRunMode(Motor.RunMode.PositionControl);
+//        armGroup.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         controller = new PIDController(p, i, d);
+        leftMotor = hardwareMap.get(DcMotorEx.class,"leftMotor");
+        rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
 
-        //leftMotor.setInverted(true); //put in reverse
-
-        armGroup = new MotorGroup( //RightMotor is leader, LeftMotor follows rightMotor
-                rightMotor,
-                leftMotor
-        );
-        armGroup.setRunMode(Motor.RunMode.PositionControl);
-        armGroup.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+//        leftMotorEx = hardwareMap.get(DcMotorEx.class, "leftMotor");
+//        rightMotorEx = hardwareMap.get(DcMotorEx.class, "rightMotor");
+//        leftMotorEx.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
@@ -172,13 +181,13 @@ public class Arm {
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
         int rightArmPos = rightMotor.getCurrentPosition();
-        double pid = controller.calculate(rightArmPos, target); //uses rightArm
+        double pid = controller.calculate(rightArmPos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
-        pidPower = power;
-        armGroup.set(power);
-        rightMotorPosition = rightMotor.getCurrentPosition();
+
+        leftMotor.setPower(power);
+        rightMotor.setPower(power);
     }
 
     //Methods of Arm TeleOp control
