@@ -36,6 +36,7 @@ public class Arm {
 
     public static double p = 0.0023, i = 0, d = 0.0008; //PID variables needed
     public static double f = 0.005; //feed forward variable
+    public double pidPower = 0;
 
     public int target = 0; //the variable team drivers will control to move arm
 
@@ -51,8 +52,8 @@ public class Arm {
     private int pixel4Height = 60;
     private int pixel3Height = 30;
     private int pixel2Height = 15;
-    private double leftMotorPosition = 0;
-    private double rightMotorPosition = 0;
+    public double leftMotorPosition = 0;
+    public double rightMotorPosition = 0;
     private int maxPosition = 4000; //Done -  find max value
     private int armStandbyPose = 200;
     private boolean armState;
@@ -133,6 +134,10 @@ public class Arm {
 //        armGroup.set(power);
     }
 
+    public void setTarget(int target){
+        this.target = target;
+    }
+
     public void stackPose(int pixel){
         //logic just like wrist
         switch(pixel){
@@ -171,7 +176,9 @@ public class Arm {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
+        pidPower = power;
         armGroup.set(power);
+        rightMotorPosition = rightMotor.getCurrentPosition();
     }
 
     //Methods of Arm TeleOp control

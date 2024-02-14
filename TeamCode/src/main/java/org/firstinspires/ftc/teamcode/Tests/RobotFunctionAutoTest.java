@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name="Robot Function Auto Test", group="Tests")
 public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
@@ -16,54 +15,26 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
 
         bot.setPoseEstimate(PoseStorage.startPoseRL);
 
-        TrajectorySequence test = bot.trajectorySequenceBuilder(new Pose2d())
-                .addTemporalMarker(0.1,() -> {
-                    intake.wrist_down();
+        Trajectory test2 = bot.trajectoryBuilder(new Pose2d())
+                .back(1)
+                .addDisplacementMarker(()->{
+                    arm.setTarget(300);
                 })
-
-                .addTemporalMarker(0.2,() -> {
-                    intake.closeClaws(false);
-                })
-
-                .addTemporalMarker(0.7,() -> {
-                    intake.closeClaws(true);
-                })
-
-                .addTemporalMarker(1.1,() -> {
-                    intake.wrist_up();
-                })
-
-                .addTemporalMarker(1.7,() -> {
-                    arm.up();
-                })
-
-                .addTemporalMarker(2.3,() -> {
-                    intake.openClawV2(true,true);
-                })
-
-                .addTemporalMarker(2.9,() -> {
-                    intake.openClawV2(true,false);
-                })
-
-                .addTemporalMarker(3.6,() -> {
-                    intake.closeClaws(true);
-                })
-
-                .addTemporalMarker(4.4,() -> {
-                    arm.down();
-                })
-                .waitSeconds(100)
-                .build();
+                        .build();
 
         waitForStart();
 
-        bot.followTrajectorySequenceAsync(test);
+       // bot.followTrajectorySequenceAsync(test);
+        bot.followTrajectoryAsync(test2);
 
         while(opModeIsActive()){
             bot.update(); //handles pathing logic
             arm.update(); //handles arm PID controller
+            telemetry.addData("Target: ",arm.target);
+            telemetry.addData("PID Power: ", arm.pidPower);
+            telemetry.addData("Right Arm Pose: ", arm.rightMotorPosition);
+            telemetry.update();
 
         }
-
     }
     }

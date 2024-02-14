@@ -18,7 +18,7 @@ public class RR_FieldCentric_Drive extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drivetrain = new SampleMecanumDrive(hardwareMap);
-        drivetrain.setPoseEstimate(PoseStorage.startPoseRL);
+        drivetrain.setPoseEstimate(PoseStorage.startPoseRR);
 
         waitForStart();
 
@@ -27,8 +27,8 @@ public class RR_FieldCentric_Drive extends LinearOpMode{
             Pose2d poseEstimate = drivetrain.getPoseEstimate();
 
             Vector2d input = new Vector2d(
-                    -gamepad1.left_stick_y,
-                    -gamepad1.left_stick_x
+                    -gamepad1.left_stick_x,
+                    -gamepad1.left_stick_y
             ).rotated(-poseEstimate.getHeading());
 
 // Pass in the rotated input + right stick value for rotation
