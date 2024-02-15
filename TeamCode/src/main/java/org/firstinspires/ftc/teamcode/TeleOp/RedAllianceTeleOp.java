@@ -19,22 +19,16 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
 
     //updates telemetry for all robot functions
-//    public void setTelemetry(){
-//        //drivetrain.getTelemetry(telemetry);
-//        intake.getTelemetry(telemetry);
-//        launcher.getTelemetry(telemetry);
-//        arm.getTelemetry(telemetry);
-//        feedback.getTelemetry(telemetry);
-//        telemetry.update();
-//    }
+    public void setTelemetry(){
+       arm.getTelemetry(telemetry);
+        telemetry.update();
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.speak("The Raven is Initializing!");
-        //drivetrain.init_drive_motors(hardwareMap);
         drivetrain.init_red_drive_motors(hardwareMap);
-       // drivetrain.init_fieldCentric_drive(hardwareMap);
-        //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
+
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
@@ -80,16 +74,14 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
         while(opModeIsActive()) {
             //Driver 1 Controls
-            //drivetrain.run_fieldCentric_drive(gamepad1Ex);
             drivetrain.run_mecanum_drive(gamepad1,telemetry);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            //arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
-            arm.run_arm_manual(gamepad2,d_down);
+            arm.run_arm_teleOp(gamepad2,d_down);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader,LBumperReader,RBumperReader);
             feedback.run_Timer(gamepad1,gamepad2);
-           // setTelemetry();
+            setTelemetry();
 
         }
     }

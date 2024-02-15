@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
@@ -14,18 +13,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Arm {
-    //TODO Code PID Controller in arm
+    //TeleOp objects
     private DcMotorEx leftMotorEx = null;
     private DcMotorEx rightMotorEx = null;
 
-    //enum armStates for arm
-    public enum armStates {
-        SCORE,
-        STACK5,
-        STACK4,
-        STACK3,
-        STACK2
-    }
 
     private DcMotorEx leftMotor;
     private DcMotorEx rightMotor;
@@ -48,16 +39,13 @@ public class Arm {
     private double speed = 0.0;
 
     private int scoreHeightHIGH = 1600; //600
-    private int pixel5Height = 90; //TODO Change these values to actual height
-    private int pixel4Height = 60;
-    private int pixel3Height = 30;
-    private int pixel2Height = 15;
+
     public double leftMotorPosition = 0;
     public double rightMotorPosition = 0;
     private int maxPosition = 4000; //Done -  find max value
     private int armStandbyPose = 200;
     private boolean armState;
-    private boolean armDefault = false;
+    private boolean hangDefault = false;
     private boolean armIsUp;
 
     //Methods of Arm Initialization
@@ -69,111 +57,46 @@ public class Arm {
     }
 
     public void init_arm_V2(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
-//        leftMotor = new Motor(hardwareMap,leftMotorName);
-//        rightMotor = new Motor(hardwareMap,rightMotorName);
-//        controller = new PIDController(p, i, d);
-//
-//        //leftMotor.setInverted(true); //put in reverse
-//
-//        armGroup = new MotorGroup( //RightMotor is leader, LeftMotor follows rightMotor
-//                rightMotor,
-//                leftMotor
-//        );
-//
-//        armGroup.resetEncoder();
-//        armGroup.setRunMode(Motor.RunMode.PositionControl);
-//        armGroup.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class,"leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
-
-//        leftMotorEx = hardwareMap.get(DcMotorEx.class, "leftMotor");
-//        rightMotorEx = hardwareMap.get(DcMotorEx.class, "rightMotor");
-//        leftMotorEx.setDirection(DcMotorSimple.Direction.REVERSE);
-
-    }
-
-
-    public void init_arm_main(HardwareMap hardwareMap, String leftMotorName, String rightMotorName, boolean autoProgram){
-        leftMotorEx = hardwareMap.get(DcMotorEx.class, "leftMotor");
-        rightMotorEx = hardwareMap.get(DcMotorEx.class, "rightMotor");
-
-        //left motor should be in reverse to work with rightMotor
-        leftMotorEx.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        //auto programs need motors to be reset to initial position
-        if(autoProgram){
-            leftMotorEx.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightMotorEx.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-
-        //sets motors 0 - ground position
-        leftMotorEx.setTargetPosition(0);
-        rightMotorEx.setTargetPosition(0);
-
-        leftMotorEx.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftMotorEx.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
 
 
+    //set arm target to ideal scoring position
     public void up(){
-        target = 2000;
-
-//        controller.setPID(p, i, d);
-//        int leftArmPos = leftMotor.getCurrentPosition();
-//        int rightArmPos = rightMotor.getCurrentPosition();
-//        double pid = controller.calculate(rightArmPos, target);
-//        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-//
-//        double power = pid + ff;
-//        armGroup.set(power);
+        target = 2300; //2000
     }
 
+    //set arm target to ground position
     public void down(){
-        target = 0;
-
-//        controller.setPID(p, i, d);
-//        int leftArmPos = leftMotor.getCurrentPosition();
-//        int rightArmPos = rightMotor.getCurrentPosition();
-//        double pid = controller.calculate(rightArmPos, target);
-//        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-//
-//        double power = pid + ff;
-//        armGroup.set(power);
+        target = 10;
     }
 
+    //manual target control for Arm PID
     public void setTarget(int target){
         this.target = target;
     }
 
+
     public void stackPose(int pixel){
-        //logic just like wrist
         switch(pixel){
             case 5:
-                target = pixel5Height;
+                target = 100;
                 break;
             case 4:
-                target = pixel4Height;
+                target = 80;
                 break;
             case 3:
-                target = pixel3Height;
+                target = 60;
                 break;
             case 2:
-                target = pixel2Height;
+                target = 30;
                 break;
              default:
                  target = 10;
         }
-
-//        controller.setPID(p, i, d);
-//        int leftArmPos = leftMotor.getCurrentPosition();
-//        int rightArmPos = rightMotor.getCurrentPosition();
-//        double pid = controller.calculate(rightArmPos, target);
-//        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
-//
-//        double power = pid + ff;
-//        armGroup.set(power);
     }
 
     //method to update PID controller for arm in auto
@@ -191,16 +114,16 @@ public class Arm {
     }
 
     //Methods of Arm TeleOp control
-    public void run_arm_manual(Gamepad gamepad2, ToggleButtonReader d_down) {
+    public void run_arm_teleOp(Gamepad gamepad2, ToggleButtonReader d_down) {
         double leftY = gamepad2.left_stick_y;
         float rightTrigger = gamepad2.right_trigger;
 
         if(d_down.wasJustPressed()){
-            armDefault = true;
+            hangDefault = true;
         }
 
         if(leftY > 0 || leftY < 0) {
-            armDefault = false;
+            hangDefault = false;
             if (rightMotorEx.getCurrentPosition() < 1600) {
                 if (leftY < 0) {
                     leftMotorEx.setPower(-0.5);
@@ -218,7 +141,7 @@ public class Arm {
                     rightMotorEx.setPower(0.3);
                 }
             }
-        } else if(armDefault == false){
+        } else if(!hangDefault){
              if(rightMotorEx.getCurrentPosition() < 1600) {
                 leftMotorEx.setPower(-0.04); //small bit of power for brakes
                 rightMotorEx.setPower(0.04);
@@ -229,7 +152,7 @@ public class Arm {
         }
 
         //hang
-        if(armDefault){
+        if(hangDefault){
             leftMotorEx.setPower(0.8);
             rightMotorEx.setPower(-.8);
         }
@@ -238,61 +161,20 @@ public class Arm {
     } //Done - just controls speed - test
 
 
-    public void run_arm_V2(Gamepad gamepad2, GamepadEx gamepad2Ex, ToggleButtonReader d_down, ToggleButtonReader d_up){
-        double ltrigger = gamepad2.left_trigger;
-        double rtrigger = gamepad2.right_trigger;
-        double leftY = gamepad2.left_stick_y; //was float—
-        boolean button_a = gamepad2.a;
-        boolean button_x = gamepad2.x;
-        boolean button_y = gamepad2.y;
-        boolean button_b = gamepad2.b;
-
-        //armDefault Logic
-
-        //TeleOp Control logic
-
-        //Set point Logic
-
-        //stack level logic
-
-        d_down.readValue();
-    }
-
     //simple arm function to make robot hang
     public void hang(){
         armGroup.setRunMode(Motor.RunMode.RawPower);
         armGroup.set(-0.7);
     }
 
-    //Auto Methods
-    public void setArmTargetPosition(int position){
-        leftMotorEx.setTargetPosition(position);
-        rightMotorEx.setTargetPosition(position);
-    }
-    public void setPosition(int position){
-        setArmTargetPosition(position);
-        leftMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightMotorEx.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftMotorEx.setPower(-0.7);
-        rightMotorEx.setPower(0.7);
-
-
-    } //TEST - main auto method to move arm
-
 
 
     public void getTelemetry(Telemetry telemetry){
-        //telemetry.addData("Intake Currently Moving: ", isActive);
-        //telemetry.addData("Current Arm Target", target);
-//        telemetry.addData("Left Arm Motor Position", leftMotorEx.getCurrentPosition());
-//        telemetry.addData("Right Arm Motor Position", rightMotorEx.getCurrentPosition());
-        //telemetry.addData("ArmGroup Position: ", armGroup.);
+
         telemetry.addData("Left Motor Position: ", leftMotor.getCurrentPosition());
         telemetry.addData("Right Motor Position: ", rightMotor.getCurrentPosition());
-        telemetry.addData("Arm Default: ", armDefault);
+        telemetry.addData("Hang Default: ", hangDefault);
         telemetry.addData("Arm is Up?: ", armIsUp);
-
-        //telemetry.addData("Current Arm Status", armStatus);
     }
 }
 
