@@ -141,8 +141,35 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .back(22)
                 .build();
 
-        //TODO
+        //TEST
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(LeftSpikeScore.end())
+                //go to board
+                .back(10)
+                .waitSeconds(.7)
+                .strafeRight(5)
+                .addDisplacementMarker(()->{
+                    arm.up();
+                    intake.wrist_up();
+                })
+                .waitSeconds(.1)
+
+                //score pixel
+                .back(5)
+                .addDisplacementMarker(()->{
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(.7)
+                .forward(7)
+                .addDisplacementMarker(()->{
+                    arm.down();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.7)
+
+                //park
+                .strafeRight(5)
+                .waitSeconds(.1)
+                .back(10)
                 .build();
 
         //TODO
