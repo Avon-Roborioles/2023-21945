@@ -13,7 +13,7 @@ public class ArmTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
+        arm.init_arm_auto(hardwareMap,"leftMotor","rightMotor");
         GamepadEx gamepad1Ex = new GamepadEx(gamepad1);
 
         ToggleButtonReader d_down = new ToggleButtonReader(

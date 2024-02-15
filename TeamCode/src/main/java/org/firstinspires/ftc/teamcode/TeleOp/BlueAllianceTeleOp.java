@@ -15,18 +15,13 @@ public class BlueAllianceTeleOp extends LinearOpMode {
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
-    //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
 
 
     //updates telemetry for all robot functions
-//    public void setTelemetry(){
-//        //drivetrain.getTelemetry(telemetry);
-//        intake.getTelemetry(telemetry);
-//        launcher.getTelemetry(telemetry);
-//        arm.getTelemetry(telemetry);
-//        feedback.getTelemetry(telemetry);
-//        telemetry.update();
-//    }
+    public void setTelemetry(){
+        arm.getTelemetry(telemetry);
+        telemetry.update();
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,7 +31,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
         //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
+        arm.init_arm_teleOp(hardwareMap, "leftMotor", "rightMotor");
         //arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
         feedback.init_Timer();
 
@@ -78,16 +73,16 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
         while(opModeIsActive()) {
             //Driver 1 Controls
-            //drivetrain.run_fieldCentric_drive(gamepad1Ex);
             drivetrain.run_mecanum_drive(gamepad1,telemetry);
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-           // arm.run_arm_V2(gamepad2,gamepad2Ex, d_down, d_up);
             arm.run_arm_teleOp(gamepad2, d_down);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader,LBumperReader,RBumperReader);
+
+            //Driver Feedback Program
             feedback.run_Timer(gamepad1,gamepad2);
-            //setTelemetry();
+            setTelemetry();
 
         }
     }

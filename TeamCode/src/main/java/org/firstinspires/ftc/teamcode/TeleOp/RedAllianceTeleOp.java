@@ -15,12 +15,11 @@ public class RedAllianceTeleOp extends LinearOpMode {
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Haptic_Feedback feedback = new Haptic_Feedback();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.DroneLauncher launcher = new DroneLauncher();
     private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
-    //private final org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
 
 
     //updates telemetry for all robot functions
     public void setTelemetry(){
-       arm.getTelemetry(telemetry);
+        arm.getTelemetry(telemetry);
         telemetry.update();
     }
 
@@ -31,8 +30,7 @@ public class RedAllianceTeleOp extends LinearOpMode {
 
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
-        arm.init_arm_manual(hardwareMap, "leftMotor", "rightMotor");
-        //arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
+        arm.init_arm_teleOp(hardwareMap, "leftMotor", "rightMotor");
         feedback.init_Timer();
 
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
@@ -80,6 +78,8 @@ public class RedAllianceTeleOp extends LinearOpMode {
             //Driver 2 Controls
             arm.run_arm_teleOp(gamepad2,d_down);
             intake.run_intake_V2(gamepad2,gamepad2Ex,a2Reader,y2Reader,LBumperReader,RBumperReader);
+
+            //Driver feedback program
             feedback.run_Timer(gamepad1,gamepad2);
             setTelemetry();
 

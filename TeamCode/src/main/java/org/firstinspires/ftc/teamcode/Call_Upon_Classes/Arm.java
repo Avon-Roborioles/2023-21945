@@ -4,7 +4,6 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -13,11 +12,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Arm {
+
     //TeleOp objects
     private DcMotorEx leftMotorEx = null;
     private DcMotorEx rightMotorEx = null;
 
-
+    //auto objects
     private DcMotorEx leftMotor;
     private DcMotorEx rightMotor;
 
@@ -49,14 +49,14 @@ public class Arm {
     private boolean armIsUp;
 
     //Methods of Arm Initialization
-    public void init_arm_manual(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
+    public void init_arm_teleOp(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         leftMotorEx = hardwareMap.get(DcMotorEx.class, "leftMotor");
         rightMotorEx = hardwareMap.get(DcMotorEx.class, "rightMotor");
         leftMotorEx.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
-    public void init_arm_V2(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
+    public void init_arm_auto(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
         controller = new PIDController(p, i, d);
         leftMotor = hardwareMap.get(DcMotorEx.class,"leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
@@ -79,7 +79,7 @@ public class Arm {
         this.target = target;
     }
 
-
+    //set arm target to stack pixel poses
     public void stackPose(int pixel){
         switch(pixel){
             case 5:
@@ -118,6 +118,7 @@ public class Arm {
         double leftY = gamepad2.left_stick_y;
         float rightTrigger = gamepad2.right_trigger;
 
+        //activate Hanging Mode
         if(d_down.wasJustPressed()){
             hangDefault = true;
         }
@@ -166,6 +167,7 @@ public class Arm {
         armGroup.setRunMode(Motor.RunMode.RawPower);
         armGroup.set(-0.7);
     }
+
 
 
 

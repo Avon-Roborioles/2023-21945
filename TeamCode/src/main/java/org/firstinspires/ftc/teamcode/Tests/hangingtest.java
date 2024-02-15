@@ -15,7 +15,7 @@ public class hangingtest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //arm.init_arm_manual(hardwareMap,"leftMotor","rightMotor");
-        arm.init_arm_V2(hardwareMap,"leftMotor", "rightMotor");
+        arm.init_arm_auto(hardwareMap,"leftMotor", "rightMotor");
 
         waitForStart();
 
