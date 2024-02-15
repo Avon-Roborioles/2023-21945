@@ -3,11 +3,29 @@ package org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score_Plus;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name="BL Score Plus", group="Park + Score")
 public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
+
+    //this enum defines our state
+    enum State {
+        LEFT_SPIKE_SCORE,
+        MIDDLE_SPIKE_SCORE,
+        RIGHT_SPIKE_SCORE,
+        LEFT_BOARD_SCORE,
+        MIDDLE_BOARD_SCORE,
+        RIGHT_BOARD_SCORE,
+        PARK,
+        WAIT,
+        IDLE
+    }
+
+    //define current state the robot is on
+    State currentState = State.IDLE;
+
     public void runOpMode() throws InterruptedException {
 
         //important variables for auto - set to random values
@@ -138,6 +156,8 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         //auto code here
         waitForStart();
 
+        if(isStopRequested()) return;
+
         //gets propPosition and needed april tag from vision class
         propPosition = vision.getPropPosition();
         aprilTagID = vision.get_Apriltag_id(propPosition,true);
@@ -145,22 +165,86 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
+                currentState = State.LEFT_SPIKE_SCORE;
                 bot.followTrajectorySequenceAsync(LeftSpikeScore);
                 break;
             case "MIDDLE":
+                currentState = State.MIDDLE_SPIKE_SCORE;
                 bot.followTrajectorySequenceAsync(MiddleSpikeScore);
                 break;
             case "RIGHT":
+                currentState = State.RIGHT_SPIKE_SCORE;
                 bot.followTrajectorySequenceAsync(RightSpikeScore);
                 break;
         }
 
-
-        while(opModeIsActive()){
-            bot.update(); //handles RR logic
-            arm.update(); //handles Arm PID control
+        //init loop so we see if robot will start with correct propPosition
+        while(opModeInInit()){
             telemetry.addData("Detected Prop Position: ", propPosition);
             telemetry.addData("Corresponding April Tag:",aprilTagID);
+        }
+
+        while(opModeIsActive() && !isStopRequested()){
+            //define the flow of the state machine through this switch statement
+            switch (currentState){
+                case LEFT_SPIKE_SCORE:
+                    // Check if the drive class isn't busy
+                    // `isBusy() == true` while it's following the trajectory
+                    // Once `isBusy() == false`, the trajectory follower signals that it is finished
+                    // We move on to the next state
+                    // Make sure we use the async follow function
+                    if(!bot.isBusy()){
+                        currentState = State.LEFT_BOARD_SCORE;
+                        bot.followTrajectorySequenceAsync(LeftBoardScore);
+                    }
+                    break;
+                case MIDDLE_SPIKE_SCORE:
+                    if(!bot.isBusy()){
+                        currentState = State.MIDDLE_BOARD_SCORE;
+                        bot.followTrajectorySequenceAsync(MiddleBoardScore);
+                    }
+                    break;
+                case RIGHT_SPIKE_SCORE:
+                    if(!bot.isBusy()){
+                        currentState = State.RIGHT_BOARD_SCORE;
+                        bot.followTrajectorySequenceAsync(RightBoardScore);
+                    }
+                    break;
+                case LEFT_BOARD_SCORE:
+                case MIDDLE_BOARD_SCORE:
+                case RIGHT_BOARD_SCORE:
+                    if(!bot.isBusy()){
+                        currentState = State.IDLE;
+                    }
+                    break;
+                case IDLE:
+                    //Do nothing in IDLE except save position
+                    //current state does not change once in IDLE
+                    //This concludes the autonomous program
+                    break;
+            }
+
+            //anything outside the switch statement will run independent of the currentState
+
+            //we update drive continuously in the background regardless of state
+            bot.update();
+
+            //read pose
+            Pose2d poseEstimate = bot.getPoseEstimate();
+
+            //continuously write pose to 'PoseStorage'
+            PoseStorage.currentPose = poseEstimate;
+
+            arm.update(); //handles Arm PID control
+
+            //telemetry data
+            telemetry.addData("Detected Prop Position: ", propPosition);
+            telemetry.addData("Corresponding April Tag:",aprilTagID);
+            telemetry.addData("Current Objective: ",currentState);
+            telemetry.addData("X: ",poseEstimate.getX());
+            telemetry.addData("Y: ",poseEstimate.getY());
+            telemetry.addData("Heading: ",poseEstimate.getHeading());
+            telemetry.update();
         }
 
     }
