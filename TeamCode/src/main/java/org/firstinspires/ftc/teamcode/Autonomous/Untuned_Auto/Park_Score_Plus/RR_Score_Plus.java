@@ -159,7 +159,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .back(15)
                 .build();
 
-        //TODO
+        //TEST
         TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(MiddleSpikeScore.end())
                 //go to board
                 .back(5)
@@ -244,7 +244,6 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
             case "RIGHT":
                 currentState = State.RIGHT_SPIKE_SCORE;
                 bot.followTrajectorySequenceAsync(RightSpikeScore);
-
                 break;
         }
 
