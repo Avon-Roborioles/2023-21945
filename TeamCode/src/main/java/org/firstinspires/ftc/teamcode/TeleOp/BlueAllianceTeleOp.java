@@ -25,14 +25,10 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        //drivetrain.init_drive_motors(hardwareMap);
         drivetrain.init_blue_drive_motors(hardwareMap);
-        //drivetrain.init_fieldCentric_drive(hardwareMap);
-        //intake.init_intake_teleOp(hardwareMap, "claw", "wrist", "pixelHolder");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_teleOp(hardwareMap, "leftMotor", "rightMotor");
-        //arm.init_arm_V2(hardwareMap,"leftMotor","rightMotor");
         feedback.init_Timer();
 
         GamepadEx gamepad2Ex = new GamepadEx(gamepad2);
@@ -67,7 +63,6 @@ public class BlueAllianceTeleOp extends LinearOpMode {
                 gamepad2Ex, GamepadKeys.Button.DPAD_UP
         );
 
-       // setTelemetry();
 
         waitForStart();
 

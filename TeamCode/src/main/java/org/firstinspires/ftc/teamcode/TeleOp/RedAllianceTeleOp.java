@@ -27,7 +27,6 @@ public class RedAllianceTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry.speak("The Raven is Initializing!");
         drivetrain.init_red_drive_motors(hardwareMap);
-
         intake.init_intake_V2(hardwareMap, "claw1", "claw2", "wrist");
         launcher.init_Launcher(hardwareMap, "launcher");
         arm.init_arm_teleOp(hardwareMap, "leftMotor", "rightMotor");

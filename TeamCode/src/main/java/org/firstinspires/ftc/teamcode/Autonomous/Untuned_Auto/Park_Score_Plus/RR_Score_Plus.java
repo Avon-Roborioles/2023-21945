@@ -26,7 +26,6 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
     }
 
     //define current state the robot is on
-    //default to IDLE
     State currentState = State.IDLE;
 
     public void runOpMode() throws InterruptedException {
@@ -45,8 +44,6 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(PoseStorage.startPoseRR) //Done testing
                 .addTemporalMarker(0, () -> {
-                    //intake.openClaw(false);
-                    //intake.closePixelHolder(true);
                     intake.closeClaws(true);
                     intake.wrist_up();
                 })
@@ -78,43 +75,26 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                     intake.closeClaws(true);
                     intake.wrist_up();
                 })
-                //park
-//                .waitSeconds(.1)
-//                .strafeLeft(21)
-//                .waitSeconds(.1)
-//                .back(22)
                 .build();
 
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(PoseStorage.startPoseRR) //Done testing
                 .addTemporalMarker(0, () -> {
-                    // intake.openClaw(false);
                     intake.closeClaws(true);
-                    //intake.closePixelHolder(true);
-
                 })
                 .forward(24) //16
                 .waitSeconds(.5)
                 .back(8.75)
                 .waitSeconds(2)
                 .addTemporalMarker(3, () -> {
-                    //intake.openClaw(false);
                     intake.openClawV2(true,false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(5, () -> {
-                    //intake.openClaw(true);
-                    intake.closeClaws(true);
-                })
+                .addTemporalMarker(5, () -> intake.closeClaws(true))
                 .addTemporalMarker(6, () ->{
                     intake.wrist_up();
                 })
                 .back(5)
-                .waitSeconds(10)
-
-                //park
-//                .back(14)
-//                .waitSeconds(1)
-//                .strafeRight(33)
+                .waitSeconds(3)
                 .build();
 
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(PoseStorage.startPoseRR) //Done testing
@@ -143,93 +123,103 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.1)
                 .turn(Math.toRadians(11))
                 .back(5)
-//                .waitSeconds(.1)
-//                .strafeLeft(21)
-//                .waitSeconds(.1)
-//                .back(15)
                 .build();
 
-        //****************Board Score Trajectories include parking********************
+        //**************** Board Score Trajectories include parking ********************
 
-        //TODO
+        //TEST
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(LeftSpikeScore.end())
-                .lineToLinearHeading(new Pose2d(PoseStorage.LeftBoardPoseR.getX(),PoseStorage.LeftBoardPoseR.getY(),PoseStorage.LeftBoardPoseR.getHeading()))
+                //go to board
+                .turn(Math.toRadians(-11))
+                .back(20)
+                .waitSeconds(.1)
+                .strafeRight(5)
                 .addDisplacementMarker(()->{
-                    //state.set("Score Yellow Pixel on Left Board Region");
                     arm.up();
                     intake.wrist_up();
-                    intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
+
+                //score pixel
                 .back(5)
                 .addDisplacementMarker(()->{
                     intake.openClawV2(true,true);
                 })
                 .waitSeconds(.7)
-                .forward(5)
+                .forward(7)
                 .addDisplacementMarker(()->{
-                    state.set("Park");
                     arm.down();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
-                .lineToLinearHeading(new Pose2d(PoseStorage.ParkSpotRR.getX()-20,PoseStorage.ParkSpotRR.getY(),PoseStorage.ParkSpotRR.getHeading()))
+
+                //park
+                .strafeLeft(20)
                 .waitSeconds(.1)
-                .lineToLinearHeading(PoseStorage.ParkSpotRR)
+                .back(15)
                 .build();
 
         //TODO
         TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(MiddleSpikeScore.end())
-                .lineToLinearHeading(new Pose2d(PoseStorage.MiddleBoardPoseR.getX(),PoseStorage.MiddleBoardPoseR.getY(),PoseStorage.MiddleBoardPoseR.getHeading()))
+                //go to board
+                .back(5)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(80))
+                .back(10)
+                .waitSeconds(.1)
+                .back(10)
                 .addDisplacementMarker(()->{
-                    //state.set("Score Yellow Pixel on Middle Board Region");
                     arm.up();
                     intake.wrist_up();
-                    intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
+
+                //score pixel
                 .back(5)
                 .addDisplacementMarker(()->{
                     intake.openClawV2(true,true);
                 })
                 .waitSeconds(.7)
-                .forward(5)
+                .forward(7)
                 .addDisplacementMarker(()->{
-                    state.set("Park");
                     arm.down();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
-                .lineToLinearHeading(new Pose2d(PoseStorage.ParkSpotRR.getX()-20,PoseStorage.ParkSpotRR.getY(),PoseStorage.ParkSpotRR.getHeading()))
+
+                //park
+                .strafeLeft(10)
                 .waitSeconds(.1)
-                .lineToLinearHeading(PoseStorage.ParkSpotRR)
+                .back(10)
                 .build();
 
-        //TODO
+        //TEST
         TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(RightSpikeScore.end())
-                .lineToLinearHeading(new Pose2d(PoseStorage.RightBoardPoseR.getX(),PoseStorage.RightBoardPoseR.getY(),PoseStorage.RightBoardPoseR.getHeading()))
+                //go to board
+                .back(10)
                 .addDisplacementMarker(()->{
-                    //state.set("Score Yellow Pixel on Board");
                     arm.up();
                     intake.wrist_up();
-                    intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
+
+                //score pixel
                 .back(5)
                 .addDisplacementMarker(()->{
                     intake.openClawV2(true,true);
                 })
                 .waitSeconds(.7)
-                .forward(5)
+                .forward(7)
                 .addDisplacementMarker(()->{
-                    state.set("Park");
                     arm.down();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
-                .lineToLinearHeading(new Pose2d(PoseStorage.ParkSpotRR.getX()-20,PoseStorage.ParkSpotRR.getY(),PoseStorage.ParkSpotRR.getHeading()))
+
+                //park
+                .strafeLeft(10)
                 .waitSeconds(.1)
-                .lineToLinearHeading(PoseStorage.ParkSpotRR)
+                .back(15)
                 .build();
 
         //auto code here
@@ -258,23 +248,11 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 break;
         }
 
-        //scores yellow pixel on preload pixel
-//        switch(aprilTagID){
-//            case 4:
-//                bot.followTrajectorySequenceAsync(LeftBoardScore);
-//                break;
-//            case 6:
-//                bot.followTrajectorySequenceAsync(MiddleBoardScore);
-//                break;
-//            default:
-//                bot.followTrajectorySequenceAsync(RightBoardScore);
-//                break;
-//        }
-
         //init loop so we see if robot will start with correct propPosition
         while(opModeInInit()){
             telemetry.addData("Detected Prop Position: ", propPosition);
-            telemetry.addData("Corresponding April Tag:",aprilTagID);        }
+            telemetry.addData("Corresponding April Tag:",aprilTagID);
+        }
 
         while(opModeIsActive() && !isStopRequested()){
             //define the flow of the state machine through this switch statement
