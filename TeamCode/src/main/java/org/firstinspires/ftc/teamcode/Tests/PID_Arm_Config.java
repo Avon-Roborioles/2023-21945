@@ -37,6 +37,7 @@ public class PID_Arm_Config extends OpMode {
 
     private DcMotorEx leftMotor;
     private DcMotorEx rightMotor;
+    private DcMotorEx wristMotor;
 
     @Override
     public void init() {
@@ -45,6 +46,7 @@ public class PID_Arm_Config extends OpMode {
 
         leftMotor = hardwareMap.get(DcMotorEx.class,"leftMotor");
         rightMotor = hardwareMap.get(DcMotorEx.class, "rightMotor");
+        wristMotor = hardwareMap.get(DcMotorEx.class,"wrist");
 
 //        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //sets to 0
 //        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//sets to 0
@@ -57,6 +59,7 @@ public class PID_Arm_Config extends OpMode {
 
     @Override
     public void loop() {
+        wristMotor.setPower(-.6);
         controller.setPID(p, i, d);
         int leftArmPos = leftMotor.getCurrentPosition();
         int rightArmPos = rightMotor.getCurrentPosition();

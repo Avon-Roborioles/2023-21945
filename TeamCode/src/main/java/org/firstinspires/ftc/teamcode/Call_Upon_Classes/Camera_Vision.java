@@ -59,6 +59,7 @@ public class Camera_Vision {
         // and experiment to fine tune it for blue
 
         if(redAlliance){
+            //TODO adjust red color scale to account for lower and upper ranges
             //color limit for red
             lower = new Scalar(150, 100, 100); // 150, 100, 100
             upper = new Scalar(180, 255, 255); // 180, 255, 255

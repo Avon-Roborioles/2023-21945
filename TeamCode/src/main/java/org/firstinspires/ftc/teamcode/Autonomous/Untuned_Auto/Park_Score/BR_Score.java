@@ -31,7 +31,7 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.1)
                 .forward(18) //17
                 .waitSeconds(.1)
-                .turn(Math.toRadians(75))
+                .turn(Math.toRadians(80)) //75
                 .addDisplacementMarker(()->{
                     intake.wrist_down();
                 })
@@ -114,9 +114,9 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .waitSeconds(.1)
                 .back(3)
-                .addDisplacementMarker(()->{
-                    intake.closeClaws(true);
-                })
+//                .addDisplacementMarker(()->{
+//                    intake.closeClaws(true);
+//                })
 //                .addDisplacementMarker(()->{
 //                    intake.closeClaws(true);
 //                    intake.wrist_up();

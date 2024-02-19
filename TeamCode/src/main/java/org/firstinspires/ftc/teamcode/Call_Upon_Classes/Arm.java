@@ -66,12 +66,12 @@ public class Arm {
 
     //set arm target to ideal scoring position
     public void up(){
-        target = 2300; //2000
+        target = 2000; //2000
     }
 
     //set arm target to ground position
     public void down(){
-        target = 10;
+        target = 5;
     }
 
     //manual target control for Arm PID
@@ -147,7 +147,7 @@ public class Arm {
                 leftMotorEx.setPower(-0.04); //small bit of power for brakes
                 rightMotorEx.setPower(0.04);
             } else {
-                 leftMotorEx.setPower(0.09); //small bit of power for brakes
+                 leftMotorEx.setPower(0.09); //small bit of power for brakes - 0.09
                  rightMotorEx.setPower(-0.09);
              }
         }
@@ -173,8 +173,8 @@ public class Arm {
 
     public void getTelemetry(Telemetry telemetry){
 
-        telemetry.addData("Left Motor Position: ", leftMotor.getCurrentPosition());
-        telemetry.addData("Right Motor Position: ", rightMotor.getCurrentPosition());
+        telemetry.addData("Left Motor Position: ", leftMotorEx.getCurrentPosition());
+        telemetry.addData("Right Motor Position: ", rightMotorEx.getCurrentPosition());
         telemetry.addData("Hang Default: ", hangDefault);
         telemetry.addData("Arm is Up?: ", armIsUp);
     }

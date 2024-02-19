@@ -101,16 +101,16 @@ public class RR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.wrist_down();
                 })
                 .waitSeconds(.7)
-                .back(16)
+                .back(15)
                 .addDisplacementMarker(()->{
                     intake.openClawV2(true,false);
                 })
                 .waitSeconds(.7)
                 .back(5)
-                .addDisplacementMarker(()->{
-                    intake.closeClaws(true);
-                    intake.wrist_up();
-                })
+//                .addDisplacementMarker(()->{
+//                    intake.closeClaws(true);
+//                    intake.wrist_up();
+//                })
                 .waitSeconds(.1)
                 .turn(Math.toRadians(11))
                 .waitSeconds(.1)

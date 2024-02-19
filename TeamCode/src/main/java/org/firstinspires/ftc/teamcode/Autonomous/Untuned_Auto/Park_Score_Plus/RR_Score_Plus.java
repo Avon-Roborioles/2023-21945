@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score_Plus;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+@Config
 @Autonomous(name="RR Score Plus", group="Park + Score")
 public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase{
 
@@ -130,10 +133,12 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         //TEST
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(LeftSpikeScore.end())
                 //go to board
-                .turn(Math.toRadians(-11))
-                .back(20)
+//                .waitSeconds(.1)
+//                .turn(Math.toRadians(11))
                 .waitSeconds(.1)
-                .strafeRight(5)
+                .back(12) //10
+                .waitSeconds(.1)
+                .strafeRight(7)
                 .addDisplacementMarker(()->{
                     arm.up();
                     intake.wrist_up();
@@ -145,7 +150,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .addDisplacementMarker(()->{
                     intake.openClawV2(true,true);
                 })
-                .waitSeconds(.7)
+                .waitSeconds(2)
                 .forward(7)
                 .addDisplacementMarker(()->{
                     arm.down();
@@ -154,9 +159,11 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.7)
 
                 //park
-                .strafeLeft(20)
+                .turn(Math.toRadians(13))
                 .waitSeconds(.1)
-                .back(15)
+                .strafeLeft(22,SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL,DriveConstants.TRACK_WIDTH),SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(.1)
+                .back(16)
                 .build();
 
         //TEST
@@ -251,6 +258,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
         while(opModeInInit()){
             telemetry.addData("Detected Prop Position: ", propPosition);
             telemetry.addData("Corresponding April Tag:",aprilTagID);
+            telemetry.update();
         }
 
         while(opModeIsActive() && !isStopRequested()){
