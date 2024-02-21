@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -16,9 +17,8 @@ import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class Team_Prop_Sim extends OpenCvPipeline {
+public class Improved_Team_Prop_Sim extends OpenCvPipeline {
 
     private final Scalar lowerL = new Scalar(0, 50, 50); // 150, 100, 100
     private final Scalar upperL = new Scalar(10, 255, 255); // 180, 255, 255
@@ -37,16 +37,22 @@ public class Team_Prop_Sim extends OpenCvPipeline {
     private double largestContourWidth;
     private double largestContourArea = -1;
     private double minArea;
-    private MatOfPoint largestContour;
+    private MatOfPoint largestContour = null;
     private int contourCount = 0;
     private final Paint linePaint;
-
     private int telemetryCount = 0;
+
+    public enum PropPositions {
+        LEFT,
+        MIDDLE,
+        RIGHT,
+        UNFOUND;
+    }
 
 
     Telemetry telemetry;
 
-    public Team_Prop_Sim(Telemetry telemetry){
+    public Improved_Team_Prop_Sim(Telemetry telemetry){
         this.telemetry = telemetry;
 
         // setting up the paint for the lines that comprise the box
@@ -108,7 +114,7 @@ public class Team_Prop_Sim extends OpenCvPipeline {
         largestContour = null;
 
         //set minArea
-        minArea = 10;
+        minArea = 50;
 
         //count number of contours
         for (int i = 0; i < contours.size();i++) { //MatOfPoint contour : contours
@@ -129,29 +135,68 @@ public class Team_Prop_Sim extends OpenCvPipeline {
             }
         }
 
+        // sets up the center points of our largest contour to be -1 (offscreen)
+        largestContourX = largestContourY = -1;
+
+        // if we found it, calculates the actual centers
+        if (largestContour != null) {
+            Moments moment = Imgproc.moments(largestContour);
+            largestContourX = (moment.m10 / moment.m00);
+            largestContourY = (moment.m01 / moment.m00);
+        }
+
+        // determines the current prop position, using the left and right dividers we gave earlier
+        // if we didn't find any contours which were large enough, sets it to be unfound
+        PropPositions propPosition = PropPositions.MIDDLE;
+        if (largestContour == null) {
+            propPosition = PropPositions.UNFOUND;
+        } else if (largestContourX < 107) {
+            propPosition = PropPositions.LEFT;
+        } else if (largestContourX > 213) {
+            propPosition = PropPositions.RIGHT;
+        } else {
+            propPosition = PropPositions.MIDDLE;
+        }
+
+// Create two Point objects representing the start and end points of the line
+        Point startPoint = new Point(107, 10);
+        Point endPoint = new Point(107, filteredFrame.height());
+
+        // Create a Scalar object representing the color of the line
+        Scalar color = new Scalar(255, 0, 0); // red
+
+        // Draw the line on the image
+        Imgproc.line(filteredFrame, new Point(107,0), new Point(107,filteredFrame.height()), color, 5);
+        Imgproc.line(filteredFrame, new Point(213,0), new Point(213,filteredFrame.height()), color, 5);
 
         finalFrame = filteredFrame;
+
+        telemetry.addData("Number of Contours: ", contourCount);
+        telemetry.addData("Prop Position: ", propPosition);
+        telemetry.addData("Frame Width: ", filteredFrame.width());
+        telemetry.addData("Frame Height: ", filteredFrame.height());
+        telemetry.update();
         return filteredFrame;
     }
 
     @Override
     public void onViewportTapped() {
         //do nothing
-        //Imgproc.drawContours(finalFrame,contours,contourIndex,new Scalar(255,0,0),1);
     }
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
-        if (largestContour != null) {
-            Rect rect = Imgproc.boundingRect(largestContour);
+            if (largestContour != null) {
+                Rect rect = Imgproc.boundingRect(largestContour);
 
-            float[] points = {rect.x * scaleBmpPxToCanvasPx, rect.y * scaleBmpPxToCanvasPx, (rect.x + rect.width) * scaleBmpPxToCanvasPx, (rect.y + rect.height) * scaleBmpPxToCanvasPx};
+                float[] points = {rect.x * scaleBmpPxToCanvasPx, rect.y * scaleBmpPxToCanvasPx, (rect.x + rect.width) * scaleBmpPxToCanvasPx, (rect.y + rect.height) * scaleBmpPxToCanvasPx};
 
-            canvas.drawLine(points[0], points[1], points[0], points[3], linePaint);
-            canvas.drawLine(points[0], points[1], points[2], points[1], linePaint);
+                canvas.drawLine(points[0], points[1], points[0], points[3], linePaint);
+                canvas.drawLine(points[0], points[1], points[2], points[1], linePaint);
 
-            canvas.drawLine(points[0], points[3], points[2], points[3], linePaint);
-            canvas.drawLine(points[2], points[1], points[2], points[3], linePaint);
+                canvas.drawLine(points[0], points[3], points[2], points[3], linePaint);
+                canvas.drawLine(points[2], points[1], points[2], points[3], linePaint);
+
 
 
         }
