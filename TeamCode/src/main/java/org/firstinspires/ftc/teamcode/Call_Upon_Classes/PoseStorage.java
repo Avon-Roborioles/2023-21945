@@ -12,11 +12,13 @@ public class PoseStorage {
     public static Pose2d currentPose = new Pose2d();
 
     //TODO - Red Alliance Poses
+    //Red Left
     public static final Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
     public static final Pose2d LeftSpikePoseRL = new Pose2d(-45,-28,Math.toRadians(-180));
     public static final Pose2d MiddleSpikePoseRL = new Pose2d(-36,-8,Math.toRadians(-90));
     public static final Pose2d RightSpikePoseRL = new Pose2d(-40,-30,Math.toRadians(0));
 
+    //Red Right
     public static Pose2d startPoseRR = new Pose2d(12, -60.6, Math.toRadians(90));
     public static final Pose2d LeftBoardPoseR = new Pose2d(39,-28,Math.toRadians(-180));
     public static final Pose2d MiddleBoardPoseR = new Pose2d(39,-34,Math.toRadians(-180));
