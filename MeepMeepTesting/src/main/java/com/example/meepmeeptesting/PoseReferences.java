@@ -20,7 +20,9 @@ public class PoseReferences {
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(PoseStorageCopy.thirdStackR)
+                        drive.trajectorySequenceBuilder(PoseStorageCopy.startPoseRR)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.rightSpikePoseRR)
                                 .waitSeconds(100)
                                 .build()
                 );
