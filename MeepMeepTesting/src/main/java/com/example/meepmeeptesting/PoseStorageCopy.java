@@ -53,13 +53,18 @@ public class PoseStorageCopy {
         public static final Pose2d leftSpikePoseBL = new Pose2d(-25,-33,Math.toRadians(0));
         public static final Pose2d middleSpikePoseBL = new Pose2d(-14,-11,Math.toRadians(-90+1e-6));
         public static final Pose2d rightSpikePoseBL = new Pose2d(-15,-34,Math.toRadians(0));
-
-    public static final Pose2d parkSpotBL = new Pose2d(-57,-10,Math.toRadians(0));
+        public static final Pose2d checkPoint1BL = new Pose2d(-16,-58.5,Math.toRadians(0));
+        public static final Pose2d checkPoint2BL = new Pose2d(34,-58.5,Math.toRadians(0));
+        public static final Pose2d parkSpotBL = new Pose2d(-57,-59,Math.toRadians(0));
 
 
     //TODO Blue Right
         public static final Pose2d startPoseBR = new Pose2d(35,-60.6,Math.toRadians(90));
-
+        public static final Pose2d leftSpikePoseBR = new Pose2d(37,-33,Math.toRadians(-180));
+        public static final Pose2d middleSpikePoseBR = new Pose2d(37,-11,Math.toRadians(-90-1e-6));
+        public static final Pose2d rightSpikePoseBR = new Pose2d(45,-30,Math.toRadians(0));
+        public static final Pose2d checkPoint1BR = new Pose2d(-16,-11,Math.toRadians(0));
+        public static final Pose2d checkPoint2BR = new Pose2d(34,-11,Math.toRadians(0));
         public static final Pose2d parkSpotBR = new Pose2d(-57,-59,Math.toRadians(0));
 
 
