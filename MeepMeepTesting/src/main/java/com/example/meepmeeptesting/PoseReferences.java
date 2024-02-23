@@ -20,29 +20,23 @@ public class PoseReferences {
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(PoseStorageCopy.startPoseRL)
-
-                                .waitSeconds(1000)
+                        drive.trajectorySequenceBuilder(PoseStorageCopy.startPoseRR)
+                                .waitSeconds(100)
                                 .build()
                 );
-        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
-                .setDarkMode(true)
-                .setBackgroundAlpha(0.95f)
-                //program to run
-                .addEntity(PoseReferences)
-                .start();
 
 
         //Blue Alliance
-        //pull Blue Alliance Image
-        Image img = null;
-        try { img = ImageIO.read(new File("<PATH TO IMAGE>")); }
+        Image Blue_Alliance_Background = null;
+        MeepMeep.Background Red_Alliance_Background = MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK;
+        //change file path to absolute path of "Blue-Alliance-Background.jpg" Image
+        try { Blue_Alliance_Background = ImageIO.read(new File("/Users/stepheno/Documents/GitHub/2023-21945/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Reference_Images/Blue-Alliance-Background.jpg")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .setBackground(img)
+                .setBackground(Red_Alliance_Background)
                 //program to run
                 .addEntity(PoseReferences)
                 .start();
