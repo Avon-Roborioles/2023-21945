@@ -31,7 +31,6 @@ public class PoseStorageCopy {
 
         //Red Right
         public static final Pose2d startPoseRR = new Pose2d(12, -60.6, Math.toRadians(90));
-        //TODO - Spike Poses
         public static final Pose2d leftSpikePoseRR = new Pose2d(13,-35,Math.toRadians(-180));
         public static final Pose2d middleSpikePoseRR = new Pose2d(13,-11,Math.toRadians(-90));
         public static final Pose2d rightSpikePoseRR = new Pose2d(23,-30,Math.toRadians(-180));
@@ -45,12 +44,20 @@ public class PoseStorageCopy {
         public static final Pose2d firstStackB = new Pose2d(52,-11, Math.toRadians(0));
         public static final Pose2d secondStackB = new Pose2d(52,-23, Math.toRadians(0));
         public static final Pose2d thirdStackB = new Pose2d(52,-35, Math.toRadians(0));
+        public static final Pose2d leftBoardPoseB = new Pose2d(-39,-28,Math.toRadians(0));
+        public static final Pose2d middleBoardPoseB = new Pose2d(-39,-34,Math.toRadians(0));
+        public static final Pose2d rightBoardPoseB = new Pose2d(-39,-40,Math.toRadians(0));
 
         //TODO Blue Left
         public static final Pose2d startPoseBL = new Pose2d(-12,-60.6,Math.toRadians(90));
 
-        //TODO Blue Right
+        public static final Pose2d parkSpotBL = new Pose2d(-57,-10,Math.toRadians(0));
+
+
+    //TODO Blue Right
         public static final Pose2d startPoseBR = new Pose2d(35,-60.6,Math.toRadians(90));
+
+        public static final Pose2d parkSpotBR = new Pose2d(-57,-59,Math.toRadians(0));
 
 
 

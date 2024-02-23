@@ -20,9 +20,7 @@ public class PoseReferences {
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(PoseStorageCopy.startPoseRR)
-                                .waitSeconds(.1)
-                                .lineToLinearHeading(PoseStorageCopy.rightSpikePoseRR)
+                        drive.trajectorySequenceBuilder(PoseStorageCopy.parkSpotBR)
                                 .waitSeconds(100)
                                 .build()
                 );
@@ -38,7 +36,7 @@ public class PoseReferences {
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .setBackground(Red_Alliance_Background)
+                .setBackground(Blue_Alliance_Background)
                 //program to run
                 .addEntity(PoseReferences)
                 .start();
