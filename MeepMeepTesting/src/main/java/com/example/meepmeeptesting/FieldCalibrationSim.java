@@ -1,6 +1,5 @@
 package com.example.meepmeeptesting;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -12,24 +11,32 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
-public class PoseReferences {
+public class FieldCalibrationSim {
     public static void main(String[] args){
         MeepMeep meepMeep = new MeepMeep(800); //600 for laptops
 
-        RoadRunnerBotEntity PoseReferences = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity fieldCalibrationSim = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(PoseStorageCopy.startPoseBL)
-                                .lineToLinearHeading(PoseStorageCopy.checkPoint1BL)
+                                .waitSeconds(.1)
+                                .splineToSplineHeading(PoseStorageCopy.checkPoint1BR,PoseStorageCopy.checkPoint1BR.getHeading())
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.checkPoint2BR)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.firstStackB)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.secondStackB)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.thirdStackB)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.checkPoint2BL)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.parkSpotBL)
                                 .waitSeconds(100)
                                 .build()
                 );
-
-        //red alliance
-        MeepMeep.Background Red_Alliance_Background = MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK;
-
 
         //Blue Alliance
         Image Blue_Alliance_Background = null;
@@ -48,7 +55,8 @@ public class PoseReferences {
                 .setBackgroundAlpha(0.95f)
                 .setBackground(Blue_Alliance_Background)
                 //program to run
-                .addEntity(PoseReferences)
+                .addEntity(fieldCalibrationSim)
                 .start();
     }
-}
+    }
+
