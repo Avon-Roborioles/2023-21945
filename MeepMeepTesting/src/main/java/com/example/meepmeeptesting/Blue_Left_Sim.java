@@ -20,7 +20,7 @@ public class Blue_Left_Sim {
         Scanner input = new Scanner(System.in); //input scanner for auto menu
 
         //meepMeep variables
-        MeepMeep meepMeep = new MeepMeep(600);
+        MeepMeep meepMeep = new MeepMeep(800); //600 for laptops
         ArrayList<String> propPoses = new ArrayList<>();
         propPoses.add("LEFT");
         propPoses.add("MIDDLE");
@@ -29,31 +29,49 @@ public class Blue_Left_Sim {
         //input variables
         boolean manualInput;
         String propPosition = "";
+        String checkPointType = "";
+
+        //variables for poses to type faster
+        Pose2d startPose = PoseStorageCopy.startPoseBL;
+        Pose2d parkSpot = PoseStorageCopy.parkSpotBL;
+        Pose2d checkPoint1 = PoseStorageCopy.checkPoint1BL; //default to BL Check points
+        Pose2d checkPoint2 = PoseStorageCopy.checkPoint2BL;
+
 
         System.out.println("Manual or Auto Selection? (true/false): ");
         manualInput = input.nextBoolean();
 
         if(manualInput){
             //manual input
+            //prop pose selection
             while(!propPoses.contains(propPosition)) { //continues prompting until a valid propPose is chosen
-                System.out.println("Select a PropPosition (LEFT, MIDDLE, RIGHT): ");
+                System.out.println("\nSelect a PropPosition (LEFT, MIDDLE, RIGHT): ");
                 propPosition = input.next();
             }
-            //start = true;
+            System.out.println("Selected: " + propPosition);
+
+            //checkpoint location selection
+            while(!Objects.equals(checkPointType, "Up") && !Objects.equals(checkPointType, "Down")){
+                System.out.println("\nSelect the Locations of the CheckPoints (Up or Down):");
+                checkPointType = input.next();
+            }
+            System.out.println("Selected: " + checkPointType);
+            if(checkPointType == "Up"){
+                checkPoint1 = PoseStorageCopy.checkPoint1BR;
+                checkPoint2 = PoseStorageCopy.checkPoint2BR;
+            }
+
         } else {
             //auto input
              propPosition = propPoses.get((int)(Math.random() * 3));
+             checkPointType = "Down";
             System.out.println("Randomized Prop Position: " + propPosition);
-
-            //start = true;
+            System.out.println("CheckPoint Location: " + checkPointType);
         }
 
 
 
-        //variables for poses to type faster
-        Pose2d startPose = PoseStorageCopy.startPoseBL;
-        Pose2d parkSpot = PoseStorageCopy.parkSpotBL;
-        Pose2d checkPoint1 = PoseStorageCopy.checkPoint1BL;
+
 
         //TODO
         RoadRunnerBotEntity Blue_Left_AutoL = new DefaultBotBuilder(meepMeep)
