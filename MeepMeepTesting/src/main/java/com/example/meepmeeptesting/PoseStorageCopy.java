@@ -50,7 +50,7 @@ public class PoseStorageCopy {
 
         //TODO Blue Left
         public static final Pose2d startPoseBL = new Pose2d(-12,-60.6,Math.toRadians(90));
-        public static final Pose2d leftSpikePoseBL = new Pose2d(-25,-33,Math.toRadians(0));
+        public static final Pose2d leftSpikePoseBL = new Pose2d(-25,-31,Math.toRadians(0));
         public static final Pose2d middleSpikePoseBL = new Pose2d(-14,-11,Math.toRadians(-90+1e-6));
         public static final Pose2d rightSpikePoseBL = new Pose2d(-15,-34,Math.toRadians(0));
         public static final Pose2d checkPoint1BL = new Pose2d(-16,-58.5,Math.toRadians(0));

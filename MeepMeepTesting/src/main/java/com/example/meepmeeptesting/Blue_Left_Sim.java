@@ -56,7 +56,7 @@ public class Blue_Left_Sim {
                 checkPointType = input.next();
             }
             System.out.println("Selected: " + checkPointType);
-            if(checkPointType == "Up"){
+            if(checkPointType.equals("Up")){
                 checkPoint1 = PoseStorageCopy.checkPoint1BR;
                 checkPoint2 = PoseStorageCopy.checkPoint2BR;
             }
@@ -79,8 +79,55 @@ public class Blue_Left_Sim {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
+                                //score purple pixel on spike mark
+                                .addTemporalMarker(0,()->{
+                                    System.out.println("\nWRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.leftSpikePoseBL)
+                                .waitSeconds(.1)
+                                .back(9)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nWRIST DOWN");
+                                })
+                                .waitSeconds(.7)
+                                .turn(Math.toRadians(-1e-6))
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nOPEN RIGHT CLAW");
+                                })
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nWRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
 
-                                .waitSeconds(1000)
+                                //score on board
+                                .lineToLinearHeading(PoseStorageCopy.leftBoardPoseB)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nARM UP");
+                                })
+                                .waitSeconds(.1)
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nOPEN LEFT CLAW");
+                                })
+                                .waitSeconds(2)
+                                .forward(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nARM DOWN");
+                                    System.out.println("\nCLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+
+                                //TODO - Add Stacked Pixel Auto
+
+                                //park
+                                .splineToLinearHeading(new Pose2d(parkSpot.getX() + 16,parkSpot.getY()),parkSpot.getHeading())
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(parkSpot)
+                                .waitSeconds(100)
                                 .build()
                 );
 
