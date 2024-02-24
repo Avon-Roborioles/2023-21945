@@ -137,8 +137,58 @@ public class Blue_Left_Sim {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
+                                //score purple pixel on spike mark
+                                .addTemporalMarker(0,()->{
+                                    System.out.println("\nWRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.middleSpikePoseBL)
+                                .waitSeconds(.1)
+                                .forward(2)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nWRIST DOWN");
+                                })
+                                .waitSeconds(.7)
+                                .turn(Math.toRadians(-1e-6))
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nOPEN RIGHT CLAW");
+                                })
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nWRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
 
-                                .waitSeconds(1000)
+                                .waitSeconds(.01)
+                                .strafeRight(11)
+                                .waitSeconds(.01)
+
+                                //score on board
+                                .splineToLinearHeading(PoseStorageCopy.middleBoardPoseB,PoseStorageCopy.middleBoardPoseB.getHeading())
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nARM UP");
+                                })
+                                .waitSeconds(.1)
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nOPEN LEFT CLAW");
+                                })
+                                .waitSeconds(2)
+                                .forward(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nARM DOWN");
+                                    System.out.println("\nCLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+
+                                //TODO - Add Stacked Pixel Auto
+
+                                //park
+                                .splineToLinearHeading(new Pose2d(parkSpot.getX() + 16,parkSpot.getY()),parkSpot.getHeading())
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(parkSpot)
+                                .waitSeconds(100)
                                 .build()
                 );
 
@@ -148,8 +198,58 @@ public class Blue_Left_Sim {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
+                                //score purple pixel on spike mark
+                                .addTemporalMarker(0,()->{
+                                    System.out.println("\nWRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.rightSpikePoseBL)
+                                .waitSeconds(.1)
+                                .forward(7)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nWRIST DOWN");
+                                })
+                                .waitSeconds(.01)
+                                .back(4)
+                                .waitSeconds(.1)
+                                .turn(Math.toRadians(-1e-6))
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nOPEN RIGHT CLAW");
+                                })
+                                .waitSeconds(1)
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nWRIST UP");
+                                    System.out.println("CLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
 
-                                .waitSeconds(1000)
+                                //score on board
+                                .lineToLinearHeading(PoseStorageCopy.rightBoardPoseB)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nARM UP");
+                                })
+                                .waitSeconds(.1)
+                                .back(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nOPEN LEFT CLAW");
+                                })
+                                .waitSeconds(2)
+                                .forward(5)
+                                .addDisplacementMarker(()->{
+                                    System.out.println("\nARM DOWN");
+                                    System.out.println("\nCLOSE CLAWS");
+                                })
+                                .waitSeconds(.1)
+
+                                //TODO - Add Stacked Pixel Auto
+
+                                //park
+                                .splineToLinearHeading(new Pose2d(parkSpot.getX() + 16,parkSpot.getY()),parkSpot.getHeading())
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(parkSpot)
+                                .waitSeconds(100)
                                 .build()
                 );
 
