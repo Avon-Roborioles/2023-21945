@@ -36,6 +36,7 @@ public class Blue_Right_Sim {
         Pose2d parkSpot = PoseStorageCopy.parkSpotBR;
         Pose2d checkPoint1; //default to BL Check points
         Pose2d checkPoint2;
+        int middleStrafeY; //used to strafe robot down if need to go through truss
 
 
         System.out.println("Manual or Auto Selection? (true/false): ");
@@ -59,12 +60,15 @@ public class Blue_Right_Sim {
             if(checkPointType.equals("Down")){
                 checkPoint1 = PoseStorageCopy.checkPoint1BL;
                 checkPoint2 = PoseStorageCopy.checkPoint2BL;
+                middleStrafeY = 20;
             } else {
+                middleStrafeY = 0;
                 checkPoint1 = PoseStorageCopy.checkPoint1BR;
                 checkPoint2 = PoseStorageCopy.checkPoint2BR;
             }
 
         } else {
+            middleStrafeY = 0;
             checkPoint1 = PoseStorageCopy.checkPoint1BR;
             checkPoint2 = PoseStorageCopy.checkPoint2BR;
             //auto input
@@ -73,9 +77,6 @@ public class Blue_Right_Sim {
             System.out.println("Randomized Prop Position: " + propPosition);
             System.out.println("CheckPoint Location: " + checkPointType);
         }
-
-
-
 
 
         //TODO
@@ -156,7 +157,9 @@ public class Blue_Right_Sim {
                                     System.out.println("CLOSE CLAWS");
                                 })
                                 .waitSeconds(.1)
-                                .lineToLinearHeading(PoseStorageCopy.middleSpikePoseBL)
+                                .strafeRight(7)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(PoseStorageCopy.middleSpikePoseBR)
                                 .waitSeconds(.1)
                                 .forward(2)
                                 .addDisplacementMarker(()->{
@@ -174,11 +177,17 @@ public class Blue_Right_Sim {
                                 })
 
                                 .waitSeconds(.01)
-                                .strafeRight(11)
+                                .strafeLeft(11)
+                                .lineToLinearHeading(new Pose2d(checkPoint2.getX()+20,checkPoint2.getY(),checkPoint2.getHeading()))
                                 .waitSeconds(.01)
 
+                                .lineToLinearHeading(checkPoint2)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkPoint1)
+                                .waitSeconds(.1)
+
                                 //score on board
-                                .splineToLinearHeading(PoseStorageCopy.middleBoardPoseB,PoseStorageCopy.middleBoardPoseB.getHeading())
+                                .lineToLinearHeading(PoseStorageCopy.middleBoardPoseB)
                                 .addDisplacementMarker(()->{
                                     System.out.println("\nARM UP");
                                 })
