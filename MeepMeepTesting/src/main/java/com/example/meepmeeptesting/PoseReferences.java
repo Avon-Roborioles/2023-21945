@@ -22,7 +22,7 @@ public class PoseReferences {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(PoseStorageCopy.startPoseBL)
-                                .lineToLinearHeading(PoseStorageCopy.checkPoint1BL)
+                                .lineToLinearHeading(PoseStorageCopy.rightBoardPoseB)
                                 .waitSeconds(100)
                                 .build()
                 );
