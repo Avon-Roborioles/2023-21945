@@ -226,25 +226,27 @@ public class Blue_Right_Sim {
                                     System.out.println("CLOSE CLAWS");
                                 })
                                 .waitSeconds(.1)
-                                .lineToLinearHeading(PoseStorageCopy.rightSpikePoseBL)
+                                .lineToLinearHeading(PoseStorageCopy.rightSpikePoseBR)
                                 .waitSeconds(.1)
-                                .forward(7)
+                                .back(10)
                                 .addDisplacementMarker(()->{
                                     System.out.println("\nWRIST DOWN");
                                 })
                                 .waitSeconds(.01)
-                                .back(4)
-                                .waitSeconds(.1)
                                 .turn(Math.toRadians(-1e-6))
                                 .addDisplacementMarker(()->{
                                     System.out.println("\nOPEN RIGHT CLAW");
                                 })
                                 .waitSeconds(1)
-                                .back(5)
+                                .back(0.01)
                                 .addDisplacementMarker(()->{
                                     System.out.println("\nWRIST UP");
                                     System.out.println("CLOSE CLAWS");
                                 })
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkPoint2)
+                                .waitSeconds(.1)
+                                .lineToLinearHeading(checkPoint1)
                                 .waitSeconds(.1)
 
                                 //score on board

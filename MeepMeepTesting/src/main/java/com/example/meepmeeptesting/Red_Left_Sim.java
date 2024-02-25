@@ -27,7 +27,7 @@ public class Red_Left_Sim {
     public static Pose2d ParkSpot = new Pose2d(57,-8,Math.toRadians(-180));
 
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(600);
+        MeepMeep meepMeep = new MeepMeep(900); //600 for laptops
         String[] propPoses = {"LEFT", "MIDDLE", "RIGHT"};
 
         String propPosition = propPoses[(int)(Math.random() * 3)];
