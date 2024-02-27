@@ -8,7 +8,6 @@ public class AutoBase extends LinearOpMode {
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Intake intake = new Intake();
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
-    //protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Distance_Sensor distance_sensor = new Distance_Sensor();
 
 
     @Override
@@ -16,8 +15,8 @@ public class AutoBase extends LinearOpMode {
     }
 
     public void init_classes(){
-        //arm.init_arm_main(hardwareMap, "leftMotor", "rightMotor", true);
-        arm.init_arm_auto(hardwareMap,"leftMotor", "rightMotor");
+        //arm.init_arm_auto(hardwareMap,"leftMotor", "rightMotor");
+        arm.init_arm_teleOp(hardwareMap,"leftMotor", "rightMotor");
         intake.init_intake_V2(hardwareMap, "claw1", "claw2","wrist");
         vision.init_cameras(hardwareMap, "Webcam 1", "Webcam 2");
     }
