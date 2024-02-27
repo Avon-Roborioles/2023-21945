@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.Call_Upon_Classes;
 
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -29,11 +29,7 @@ public class Arm {
     public static double kV = 0;
     public double rightMotorPosition = 0;
     private boolean hangingMode = false;
-    private boolean stackMode = false;
-    private int stackedPixel2 = 30;
-    private int stackedPixel3 = 60;
-    private int stackedPixel4 = 80;
-    private int stackedPixel5 = 100;
+    private boolean PIDMode = false;
 
     //Init Function
     public void init_arm_teleOp(HardwareMap hardwareMap, String leftMotorName, String rightMotorName){
@@ -42,18 +38,21 @@ public class Arm {
         //leftMotorEx.setDirection(DcMotorSimple.Direction.REVERSE);
 
         armGroup = new MotorGroup((Motor) rightMotorEx, (Motor) leftMotorEx);
-
+        armGroup.setRunMode(Motor.RunMode.RawPower);
     }
-
 
     //Auto Arm Methods
     public void up(){
-        target = 2000; //2000
+        target = 1600; //2000
     }
     public void down(){
         target = 5;
     }
-    public void stackPose(int pixel){
+    public void setStackPose(int pixel){
+        int stackedPixel2 = 30;
+        int stackedPixel3 = 60;
+        int stackedPixel4 = 80;
+        int stackedPixel5 = 100;
         switch(pixel){
             case 5:
                 target = stackedPixel5;
@@ -70,8 +69,8 @@ public class Arm {
              default:
                  target = 0;
         }
-    }
-    public void update(){
+    } //TODO - adjust stacked Pixels values
+    public void PIDUpdate(){
         controller.setPID(p, i, d);
         int rightArmPos = rightMotorEx.getCurrentPosition();
         double pid = controller.calculate(rightArmPos, target);
@@ -80,28 +79,62 @@ public class Arm {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         double power = pid + ff;
-
-        leftMotorEx.setPower(power);
-        rightMotorEx.setPower(power);
+//        leftMotorEx.setPower(power);
+//        rightMotorEx.setPower(power);
+        armGroup.set(power);
+    }
+    public void hang(){
+        armGroup.setRunMode(Motor.RunMode.RawPower);
+        armGroup.set(-0.8);
     }
 
     //TeleOp functions
-    public void run_arm_teleOp(Gamepad gamepad2, ToggleButtonReader d_down) {
-        double leftY = gamepad2.left_stick_y;
+    public void run_arm_teleOp(Gamepad gamepad2, ToggleButtonReader d_down, ToggleButtonReader d_up, ToggleButtonReader d_left, ToggleButtonReader d_right, TriggerReader ltrigger, TriggerReader rtrigger) {
+        double leftY = gamepad2.left_stick_y; //manual arm control
         boolean homeButton = gamepad2.ps; //TODO change to guide button if not detected
 
-        //TODO stacked pixel heights
-//        if(d_down.wasJustPressed()){
-//
-//        }
+        //stacked pixel heights
+        if(d_up.wasJustPressed()){
+            setStackPose(5);
+            PIDMode = true;
+        }
+
+        if(d_left.wasJustPressed()){
+            setStackPose(4);
+            PIDMode = true;
+        }
+
+        if(d_right.wasJustPressed()){
+            setStackPose(3);
+            PIDMode = true;
+        }
+
+        if(d_down.wasJustPressed()){
+            setStackPose(2);
+            PIDMode = true;
+        }
+
+        //default arm poses
+        if(ltrigger.wasJustPressed()){
+            down();
+            PIDMode = true;
+        }
+
+        if(rtrigger.wasJustPressed()){
+            up();
+            PIDMode = true;
+        }
 
         //activate hanging mode
         if(homeButton){
             hangingMode = true;
         }
 
-        if(leftY > 0 || leftY < 0) {
+        //manual control
+        if(leftY > 0 || leftY < 0) { //if controlling arm manually
+            //enter manual mode
             hangingMode = false;
+            PIDMode = false;
             if (rightMotorEx.getCurrentPosition() < 1600) {
                 if (leftY < 0) {
                     leftMotorEx.setPower(-0.5);
@@ -119,26 +152,22 @@ public class Arm {
                     rightMotorEx.setPower(0.3);
                 }
             }
-        } else if(!hangingMode){
-             if(rightMotorEx.getCurrentPosition() < 1600) {
-                leftMotorEx.setPower(-0.04); //small bit of power for brakes
-                rightMotorEx.setPower(0.04);
-            } else {
-                 leftMotorEx.setPower(0.09); //small bit of power for brakes - 0.09
-                 rightMotorEx.setPower(-0.09);
-             }
+        } else if(!hangingMode){ //if arm is idle - hold current pose
+        target = armGroup.getCurrentPosition();
+        PIDMode = true;
         }
 
-        //hanging mode
+        //Hanging Mode
         if(hangingMode){
             hang();
         }
 
+        //PID control for Stacked Pixels & Default Arm Poses
+        if(PIDMode){
+            PIDUpdate();
+        }
+
         d_down.readValue();
-    }
-    public void hang(){
-        armGroup.setRunMode(Motor.RunMode.RawPower);
-        armGroup.set(-0.8);
     }
 
 
@@ -147,4 +176,3 @@ public class Arm {
         telemetry.addData("Right Motor Position: ", rightMotorEx.getCurrentPosition());
     }
 }
-

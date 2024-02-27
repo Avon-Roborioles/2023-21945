@@ -152,7 +152,7 @@ public class BR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
 
         while(opModeIsActive()){
             bot.update(); //handles RR logic
-            arm.update(); //handles Arm PID control
+            arm.PIDUpdate(); //handles Arm PID control
         }
     }
 }

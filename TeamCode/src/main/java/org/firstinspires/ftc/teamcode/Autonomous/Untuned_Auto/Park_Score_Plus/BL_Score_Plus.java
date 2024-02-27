@@ -262,7 +262,7 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
             //continuously write pose to 'PoseStorage'
             PoseStorage.currentPose = poseEstimate;
 
-            arm.update(); //handles Arm PID control
+            arm.PIDUpdate(); //handles Arm PID control
 
             //telemetry data
             telemetry.addData("Detected Prop Position: ", propPosition);

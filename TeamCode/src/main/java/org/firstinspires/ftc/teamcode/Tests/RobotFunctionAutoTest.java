@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -46,7 +45,7 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
 
         while(opModeIsActive()){
             bot.update(); //handles pathing logic
-            arm.update(); //handles arm PID controller
+            arm.PIDUpdate(); //handles arm PID controller
             telemetry.addData("Target: ",arm.target);
             telemetry.addData("PID Power: ", arm.pidPower);
             telemetry.addData("Right Arm Pose: ", arm.rightMotorPosition);

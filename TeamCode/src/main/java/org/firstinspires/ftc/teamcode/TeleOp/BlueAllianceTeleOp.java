@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.*;
@@ -19,7 +20,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
 
     //updates telemetry for all robot functions
     public void setTelemetry(){
-        arm.getTelemetry(telemetry);
+
         telemetry.update();
     }
 
@@ -55,14 +56,30 @@ public class BlueAllianceTeleOp extends LinearOpMode {
         );
 
         //TODO - New Features
-        ToggleButtonReader d_down = new ToggleButtonReader(
-                gamepad2Ex, GamepadKeys.Button.DPAD_DOWN
-        );
-
-        ToggleButtonReader d_up = new ToggleButtonReader(
+        ToggleButtonReader d_up2 = new ToggleButtonReader(
                 gamepad2Ex, GamepadKeys.Button.DPAD_UP
         );
 
+        ToggleButtonReader d_down2 = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.DPAD_DOWN
+        );
+        ToggleButtonReader d_left2 = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.DPAD_LEFT
+        );
+        ToggleButtonReader d_right2 = new ToggleButtonReader(
+                gamepad2Ex, GamepadKeys.Button.DPAD_RIGHT
+        );
+        TriggerReader ltrigger2 = new TriggerReader(
+                gamepad2Ex, GamepadKeys.Trigger.LEFT_TRIGGER
+        );
+        TriggerReader rtrigger2 = new TriggerReader(
+                gamepad2Ex, GamepadKeys.Trigger.RIGHT_TRIGGER
+        );
+
+        while(opModeInInit()){
+            telemetry.addLine("The Raven is ready to fly!");
+            setTelemetry();
+        }
 
         waitForStart();
 
@@ -72,7 +89,7 @@ public class BlueAllianceTeleOp extends LinearOpMode {
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            arm.run_arm_teleOp(gamepad2, d_down);
+            arm.run_arm_teleOp(gamepad2,d_down2,d_up2,d_left2,d_right2,ltrigger2,rtrigger2);
             intake.run_intake_V2(gamepad2, a2Reader,y2Reader,LBumperReader,RBumperReader);
 
             //Driver Feedback Program
