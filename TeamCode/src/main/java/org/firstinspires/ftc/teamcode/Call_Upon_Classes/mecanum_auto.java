@@ -10,6 +10,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+/*
+A Backup auto class in case libraries like RoadRunner or Silver Surfer
+ (New Secretive Library Stephen will experiment with during the 2024 Summer Off-Season)
+  don't work
+ */
+
 public class mecanum_auto {
     private DcMotor fl = null;
     private DcMotor bl = null;
