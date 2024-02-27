@@ -1,3 +1,6 @@
 1) Use RR Localizer and make arm go down when the bot is in the center of the field
     - Going under gate
     - Going under trusses
+
+2) Add Safety features for every possible secnario
+    - Keep Robot Arm Up if wrist is pointing down (avoids arm from potentially snapping arm)

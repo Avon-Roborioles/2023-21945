@@ -21,10 +21,10 @@ public class Intake {
     private boolean wristIsUp = true;
     private boolean wristDefault = false;
     private boolean clawDefault = false;
-    public int pixel5 = -120;
-    public int pixel4 = -111;
-    public int pixel3 = -104;
-    public int pixel2 = -97;
+    public int stackedPixel5 = -120; //TODO - get values of wrist for stacked pixels
+    public int stackedPixel4 = -111;
+    public int stackedPixel3 = -104;
+    public int stackedPixel2 = -97;
     private boolean clawsAreClosed = true;
     private boolean claw1Open = true;
     private boolean claw2Open = true;
@@ -40,6 +40,12 @@ public class Intake {
         wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
+    }
+
+    //Call Upon methods for multi-modual robot features
+    public boolean wristIsPointingDown(){
+        //TODO - test to get value
+        return wristTarget > 300;
     }
 
     //autonomous methods
@@ -66,6 +72,11 @@ public class Intake {
             }
         }
     }
+        //TODO - easier methods
+    public void openLeftClaw(boolean open){
+
+    }
+    public void openRightClaw(boolean open){}
     public void closeClaws(boolean close){ //Done
         if (close){
            // clawIsOpen = false;
@@ -97,19 +108,19 @@ public class Intake {
     public void wrist_auto(int pixel){ //adjust wrist pose based on pixel stack height
         switch(pixel){ //TODO find exact heights with Robot_Telemetry Program
             case 5:
-                wristTarget = pixel5;
+                wristTarget = stackedPixel5;
                 break;
             case 4:
-                wristTarget = pixel4;
+                wristTarget = stackedPixel4;
                 break;
             case 3:
-                wristTarget = pixel3;
+                wristTarget = stackedPixel3;
                 break;
             case 2:
-                wristTarget = pixel2;
+                wristTarget = stackedPixel2;
                 break;
             default:
-                wristTarget = -90;
+                wristTarget = 0;
                 break;
         }
         wristMotor.setTargetPosition(wristTarget);
@@ -119,32 +130,45 @@ public class Intake {
     }
 
 
-    //Methods for TeleOp
-    public void run_intake_V2(Gamepad gamepad2, ToggleButtonReader aReader, ToggleButtonReader yReader, ToggleButtonReader LBumper, ToggleButtonReader RBumper){
-        double rightY = gamepad2.right_stick_y; //was float—
+    //TODO - Methods for TeleOp
+    public void run_intake_V2(Gamepad gamepad2, ToggleButtonReader aReader, ToggleButtonReader yReader, ToggleButtonReader LBumper, ToggleButtonReader RBumper,ToggleButtonReader d_down,ToggleButtonReader d_up,ToggleButtonReader d_left, ToggleButtonReader d_right){
+        double rightY = gamepad2.right_stick_y; //manual control
 
         if(aReader.wasJustPressed()){
             clawDefault = true;
             clawsAreClosed = claw1.getPosition() == 0.4 || claw2.getPosition() == 0.2;
-        }
+        } //auto claws control
 
         if(LBumper.wasJustPressed()){
             clawDefault = false;
             openClawV2(!claw1Open,true);
-        }
+        } //left claw control
 
         if(RBumper.wasJustPressed()){
             clawDefault = false;
             openClawV2(!claw2Open,false);
-        }
-
-
-
+        } //right claw control
 
         if(yReader.wasJustPressed()){ //when pressed activate default mode & switch between up or down
             wristDefault = true;
             wristIsUp = wristMotor.getCurrentPosition() > -50;
-            }
+        } //auto wrist control
+
+
+        //TODO - Auto Wrist Level for Stacked Pixels
+        if(d_up.wasJustPressed()){ //pixel 5
+
+        }
+        if(d_left.wasJustPressed()){ //pixel 4
+
+        }
+        if(d_right.wasJustPressed()){ //pixel 3
+
+        }
+        if(d_down.wasJustPressed()){ //pixel 2
+
+        }
+
 
         if(rightY < -0.3 || rightY > 0.3) { //TODO: Add Safety Check In case of Joystick strafe; check if joystick is moving
             wristDefault = false;
