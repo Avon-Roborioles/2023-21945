@@ -17,7 +17,7 @@ public class Intake {
     private Servo claw2 = null;
     private DcMotorEx wristMotor = null;
     private boolean wristIsUp = true;
-    private boolean wristDefault = false;
+    private boolean wristMode = false;
     private boolean clawDefault = false;
     public int stackedPixel5 = -120; //TODO - get values of wrist for stacked pixels
     public int stackedPixel4 = -111;
@@ -41,10 +41,10 @@ public class Intake {
 
     }
 
-    //Call Upon methods for multi-modual robot features
+    //Call Upon methods for multi-module robot features
     public boolean wristIsPointingDown(){
         //TODO - test to get value
-        return wristTarget > 300;
+        return wristTarget < -300;
     }
 
     //autonomous methods
@@ -169,7 +169,7 @@ public class Intake {
         } //right claw control
 
         if(yReader.wasJustPressed()){ //auto wrist control
-            wristDefault = true;
+            wristMode = true;
             stackMode = false;
             wristIsUp = wristMotor.getCurrentPosition() > -50;
         } //auto wrist control
@@ -178,29 +178,29 @@ public class Intake {
         //TODO - Auto Wrist Level for Stacked Pixels
         if(d_up.wasJustPressed()){ //pixel 5
             stackMode = true;
-            wristDefault = false;
+            wristMode = false;
             setStackPose(5);
         }
         if(d_left.wasJustPressed()){ //pixel 4
             stackMode = true;
-            wristDefault = false;
+            wristMode = false;
             setStackPose(4);
         }
         if(d_right.wasJustPressed()){ //pixel 3
             stackMode = true;
-            wristDefault = false;
+            wristMode = false;
             setStackPose(3);
         }
         if(d_down.wasJustPressed()){ //pixel 2
             stackMode = true;
-            wristDefault = false;
+            wristMode = false;
             setStackPose(2);
         }
 
 
         if(rightY < -0.3 || rightY > 0.3) { //TODO: Add Safety Check In case of Joystick strafe; check if joystick is moving
             stackMode = false;
-            wristDefault = false;
+            wristMode = false;
             //control wrist
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             if (rightY > 0) {
@@ -211,14 +211,14 @@ public class Intake {
                 wristMotor.setPower(0.35); //-0.25
 
             }
-        } else if(rightY >= -0.3 && !wristDefault && !stackMode){
+        } else if(rightY >= -0.3 && !wristMode && !stackMode){
             wristTarget = wristMotor.getCurrentPosition();
             wristMotor.setTargetPosition(wristTarget);
             wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             wristMotor.setPower(.7);
         }
 
-        if(wristDefault) { //switch between up and down if wristDefault is activated
+        if(wristMode) { //switch between up and down if wristDefault is activated
             if (wristIsUp) {
                 wrist_down();
             } else {
