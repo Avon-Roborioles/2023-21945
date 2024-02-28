@@ -28,13 +28,16 @@ import java.util.List;
 @Config
 public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 2000; //ticks per rev for GOBILDA Deadwheels
-    public static double WHEEL_RADIUS = 1.89; // in
+    public static double WHEEL_RADIUS = 0.944882; // in //1.89
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 4.75; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 3; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 4.75; // 0.445700839399633; distance between the left and right wheels
+    public static double FORWARD_OFFSET = 0; // in; offset of the lateral wheel in 3
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
+
+    public static double X_Multiplier = 1.00285342; //Multiplier in the X direction
+    public static double Y_Multiplier = 1.034523406666667 ;// Multiplier in the Y direction
 
     private List<Integer> lastEncPositions, lastEncVels;
 
@@ -54,7 +57,7 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
         leftEncoder.setDirection(Encoder.Direction.REVERSE);
-        //frontEncoder.setDirection(Encoder.Direction.REVERSE);
+        frontEncoder.setDirection(Encoder.Direction.REVERSE);
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -74,9 +77,9 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncPositions.add(frontPos);
 
         return Arrays.asList(
-                encoderTicksToInches(leftPos),
-                encoderTicksToInches(rightPos),
-                encoderTicksToInches(frontPos)
+                encoderTicksToInches(leftPos) * X_Multiplier,
+                encoderTicksToInches(rightPos) * X_Multiplier,
+                encoderTicksToInches(frontPos) * Y_Multiplier
         );
     }
 
