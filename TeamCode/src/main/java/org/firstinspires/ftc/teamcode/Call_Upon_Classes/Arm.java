@@ -89,7 +89,7 @@ public class Arm {
     }
 
     //TeleOp functions
-    public void run_arm_teleOp(Gamepad gamepad2, ToggleButtonReader d_down, ToggleButtonReader d_up, ToggleButtonReader d_left, ToggleButtonReader d_right, TriggerReader ltrigger, TriggerReader rtrigger) {
+    public void run_arm_teleOp(Gamepad gamepad2, ToggleButtonReader d_down, ToggleButtonReader d_up, ToggleButtonReader d_left, ToggleButtonReader d_right, TriggerReader ltrigger, TriggerReader rtrigger,boolean clawPointingDown) {
         double leftY = gamepad2.left_stick_y; //manual arm control
         boolean homeButton = gamepad2.ps; //TODO change to guide button if not detected
 
@@ -121,6 +121,9 @@ public class Arm {
         //default arm poses
         if(ltrigger.wasJustPressed()){ //arm down auto
             setTargetDown();
+            if(clawPointingDown){
+                target += 300;
+            }
             PIDMode = true;
             hangingMode = false;
         }

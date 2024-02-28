@@ -89,8 +89,9 @@ public class BlueAllianceTeleOp extends LinearOpMode {
             launcher.run_Launcher(gamepad1);
 
             //Driver 2 Controls
-            arm.run_arm_teleOp(gamepad2,d_down2,d_up2,d_left2,d_right2,ltrigger2,rtrigger2);
             intake.run_intake_V2(gamepad2, a2Reader,y2Reader,LBumperReader,RBumperReader,d_down2,d_up2,d_left2,d_right2);
+            boolean clawPointingDown = intake.wristIsPointingDown(); //safety feature
+            arm.run_arm_teleOp(gamepad2,d_down2,d_up2,d_left2,d_right2,ltrigger2,rtrigger2,clawPointingDown);
 
             //Driver Feedback Program
             feedback.run_Timer(gamepad1,gamepad2);
