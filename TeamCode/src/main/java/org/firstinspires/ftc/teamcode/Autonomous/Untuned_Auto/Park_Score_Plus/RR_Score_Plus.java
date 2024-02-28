@@ -140,7 +140,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.1)
                 .strafeRight(7)
                 .addDisplacementMarker(()->{
-                    arm.up();
+                    arm.setTargetUp();
                     intake.wrist_up();
                 })
                 .waitSeconds(.7)
@@ -153,7 +153,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(2)
                 .forward(7)
                 .addDisplacementMarker(()->{
-                    arm.down();
+                    arm.setTargetDown();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
@@ -176,7 +176,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.1)
                 .back(10)
                 .addDisplacementMarker(()->{
-                    arm.up();
+                    arm.setTargetUp();
                     intake.wrist_up();
                 })
                 .waitSeconds(.7)
@@ -189,7 +189,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.7)
                 .forward(7)
                 .addDisplacementMarker(()->{
-                    arm.down();
+                    arm.setTargetDown();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)
@@ -205,7 +205,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 //go to board
                 .back(10)
                 .addDisplacementMarker(()->{
-                    arm.up();
+                    arm.setTargetUp();
                     intake.wrist_up();
                 })
                 .waitSeconds(.7)
@@ -218,7 +218,7 @@ public class RR_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.7)
                 .forward(7)
                 .addDisplacementMarker(()->{
-                    arm.down();
+                    arm.setTargetDown();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)

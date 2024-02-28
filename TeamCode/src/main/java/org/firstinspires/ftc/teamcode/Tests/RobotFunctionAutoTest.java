@@ -24,12 +24,12 @@ public class RobotFunctionAutoTest extends org.firstinspires.ftc.teamcode.Autono
         TrajectorySequence test = bot.trajectorySequenceBuilder(new Pose2d())
                 .forward(3)
                 .addDisplacementMarker(()->{
-                    arm.up();
+                    arm.setTargetUp();
                 })
                 .waitSeconds(3)
                 .back(3)
                 .addDisplacementMarker(()->{
-                    arm.down();
+                    arm.setTargetDown();
                 })
                 .build();
 

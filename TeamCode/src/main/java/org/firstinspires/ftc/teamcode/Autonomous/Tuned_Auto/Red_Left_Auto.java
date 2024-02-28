@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Tuned_Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
@@ -184,7 +182,7 @@ public class Red_Left_Auto extends AutoBase {
                     telemetry.addLine(" ");
                     telemetry.addLine("ARM UP");
                     telemetry.update();
-                    arm.up();
+                    arm.setTargetUp();
                 })
                 .waitSeconds(.7)
                 .back(5)
@@ -209,7 +207,7 @@ public class Red_Left_Auto extends AutoBase {
                     telemetry.addLine(" ");
                     telemetry.addLine("ARM UP");
                     telemetry.update();
-                    arm.up();
+                    arm.setTargetUp();
                 })
                 .waitSeconds(.7)
                 .back(5)
@@ -234,7 +232,7 @@ public class Red_Left_Auto extends AutoBase {
                     telemetry.addLine(" ");
                     telemetry.addLine("ARM UP");
                     telemetry.update();
-                    arm.up();
+                    arm.setTargetUp();
                 })
                 .waitSeconds(.1)
                 .back(5)
@@ -266,7 +264,7 @@ public class Red_Left_Auto extends AutoBase {
                     telemetry.addLine("ARM DOWN");
                     telemetry.addLine("CLOSE CLAWS");
                     telemetry.update();
-                    arm.down();
+                    arm.setTargetDown();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.1)

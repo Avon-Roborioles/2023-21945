@@ -148,7 +148,7 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.7)
                 .strafeRight(5)
                 .addDisplacementMarker(()->{
-                    arm.up();
+                    arm.setTargetUp();
                     intake.wrist_up();
                 })
                 .waitSeconds(.1)
@@ -161,7 +161,7 @@ public class BL_Score_Plus extends org.firstinspires.ftc.teamcode.Autonomous.Aut
                 .waitSeconds(.7)
                 .forward(7)
                 .addDisplacementMarker(()->{
-                    arm.down();
+                    arm.setTargetDown();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.7)

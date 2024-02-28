@@ -42,10 +42,10 @@ public class Arm {
     }
 
     //Auto Arm Methods
-    public void up(){
+    public void setTargetUp(){
         target = 1600; //2000
     }
-    public void down(){
+    public void setTargetDown(){
         target = 5;
     }
     public void setStackPose(int pixel){
@@ -94,40 +94,47 @@ public class Arm {
         boolean homeButton = gamepad2.ps; //TODO change to guide button if not detected
 
         //stacked pixel heights
-        if(d_up.wasJustPressed()){
+        if(d_up.wasJustPressed()){ //pixel 5
             setStackPose(5);
             PIDMode = true;
+            hangingMode = false;
         }
 
-        if(d_left.wasJustPressed()){
+        if(d_left.wasJustPressed()){ //pixel 4
             setStackPose(4);
             PIDMode = true;
+            hangingMode = false;
         }
 
-        if(d_right.wasJustPressed()){
+        if(d_right.wasJustPressed()){ //pixel 3
             setStackPose(3);
             PIDMode = true;
+            hangingMode = false;
         }
 
-        if(d_down.wasJustPressed()){
+        if(d_down.wasJustPressed()){ //pixel 2
             setStackPose(2);
             PIDMode = true;
+            hangingMode = false;
         }
 
         //default arm poses
-        if(ltrigger.wasJustPressed()){
-            down();
+        if(ltrigger.wasJustPressed()){ //arm down auto
+            setTargetDown();
             PIDMode = true;
+            hangingMode = false;
         }
 
-        if(rtrigger.wasJustPressed()){
-            up();
+        if(rtrigger.wasJustPressed()){ //arm up auto
+            setTargetUp();
             PIDMode = true;
+            hangingMode = false;
         }
 
         //activate hanging mode
-        if(homeButton){
+        if(homeButton){ //hang
             hangingMode = true;
+            PIDMode = false;
         }
 
         //manual control
@@ -137,19 +144,23 @@ public class Arm {
             PIDMode = false;
             if (rightMotorEx.getCurrentPosition() < 1600) {
                 if (leftY < 0) {
-                    leftMotorEx.setPower(-0.5);
-                    rightMotorEx.setPower(0.5);
+//                    leftMotorEx.setPower(-0.5);
+//                    rightMotorEx.setPower(0.5);
+                    armGroup.set(0.5); //
                 } else {
-                    leftMotorEx.setPower(0.3);
-                    rightMotorEx.setPower(-0.3);
+//                    leftMotorEx.setPower(0.3);
+//                    rightMotorEx.setPower(-0.3);
+                    armGroup.set(-0.3); //
                 }
             } else {
                 if (leftY > 0) {
-                    leftMotorEx.setPower(0.5);
-                    rightMotorEx.setPower(-0.5);
+//                    leftMotorEx.setPower(0.5);
+//                    rightMotorEx.setPower(-0.5);
+                    armGroup.set(-0.5);
                 } else {
-                    leftMotorEx.setPower(-0.3);
-                    rightMotorEx.setPower(0.3);
+//                    leftMotorEx.setPower(-0.3);
+//                    rightMotorEx.setPower(0.3);
+                    armGroup.set(0.3);
                 }
             }
         } else if(!hangingMode){ //if arm is idle - hold current pose
