@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//FTCLib Library
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
@@ -25,6 +23,7 @@ public class Intake {
     public int stackedPixel4 = -111;
     public int stackedPixel3 = -104;
     public int stackedPixel2 = -97;
+    public boolean stackMode = false;
     private boolean clawsAreClosed = true;
     private boolean claw1Open = true;
     private boolean claw2Open = true;
@@ -129,48 +128,78 @@ public class Intake {
 
     }
 
+    public void setStackPose(int pixel){
+        switch(pixel){ //TODO find exact heights with Robot_Telemetry Program
+            case 5:
+                wristTarget = stackedPixel5;
+                break;
+            case 4:
+                wristTarget = stackedPixel4;
+                break;
+            case 3:
+                wristTarget = stackedPixel3;
+                break;
+            case 2:
+                wristTarget = stackedPixel2;
+                break;
+            default:
+                wristTarget = 0;
+                break;
+        }
+    }
+
 
     //TODO - Methods for TeleOp
     public void run_intake_V2(Gamepad gamepad2, ToggleButtonReader aReader, ToggleButtonReader yReader, ToggleButtonReader LBumper, ToggleButtonReader RBumper,ToggleButtonReader d_down,ToggleButtonReader d_up,ToggleButtonReader d_left, ToggleButtonReader d_right){
         double rightY = gamepad2.right_stick_y; //manual control
 
-        if(aReader.wasJustPressed()){
+        if(aReader.wasJustPressed()){ //auto claw control
             clawDefault = true;
             clawsAreClosed = claw1.getPosition() == 0.4 || claw2.getPosition() == 0.2;
         } //auto claws control
 
-        if(LBumper.wasJustPressed()){
+        if(LBumper.wasJustPressed()){ //left claw control
             clawDefault = false;
             openClawV2(!claw1Open,true);
         } //left claw control
 
-        if(RBumper.wasJustPressed()){
+        if(RBumper.wasJustPressed()){ //right claw control
             clawDefault = false;
             openClawV2(!claw2Open,false);
         } //right claw control
 
-        if(yReader.wasJustPressed()){ //when pressed activate default mode & switch between up or down
+        if(yReader.wasJustPressed()){ //auto wrist control
             wristDefault = true;
+            stackMode = false;
             wristIsUp = wristMotor.getCurrentPosition() > -50;
         } //auto wrist control
 
 
         //TODO - Auto Wrist Level for Stacked Pixels
         if(d_up.wasJustPressed()){ //pixel 5
-
+            stackMode = true;
+            wristDefault = false;
+            setStackPose(5);
         }
         if(d_left.wasJustPressed()){ //pixel 4
-
+            stackMode = true;
+            wristDefault = false;
+            setStackPose(4);
         }
         if(d_right.wasJustPressed()){ //pixel 3
-
+            stackMode = true;
+            wristDefault = false;
+            setStackPose(3);
         }
         if(d_down.wasJustPressed()){ //pixel 2
-
+            stackMode = true;
+            wristDefault = false;
+            setStackPose(2);
         }
 
 
         if(rightY < -0.3 || rightY > 0.3) { //TODO: Add Safety Check In case of Joystick strafe; check if joystick is moving
+            stackMode = false;
             wristDefault = false;
             //control wrist
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -182,9 +211,11 @@ public class Intake {
                 wristMotor.setPower(0.35); //-0.25
 
             }
-        } else if(rightY >= -0.3 && !wristDefault){
-            wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            wristMotor.setPower(0); //small power to hold wrist
+        } else if(rightY >= -0.3 && !wristDefault && !stackMode){
+            wristTarget = wristMotor.getCurrentPosition();
+            wristMotor.setTargetPosition(wristTarget);
+            wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            wristMotor.setPower(.7);
         }
 
         if(wristDefault) { //switch between up and down if wristDefault is activated
@@ -197,6 +228,12 @@ public class Intake {
 
         if(clawDefault){
             closeClaws(clawsAreClosed);
+        }
+
+        if(stackMode){
+            wristMotor.setTargetPosition(wristTarget);
+            wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            wristMotor.setPower(.7);
         }
 
         aReader.readValue();
