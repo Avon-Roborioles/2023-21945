@@ -8,7 +8,6 @@ public class AutoBase extends LinearOpMode {
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Arm arm = new Arm();
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Intake intake = new Intake();
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
-    //protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Distance_Sensor distance_sensor = new Distance_Sensor();
 
 
     @Override
