@@ -42,7 +42,9 @@ public class AutoMenu extends LinearOpMode {
         telemetry.addData("Current Auto Path Selected: ", selectedPath);
         telemetry.addLine(" ");
         telemetry.addLine("Select Board Scoring by Toggling the D-pad Down Button");
-f
+        telemetry.addData("Selected Board Score Status: ", BoardScore);
+        telemetry.update();
+
         //updates
         d_up.readValue();
         d_down.readValue();
@@ -51,6 +53,9 @@ f
 
         while(opModeIsActive()){
             //display final readings
+            telemetry.addData("Selected Path: ", selectedPath);
+            telemetry.addData("Scoring on Board?: ", BoardScore);
+            telemetry.update();
         }
     }
 }
