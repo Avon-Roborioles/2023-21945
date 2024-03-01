@@ -35,6 +35,7 @@ public class FieldCentric_Drive extends LinearOpMode{
         telemetry.addLine("Field Centric Drive Activated");
         telemetry.addLine("If IMU starts to drift or have problems, simply press A on Gamepad1 to reset it.");
         telemetry.addData("Current IMU Value: ", drivetrain.getHeading());
+        telemetry.addData("RoadRunner Localizer Heading: ", PoseHeading);
         telemetry.update();
 
         waitForStart(); //loop code above until we start program
@@ -51,6 +52,7 @@ public class FieldCentric_Drive extends LinearOpMode{
             telemetry.addData("X Position: ", PoseX);
             telemetry.addData("Y Position: ", PoseY);
             telemetry.addData("Heading Position: ", PoseHeading);
+            telemetry.addData("IMU Heading Comparison: ", drivetrain.getHeading());
             telemetry.update();
 
         }
