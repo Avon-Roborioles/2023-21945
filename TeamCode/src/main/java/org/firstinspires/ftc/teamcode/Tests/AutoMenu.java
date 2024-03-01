@@ -49,7 +49,7 @@ public class AutoMenu extends LinearOpMode {
         d_up.readValue();
         d_down.readValue();
 
-        waitForStart();
+        waitForStart(); //loops though everything above
 
         while(opModeIsActive()){
             //display final readings
