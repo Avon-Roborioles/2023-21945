@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -191,12 +192,30 @@ public class Drivetrain {
         getTelemetry(telemetry);
     }
 
-    public void run_fieldCentric_drive(GamepadEx gamepad1Ex){
+    public void run_fieldCentric_drive(GamepadEx gamepad1Ex, boolean redAlliance){
+        //code to reset imu in case of drift or other problems
+        if(gamepad1Ex.getButton(GamepadKeys.Button.A)){ //reset imu
+            gamepad1Ex.gamepad.rumble(500); //alert driver that imu has reset
+            RevHubOrientationOnRobot.LogoFacingDirection newLogoDirection;
+            RevHubOrientationOnRobot.UsbFacingDirection newUsbDirection;
+            if(redAlliance) {
+                //red alliance
+                newLogoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
+
+            } else {
+                //blue alliance
+               newLogoDirection = RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
+            }
+            newUsbDirection = RevHubOrientationOnRobot.UsbFacingDirection.UP;
+            RevHubOrientationOnRobot currentOrientation = new RevHubOrientationOnRobot(newLogoDirection, newUsbDirection);
+            imu.initialize(new IMU.Parameters(currentOrientation));
+        }
+
+
         double strafeSpeed = -gamepad1Ex.getLeftY();
         double forwardSpeed = gamepad1Ex.getLeftX();
         double turnSpeed = -gamepad1Ex.getRightX();
         double gyroAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-                //imu.getRotation2d().getDegrees(); //TODO if imu doesn't work, get heading from dead wheels
 
         drivetrain.driveFieldCentric(strafeSpeed,forwardSpeed,turnSpeed,gyroAngle,true);
     }
