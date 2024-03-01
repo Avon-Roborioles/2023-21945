@@ -202,7 +202,6 @@ public class Drivetrain {
             if(redAlliance) {
                 //red alliance
                 newLogoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
-
             } else {
                 //blue alliance
                newLogoDirection = RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
@@ -212,7 +211,6 @@ public class Drivetrain {
             imu.initialize(new IMU.Parameters(currentOrientation));
         }
 
-
         double strafeSpeed = -gamepad1Ex.getLeftY();
         double forwardSpeed = gamepad1Ex.getLeftX();
         double turnSpeed = -gamepad1Ex.getRightX();
@@ -221,7 +219,7 @@ public class Drivetrain {
         drivetrain.driveFieldCentric(strafeSpeed,forwardSpeed,turnSpeed,gyroAngle,true);
     }
 
-    public double getHeading(){
+    public double getHeading(){ //used to compare IMU Heading with Odometry Heading
         return gyroAngle;
     }
 
