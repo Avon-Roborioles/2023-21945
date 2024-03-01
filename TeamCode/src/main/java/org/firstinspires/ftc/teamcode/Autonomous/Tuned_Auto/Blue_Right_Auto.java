@@ -4,17 +4,29 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
 import org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score_Plus.RR_Score_Plus;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-//@Autonomous(name="Blue Right Auto", group="auto")
-@Disabled
+@Autonomous(name="Blue Right Auto", group="auto")
+//@Disabled
 public class Blue_Right_Auto extends AutoBase {
-    public static Pose2d startPoseBR = new Pose2d(11.7,60,Math.toRadians(-90));
+    //copied poses from PoseStorage
+    public Pose2d startPoseBR = PoseStorage.startPoseBR;
+    public Pose2d leftSpikePose = PoseStorage.leftSpikePoseBR;
+    public Pose2d middleSpikePose = PoseStorage.middleSpikePoseBR;
+    public Pose2d rightSpikePose = PoseStorage.rightSpikePoseBR;
+    public Pose2d leftBoardPose = PoseStorage.leftBoardPoseB;
+    public Pose2d middleBoardPose = PoseStorage.middleBoardPoseB;
+    public Pose2d rightBoardPose = PoseStorage.rightBoardPoseB;
+    public Pose2d firstStack = PoseStorage.firstStackB;
+    public Pose2d secondStack = PoseStorage.secondStackB;
+    public Pose2d thirdStack = PoseStorage.thirdStackB;
 
     public void runOpMode() throws  InterruptedException{
         GamepadEx gamepad = new GamepadEx(gamepad1);
@@ -36,7 +48,10 @@ public class Blue_Right_Auto extends AutoBase {
         int aprilTagID = 5;
 
         init_classes(); //initiates robot functions
-        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
+        vision.init_prop_detection(hardwareMap, false); //sets camera to start looking for prop
+
+        bot.setPoseEstimate(startPoseBR);
+        PoseStorage.currentPose = startPoseBR;
 
         //TODO
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(startPoseBR)

@@ -40,7 +40,7 @@ public class PoseStorageCopy {
 
 
 
-        //TODO - Blue Alliance Poses
+        //Blue Alliance Poses
         public static final Pose2d firstStackB = new Pose2d(52,-11, Math.toRadians(0));
         public static final Pose2d secondStackB = new Pose2d(52,-23, Math.toRadians(0));
         public static final Pose2d thirdStackB = new Pose2d(52,-35, Math.toRadians(0));
@@ -49,7 +49,7 @@ public class PoseStorageCopy {
         public static final Pose2d rightBoardPoseB = new Pose2d(-39,-28,Math.toRadians(0));
 
 
-        //TODO Blue Left
+        //Blue Left
         public static final Pose2d startPoseBL = new Pose2d(-12,-60.6,Math.toRadians(90));
         public static final Pose2d leftSpikePoseBL = new Pose2d(-25,-31,Math.toRadians(0));
         public static final Pose2d middleSpikePoseBL = new Pose2d(-14,-11,Math.toRadians(-90+1e-6));
@@ -59,7 +59,7 @@ public class PoseStorageCopy {
         public static final Pose2d parkSpotBL = new Pose2d(-57,-59,Math.toRadians(0));
 
 
-    //TODO Blue Right
+        //Blue Right
         public static final Pose2d startPoseBR = new Pose2d(35,-60.6,Math.toRadians(90));
         public static final Pose2d leftSpikePoseBR = new Pose2d(37,-33,Math.toRadians(-180));
         public static final Pose2d middleSpikePoseBR = new Pose2d(37,-11,Math.toRadians(-90-1e-6));
