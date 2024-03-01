@@ -47,6 +47,7 @@ public class Drivetrain {
 
     IMU imu;
     MecanumDrive drivetrain;
+    double gyroAngle;
 
 //
 //    /// new library stuff ///
@@ -215,9 +216,13 @@ public class Drivetrain {
         double strafeSpeed = -gamepad1Ex.getLeftY();
         double forwardSpeed = gamepad1Ex.getLeftX();
         double turnSpeed = -gamepad1Ex.getRightX();
-        double gyroAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        gyroAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES); //used outside code
 
         drivetrain.driveFieldCentric(strafeSpeed,forwardSpeed,turnSpeed,gyroAngle,true);
+    }
+
+    public double getHeading(){
+        return gyroAngle;
     }
 
     public void getTelemetry (@NonNull Telemetry telemetry){

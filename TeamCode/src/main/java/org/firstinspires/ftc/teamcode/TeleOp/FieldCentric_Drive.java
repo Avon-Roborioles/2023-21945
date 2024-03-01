@@ -25,7 +25,8 @@ public class FieldCentric_Drive extends LinearOpMode{
 
         //RR localizer code to track pose on field
         SampleMecanumDrive localizer = new SampleMecanumDrive(hardwareMap);
-        //localizer.setPoseEstimate();
+        localizer.setPoseEstimate(PoseStorage.parkSpotRR); //start from here for accurate pose
+
         double PoseX = localizer.getPoseEstimate().getX();
         double PoseY = localizer.getPoseEstimate().getY();
         double PoseHeading = localizer.getPoseEstimate().getHeading();
@@ -33,9 +34,10 @@ public class FieldCentric_Drive extends LinearOpMode{
         //telemetry update
         telemetry.addLine("Field Centric Drive Activated");
         telemetry.addLine("If IMU starts to drift or have problems, simply press A on Gamepad1 to reset it.");
+        telemetry.addData("Current IMU Value: ", drivetrain.getHeading());
         telemetry.update();
 
-        waitForStart();
+        waitForStart(); //loop code above until we start program
 
         while(opModeIsActive()){
             drivetrain.run_fieldCentric_drive(gamepad1Ex,true);
@@ -46,6 +48,10 @@ public class FieldCentric_Drive extends LinearOpMode{
             PoseHeading = localizer.getPoseEstimate().getHeading();
 
             //telemetry update
+            telemetry.addData("X Position: ", PoseX);
+            telemetry.addData("Y Position: ", PoseY);
+            telemetry.addData("Heading Position: ", PoseHeading);
+            telemetry.update();
 
         }
     }
