@@ -38,8 +38,8 @@ public class AutoBase extends LinearOpMode {
     //define current state the robot is on
     public State currentState = State.IDLE;
 
-    public AutoPath selectedPath = AutoPath.UP;
-    public boolean BoardScore = true;
+//    public AutoPath selectedPath = AutoPath.UP;
+//    public boolean BoardScore = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -52,27 +52,27 @@ public class AutoBase extends LinearOpMode {
         vision.init_cameras(hardwareMap, "Webcam 1", "Webcam 2");
     }
 
-    public void runAutoMenu(GamepadEx gamepad, ToggleButtonReader d_up, ToggleButtonReader d_down){
-        if(d_up.getState()){ //Auto Path selection
-            selectedPath = AutoPath.UP;
-        } else {
-            selectedPath = AutoPath.DOWN;
-        }
-
-        BoardScore = d_down.getState(); //Board Score Selection
-
-        //menu
-        telemetry.addLine("Select the Auto Path by Toggling the D-pad Up Button");
-        telemetry.addData("Current Auto Path Selected: ", selectedPath);
-        telemetry.addLine(" ");
-        telemetry.addLine("Select Board Scoring by Toggling the D-pad Down Button");
-        telemetry.addData("Selected Board Score Status: ", BoardScore);
-        telemetry.addLine(" "); //space
+//    public void runAutoMenu(GamepadEx gamepad, ToggleButtonReader d_up, ToggleButtonReader d_down){
+//        if(d_up.getState()){ //Auto Path selection
+//            sele ctedPath = AutoPath.UP;
+//        } else {
+//            selectedPath = AutoPath.DOWN;
+//        }
+//
+//        BoardScore = d_down.getState(); //Board Score Selection
+//
+//        //menu
+//        telemetry.addLine("Select the Auto Path by Toggling the D-pad Up Button");
+//        telemetry.addData("Current Auto Path Selected: ", selectedPath);
+//        telemetry.addLine(" ");
+//        telemetry.addLine("Select Board Scoring by Toggling the D-pad Down Button");
+//        telemetry.addData("Selected Board Score Status: ", BoardScore);
+//        telemetry.addLine(" "); //space
 
         //keep checking for driver input
-        d_up.readValue();
-        d_down.readValue();
-    }
+//        d_up.readValue();
+//        d_down.readValue();
+//    }
 
 
 }

@@ -33,25 +33,25 @@ public class Blue_Right_Auto extends AutoBase {
 
     //Auto Menu variables
     String checkPointType = "";
-    GamepadEx gamepad = new GamepadEx(gamepad1);
-
-    //auto menu code
-    ToggleButtonReader d_up = new ToggleButtonReader(
-            gamepad, GamepadKeys.Button.DPAD_UP
-    );
-    ToggleButtonReader d_down = new ToggleButtonReader(
-            gamepad, GamepadKeys.Button.DPAD_DOWN
-    );
+//    GamepadEx gamepad = new GamepadEx(gamepad1);
+//
+//    //auto menu code
+//    ToggleButtonReader d_up = new ToggleButtonReader(
+//            gamepad, GamepadKeys.Button.DPAD_UP
+//    );
+//    ToggleButtonReader d_down = new ToggleButtonReader(
+//            gamepad, GamepadKeys.Button.DPAD_DOWN
+//    );
 
     public void runOpMode() throws  InterruptedException{ //loop
 
         //Auto Menu
-        runAutoMenu(gamepad,d_up,d_down);
+        //runAutoMenu(gamepad,d_up,d_down);
         //adjust auto parameters
-        if(selectedPath == AutoPath.DOWN){ //change auto path to down if selected in auto menu
-            checkPoint1 = PoseStorage.checkPoint1BL;
-            checkPoint2 = PoseStorage.checkPoint2BL;
-        }
+//        if(selectedPath == AutoPath.DOWN){ //change auto path to down if selected in auto menu
+//            checkPoint1 = PoseStorage.checkPoint1BL;
+//            checkPoint2 = PoseStorage.checkPoint2BL;
+//        }
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
@@ -71,6 +71,8 @@ public class Blue_Right_Auto extends AutoBase {
                 .addTemporalMarker(0,()->{
 //                    System.out.println("\nWRIST UP");
 //                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
                 .lineToLinearHeading(leftSpikePose)
@@ -78,6 +80,7 @@ public class Blue_Right_Auto extends AutoBase {
                 .forward(7)
                 .addDisplacementMarker(()->{
                     //System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
                 })
                 .waitSeconds(.1)
                 .back(5)
@@ -85,11 +88,14 @@ public class Blue_Right_Auto extends AutoBase {
                 .turn(Math.toRadians(-1e-6))
                 .addDisplacementMarker(()->{
                     //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
                 })
                 .back(5)
                 .addDisplacementMarker(()->{
 //                    System.out.println("\nWRIST UP");
 //                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
                 .build();
@@ -98,6 +104,8 @@ public class Blue_Right_Auto extends AutoBase {
                 .addTemporalMarker(0,()->{
 //                    System.out.println("\nWRIST UP");
 //                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
                 .strafeRight(7)
@@ -107,16 +115,20 @@ public class Blue_Right_Auto extends AutoBase {
                 .forward(2)
                 .addDisplacementMarker(()->{
                     //System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
                 })
                 .waitSeconds(.7)
                 .turn(Math.toRadians(-1e-6))
                 .addDisplacementMarker(()->{
                     //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
                 })
                 .back(5)
                 .addDisplacementMarker(()->{
 //                    System.out.println("\nWRIST UP");
 //                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
                 })
 
                 .waitSeconds(.01)
@@ -129,6 +141,8 @@ public class Blue_Right_Auto extends AutoBase {
                 .addTemporalMarker(0,()->{
 //                    System.out.println("\nWRIST UP");
 //                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
                 .lineToLinearHeading(rightSpikePose)
@@ -136,17 +150,21 @@ public class Blue_Right_Auto extends AutoBase {
                 .back(10)
                 .addDisplacementMarker(()->{
                     //System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
                 })
                 .waitSeconds(.01)
                 .turn(Math.toRadians(-1e-6))
                 .addDisplacementMarker(()->{
                     //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
                 })
                 .waitSeconds(1)
                 .back(0.01)
                 .addDisplacementMarker(()->{
 //                    System.out.println("\nWRIST UP");
 //                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
                 })
                 .build();
 
@@ -223,8 +241,8 @@ public class Blue_Right_Auto extends AutoBase {
                 .build();
 
         //TODO
-        TrajectorySequence thirdStack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                .build();
+//        TrajectorySequence thirdStack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+//                .build();
 
         //TODO
         TrajectorySequence Park = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
@@ -234,16 +252,17 @@ public class Blue_Right_Auto extends AutoBase {
                 .lineToLinearHeading(ParkSpot)
                 .build();
 
-        //gets propPosition and needed april tag from vision class
-        propPosition = vision.getPropPosition();
-        aprilTagID = vision.get_Apriltag_id(propPosition,true);
+        while(!opModeIsActive()) {
+            //gets propPosition and needed april tag from vision class
+            propPosition = vision.getPropPosition();
+            aprilTagID = vision.get_Apriltag_id(propPosition, true);
 
-        //telemetry + Auto Menu
-        telemetry.addData("Detected Prop Position: ", propPosition);
-        telemetry.addData("Required April Tag: ", aprilTagID);
+            //telemetry + Auto Menu
+            telemetry.addData("Detected Prop Position: ", propPosition);
+            telemetry.addData("Required April Tag: ", aprilTagID);
 
-        telemetry.update(); //keep updating drivers with bot's detect prop, required tag, and auto menu
-
+            telemetry.update(); //keep updating drivers with bot's detect prop, required tag, and auto menu
+        }
         waitForStart(); //**loops through code above until robot starts***************************
 
         if(isStopRequested()) return;
@@ -282,8 +301,9 @@ public class Blue_Right_Auto extends AutoBase {
                     break;
                 case CHECKPOINT2:
                     if(!bot.isBusy()){
-                        currentState = State.CHECKPOINT1;
-                        bot.followTrajectorySequenceAsync(CheckPoint1);
+//                        currentState = State.CHECKPOINT1;
+//                        bot.followTrajectorySequenceAsync(CheckPoint1);
+                        currentState = State.IDLE;
                     }
                     break;
                 case CHECKPOINT1:
@@ -329,7 +349,7 @@ public class Blue_Right_Auto extends AutoBase {
             bot.update();
 
             //PID arm control
-            arm.update();
+            //arm.update();
 
             //read pose
             Pose2d poseEstimate = bot.getPoseEstimate();
