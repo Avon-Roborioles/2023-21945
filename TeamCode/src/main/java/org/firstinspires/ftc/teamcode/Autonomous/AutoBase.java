@@ -14,6 +14,7 @@ public class AutoBase extends LinearOpMode {
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Intake intake = new Intake();
     protected org.firstinspires.ftc.teamcode.Call_Upon_Classes.Camera_Vision vision = new Camera_Vision();
 
+    //used to determine if bot should go through truss (down) or gate (up)
     public enum AutoPath {
         UP,
         DOWN

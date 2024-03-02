@@ -48,7 +48,7 @@ public class Blue_Right_Auto extends AutoBase {
         //Auto Menu
         runAutoMenu(gamepad,d_up,d_down);
         //adjust auto parameters
-        if(selectedPath == AutoPath.DOWN){
+        if(selectedPath == AutoPath.DOWN){ //change auto path to down if selected in auto menu
             checkPoint1 = PoseStorage.checkPoint1BL;
             checkPoint2 = PoseStorage.checkPoint2BL;
         }
@@ -95,9 +95,59 @@ public class Blue_Right_Auto extends AutoBase {
                 .build();
         //TODO
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(startPoseBR)
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                })
+                .waitSeconds(.1)
+                .strafeRight(7)
+                .waitSeconds(.1)
+                .lineToLinearHeading(middleSpikePose)
+                .waitSeconds(.1)
+                .forward(2)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nWRIST DOWN");
+                })
+                .waitSeconds(.7)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                })
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                })
+
+                .waitSeconds(.01)
+                .strafeLeft(11)
+                .lineToLinearHeading(new Pose2d(checkPoint2.getX()+20,checkPoint2.getY(),checkPoint2.getHeading()))
+                .waitSeconds(.01)
                 .build();
         //TODO
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(startPoseBR)
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(rightSpikePose)
+                .waitSeconds(.1)
+                .back(10)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nWRIST DOWN");
+                })
+                .waitSeconds(.01)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                })
+                .waitSeconds(1)
+                .back(0.01)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                })
                 .build();
 
         //TODO
@@ -113,13 +163,63 @@ public class Blue_Right_Auto extends AutoBase {
                 .build();
         //TODO
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .waitSeconds(.01)
+                .back(16)
+                .waitSeconds(.1)
+                .lineToLinearHeading(leftBoardPose)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nARM UP");
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN LEFT CLAW");
+                })
+                .waitSeconds(2)
+                .forward(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+                })
+                .waitSeconds(.1)
                 .build();
         //TODO
         TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .waitSeconds(.01)
+                .lineToLinearHeading(middleBoardPose)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nARM UP");
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN LEFT CLAW");
+                })
+                .waitSeconds(2)
+                .forward(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+                })
                 .build();
 
         //TODO -scores on the left side of the board
         TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .lineToLinearHeading(rightBoardPose)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nARM UP");
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN LEFT CLAW");
+                })
+                .waitSeconds(2)
+                .forward(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+                })
                 .build();
 
         //TODO
@@ -128,6 +228,10 @@ public class Blue_Right_Auto extends AutoBase {
 
         //TODO
         TrajectorySequence Park = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .waitSeconds(.01)
+                .splineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()),ParkSpot.getHeading())
+                .waitSeconds(.1)
+                .lineToLinearHeading(ParkSpot)
                 .build();
 
         //gets propPosition and needed april tag from vision class
@@ -138,9 +242,9 @@ public class Blue_Right_Auto extends AutoBase {
         telemetry.addData("Detected Prop Position: ", propPosition);
         telemetry.addData("Required April Tag: ", aprilTagID);
 
-        telemetry.update();
+        telemetry.update(); //keep updating drivers with bot's detect prop, required tag, and auto menu
 
-        waitForStart(); //**loops through code above*********************************
+        waitForStart(); //**loops through code above until robot starts***************************
 
         if(isStopRequested()) return;
 
@@ -184,8 +288,23 @@ public class Blue_Right_Auto extends AutoBase {
                     break;
                 case CHECKPOINT1:
                     if(!bot.isBusy()){
-                        //TODO - switch to correct board score
+                        //Done - switch to correct board score
+                        switch(propPosition){
+                            case "LEFT":
+                                currentState = State.LEFT_BOARD_SCORE;
+                                bot.followTrajectorySequenceAsync(LeftBoardScore);
+                                break;
+                            case "RIGHT":
+                                currentState = State.RIGHT_BOARD_SCORE;
+                                bot.followTrajectorySequenceAsync(RightBoardScore);
+                                break;
+                            default:
+                                currentState = State.MIDDLE_BOARD_SCORE;
+                                bot.followTrajectorySequenceAsync(MiddleBoardScore);
+                                break;
+                        }
                     }
+                    break;
                 case LEFT_BOARD_SCORE:
                 case MIDDLE_BOARD_SCORE:
                 case RIGHT_BOARD_SCORE:
