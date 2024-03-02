@@ -48,7 +48,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.88976; // in(1.9)
     public static double GEAR_RATIO = 0.9047619047619048; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 13.25; // in (prev: 10.5) - actual wheels, not dead wheels - Stephen
+    public static double TRACK_WIDTH = 12; // in (prev: 13.25) - actual wheels, not dead wheels - Stephen
 
 
     /*
