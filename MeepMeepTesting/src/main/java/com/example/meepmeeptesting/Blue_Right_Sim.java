@@ -82,7 +82,7 @@ public class Blue_Right_Sim {
         //TODO
         RoadRunnerBotEntity Blue_Left_AutoL = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
+                .setConstraints(300, 47.4845458372762, Math.toRadians(236.0335128252632), Math.toRadians(259.11086367346934), 12)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 //score purple pixel on spike mark
@@ -148,7 +148,7 @@ public class Blue_Right_Sim {
         //TODO
         RoadRunnerBotEntity Blue_Left_AutoM = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
+                .setConstraints(300, 47.4845458372762, Math.toRadians(236.0335128252632), Math.toRadians(259.11086367346934), 12)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 //score purple pixel on spike mark
@@ -217,7 +217,7 @@ public class Blue_Right_Sim {
         //TODO
         RoadRunnerBotEntity Blue_Left_AutoR = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 10.5)
+                .setConstraints(300, 47.4845458372762, Math.toRadians(236.0335128252632), Math.toRadians(259.11086367346934), 12)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 //score purple pixel on spike mark
@@ -284,12 +284,12 @@ public class Blue_Right_Sim {
 
         //change file path to absolute path of "Blue-Alliance-Background.jpg" Image
         //Stephen's Mac
-        try { Blue_Alliance_Background = ImageIO.read(new File("/Users/stepheno/Documents/GitHub/2023-21945/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Reference_Images/Blue-Alliance-Background.jpg")); }
-        catch (IOException e) {}
+//        try { Blue_Alliance_Background = ImageIO.read(new File("/Users/stepheno/Documents/GitHub/2023-21945/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Reference_Images/Blue-Alliance-Background.jpg")); }
+//        catch (IOException e) {}
 
         //Stephen's PC
-//        try { Blue_Alliance_Background = ImageIO.read(new File("F:\\steph\\Documents\\Github\\2023-21945\\MeepMeepTesting\\src\\main\\java\\com\\example\\meepmeeptesting\\Reference_Images\\Blue-Alliance-Background.jpg")); }
-//        catch (IOException e) {}
+        try { Blue_Alliance_Background = ImageIO.read(new File("F:\\steph\\Documents\\Github\\2023-21945\\MeepMeepTesting\\src\\main\\java\\com\\example\\meepmeeptesting\\Reference_Images\\Blue-Alliance-Background.jpg")); }
+        catch (IOException e) {}
 
         //run program
         switch (propPosition) {
