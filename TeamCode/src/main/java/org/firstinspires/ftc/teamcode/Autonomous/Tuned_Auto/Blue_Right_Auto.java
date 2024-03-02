@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
+import org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score_Plus.RR_Score_Plus;
 import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -20,25 +21,37 @@ public class Blue_Right_Auto extends AutoBase {
     public Pose2d leftSpikePose = PoseStorage.leftSpikePoseBR;
     public Pose2d middleSpikePose = PoseStorage.middleSpikePoseBR;
     public Pose2d rightSpikePose = PoseStorage.rightSpikePoseBR;
+    public Pose2d checkPoint1 = PoseStorage.checkPoint1BR;
+    public Pose2d checkPoint2 = PoseStorage.checkPoint2BR;
     public Pose2d leftBoardPose = PoseStorage.leftBoardPoseB;
     public Pose2d middleBoardPose = PoseStorage.middleBoardPoseB;
     public Pose2d rightBoardPose = PoseStorage.rightBoardPoseB;
     public Pose2d firstStack = PoseStorage.firstStackB;
     public Pose2d secondStack = PoseStorage.secondStackB;
     public Pose2d thirdStack = PoseStorage.thirdStackB;
+    public Pose2d ParkSpot = PoseStorage.parkSpotBR;
 
-    public void runOpMode() throws  InterruptedException{
-        GamepadEx gamepad = new GamepadEx(gamepad1);
+    //Auto Menu variables
+    String checkPointType = "";
+    GamepadEx gamepad = new GamepadEx(gamepad1);
 
-        //auto menu code
-        ToggleButtonReader d_up = new ToggleButtonReader(
-                gamepad, GamepadKeys.Button.DPAD_UP
-        );
-        ToggleButtonReader d_down = new ToggleButtonReader(
-                gamepad, GamepadKeys.Button.DPAD_DOWN
-        );
+    //auto menu code
+    ToggleButtonReader d_up = new ToggleButtonReader(
+            gamepad, GamepadKeys.Button.DPAD_UP
+    );
+    ToggleButtonReader d_down = new ToggleButtonReader(
+            gamepad, GamepadKeys.Button.DPAD_DOWN
+    );
+
+    public void runOpMode() throws  InterruptedException{ //loop
+
+        //Auto Menu
         runAutoMenu(gamepad,d_up,d_down);
-
+        //adjust auto parameters
+        if(selectedPath == AutoPath.DOWN){
+            checkPoint1 = PoseStorage.checkPoint1BL;
+            checkPoint2 = PoseStorage.checkPoint2BL;
+        }
 
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
 
@@ -54,6 +67,31 @@ public class Blue_Right_Auto extends AutoBase {
 
         //TODO
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(startPoseBR)
+                //score purple pixel on spike mark
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(leftSpikePose)
+                .waitSeconds(.1)
+                .forward(7)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nWRIST DOWN");
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .waitSeconds(.7)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                })
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                })
+                .waitSeconds(.1)
                 .build();
         //TODO
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(startPoseBR)
@@ -64,24 +102,28 @@ public class Blue_Right_Auto extends AutoBase {
 
         //TODO
         TrajectorySequence CheckPoint1 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .waitSeconds(.1)
+                .lineToLinearHeading(checkPoint1)
                 .build();
 
         //TODO
         TrajectorySequence CheckPoint2 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                .waitSeconds(.1)
+                .lineToLinearHeading(checkPoint2)
                 .build();
         //TODO
-        TrajectorySequence Middle_Preload = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
         //TODO
-        TrajectorySequence Right_Preload = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
 
         //TODO -scores on the left side of the board
-        TrajectorySequence Board_Score = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
 
         //TODO
-        TrajectorySequence Pixel_Stack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence thirdStack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .build();
 
         //TODO
@@ -92,11 +134,13 @@ public class Blue_Right_Auto extends AutoBase {
         propPosition = vision.getPropPosition();
         aprilTagID = vision.get_Apriltag_id(propPosition,true);
 
+        //telemetry + Auto Menu
         telemetry.addData("Detected Prop Position: ", propPosition);
         telemetry.addData("Required April Tag: ", aprilTagID);
+
         telemetry.update();
 
-        waitForStart(); // loops through code above
+        waitForStart(); //**loops through code above*********************************
 
         if(isStopRequested()) return;
 
@@ -116,6 +160,73 @@ public class Blue_Right_Auto extends AutoBase {
                 break;
         }
 
+        while(opModeIsActive()){
+            //FSM Logic
+            switch (currentState){
+                case LEFT_SPIKE_SCORE:
+                case MIDDLE_SPIKE_SCORE:
+                case RIGHT_SPIKE_SCORE:
+                    // Check if the drive class isn't busy
+                    // `isBusy() == true` while it's following the trajectory
+                    // Once `isBusy() == false`, the trajectory follower signals that it is finished
+                    // We move on to the next state
+                    // Make sure we use the async follow function
+                    if(!bot.isBusy()){
+                        currentState = State.CHECKPOINT2;
+                        bot.followTrajectorySequenceAsync(CheckPoint2);
+                    }
+                    break;
+                case CHECKPOINT2:
+                    if(!bot.isBusy()){
+                        currentState = State.CHECKPOINT1;
+                        bot.followTrajectorySequenceAsync(CheckPoint1);
+                    }
+                    break;
+                case CHECKPOINT1:
+                    if(!bot.isBusy()){
+                        //TODO - switch to correct board score
+                    }
+                case LEFT_BOARD_SCORE:
+                case MIDDLE_BOARD_SCORE:
+                case RIGHT_BOARD_SCORE:
+                    if(!bot.isBusy()){
+                        currentState = State.PARK;
+                        bot.followTrajectorySequenceAsync(Park);
+                    }
+                    break;
+                case PARK:
+                    if(!bot.isBusy()){
+                        currentState = State.IDLE;
+                    }
+                    break;
+                case IDLE:
+                    //Do nothing in IDLE except save position
+                    //current state does not change once in IDLE
+                    //This concludes the autonomous program
+                    break;
+            }
+
+            //RoadRunner FSM Logic Control
+            bot.update();
+
+            //PID arm control
+            arm.update();
+
+            //read pose
+            Pose2d poseEstimate = bot.getPoseEstimate();
+
+            //continuously write pose to 'PoseStorage'
+            PoseStorage.currentPose = poseEstimate;
+
+            //telemetry data
+            telemetry.addData("Detected Prop Position: ", propPosition);
+            telemetry.addData("Corresponding April Tag:",aprilTagID);
+            telemetry.addData("Current Objective: ",currentState);
+            telemetry.addData("X: ",poseEstimate.getX());
+            telemetry.addData("Y: ",poseEstimate.getY());
+            telemetry.addData("Heading: ",poseEstimate.getHeading());
+            telemetry.update();
+        }
 
     }
 }

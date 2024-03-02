@@ -24,6 +24,8 @@ public class AutoBase extends LinearOpMode {
         LEFT_SPIKE_SCORE,
         MIDDLE_SPIKE_SCORE,
         RIGHT_SPIKE_SCORE,
+        CHECKPOINT1,
+        CHECKPOINT2,
         LEFT_BOARD_SCORE,
         MIDDLE_BOARD_SCORE,
         RIGHT_BOARD_SCORE,
@@ -35,7 +37,7 @@ public class AutoBase extends LinearOpMode {
     //define current state the robot is on
     public State currentState = State.IDLE;
 
-    AutoPath selectedPath = AutoPath.UP;
+    public AutoPath selectedPath = AutoPath.UP;
     public boolean BoardScore = true;
 
     @Override
@@ -64,6 +66,7 @@ public class AutoBase extends LinearOpMode {
         telemetry.addLine(" ");
         telemetry.addLine("Select Board Scoring by Toggling the D-pad Down Button");
         telemetry.addData("Selected Board Score Status: ", BoardScore);
+        telemetry.addLine(" "); //space
 
         //keep checking for driver input
         d_up.readValue();
