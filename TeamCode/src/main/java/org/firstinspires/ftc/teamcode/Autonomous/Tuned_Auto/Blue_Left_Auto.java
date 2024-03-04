@@ -99,11 +99,73 @@ public class Blue_Left_Auto extends AutoBase {
                 .build();
         //TODO
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(startPoseBL)
+//score purple pixel on spike mark
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(middleSpikePose)
+                .waitSeconds(.1)
+                .forward(2)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
+                })
+                .waitSeconds(.7)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
+                })
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
 
+                .waitSeconds(.01)
+                .strafeRight(11)
+                .waitSeconds(.01)
                 .build();
         //TODO
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(startPoseBL)
-
+                //score purple pixel on spike mark
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(rightSpikePose)
+                .waitSeconds(.1)
+                .forward(7)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
+                })
+                .waitSeconds(.01)
+                .back(4)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(1)
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
                 .build();
 
         //TODO
@@ -123,6 +185,7 @@ public class Blue_Left_Auto extends AutoBase {
                 .addDisplacementMarker(()->{
                     //System.out.println("\nARM UP");
                     arm.up();
+                    intake.wrist_up();
                 })
                 .waitSeconds(.1)
                 .back(5)
@@ -142,12 +205,52 @@ public class Blue_Left_Auto extends AutoBase {
                 .build();
         //TODO
         TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-
+                .splineToLinearHeading(middleBoardPose,middleBoardPose.getHeading())
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nARM UP");
+                    arm.up();
+                    intake.wrist_up();
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(()->{
+                   // System.out.println("\nOPEN LEFT CLAW");
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(2)
+                .forward(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+                    arm.down();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
                 .build();
 
         //TODO -scores on the left side of the board
         TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-
+                //score on board
+                .lineToLinearHeading(rightBoardPose)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nARM UP");
+                    arm.up();
+                })
+                .waitSeconds(.1)
+                .back(5)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN LEFT CLAW");
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(2)
+                .forward(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+                    arm.down();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
                 .build();
 
         //TODO
