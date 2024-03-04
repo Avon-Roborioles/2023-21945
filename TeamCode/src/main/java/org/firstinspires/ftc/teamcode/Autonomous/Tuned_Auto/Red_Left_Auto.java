@@ -1,62 +1,85 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Tuned_Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutoBase;
+import org.firstinspires.ftc.teamcode.Autonomous.Untuned_Auto.Park_Score_Plus.RR_Score_Plus;
+import org.firstinspires.ftc.teamcode.Call_Upon_Classes.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-//@Autonomous(name = "Red Left Auto", group = "auto")
-@Disabled
+@Autonomous(name="Red Left Auto", group="auto")
+//@Disabled
 public class Red_Left_Auto extends AutoBase {
-    public static Pose2d startPoseRL = new Pose2d(-34,-60.6,Math.toRadians(90));
-    public static Pose2d checkpoint1 = new Pose2d(-36,-11,Math.toRadians(-180));
-    public static Pose2d checkpoint2 = new Pose2d(34,-11,Math.toRadians(-180));
-    public static Pose2d LeftSpikePose = new Pose2d(-45,-28,Math.toRadians(-180));
-    public static Pose2d MiddleSpikePose = new Pose2d(-36,-8,Math.toRadians(-90));
-    public static Pose2d RightSpikePose = new Pose2d(-40,-30,Math.toRadians(0));
-    public static Pose2d ThirdStack = new Pose2d(-54,checkpoint1.getY() + 2, checkpoint1.getHeading());
-    public static Pose2d LeftBoardPose = new Pose2d(39,-28,Math.toRadians(-180));
-    public static Pose2d MiddleBoardPose = new Pose2d(39,-34,Math.toRadians(-180));
-    public static Pose2d RightBoardPose = new Pose2d(39,-40,Math.toRadians(-180));
+    //copied poses from PoseStorage
+    public Pose2d startPoseRL = PoseStorage.startPoseRL;
+    public Pose2d leftSpikePose = PoseStorage.leftSpikePoseRL;
+    public Pose2d middleSpikePose = PoseStorage.middleSpikePoseRL;
+    public Pose2d rightSpikePose = PoseStorage.rightSpikePoseRL;
+    public Pose2d checkPoint1 = PoseStorage.checkPoint1RL;
+    public Pose2d checkPoint2 = PoseStorage.checkPoint2RL;
+    public Pose2d leftBoardPose = PoseStorage.leftBoardPoseR;
+    public Pose2d middleBoardPose = PoseStorage.middleBoardPoseR;
+    public Pose2d rightBoardPose = PoseStorage.rightBoardPoseR;
+    public Pose2d firstStack = PoseStorage.firstStackR;
+    public Pose2d secondStack = PoseStorage.secondStackR;
+    public Pose2d thirdStack = PoseStorage.thirdStackR;
+    public Pose2d ParkSpot = PoseStorage.parkSpotRL;
 
-    public static Pose2d ParkSpot = new Pose2d(57,-8,Math.toRadians(-180));
+    //Auto Menu variables
+    String checkPointType = "";
+//    GamepadEx gamepad = new GamepadEx(gamepad1);
+//
+//    //auto menu code
+//    ToggleButtonReader d_up = new ToggleButtonReader(
+//            gamepad, GamepadKeys.Button.DPAD_UP
+//    );
+//    ToggleButtonReader d_down = new ToggleButtonReader(
+//            gamepad, GamepadKeys.Button.DPAD_DOWN
+//    );
 
-    public void runOpMode() throws  InterruptedException{
+    public void runOpMode() throws  InterruptedException{ //loop
+
+        //Auto Menu
+        //runAutoMenu(gamepad,d_up,d_down);
+        //adjust auto parameters
+//        if(selectedPath == AutoPath.DOWN){ //change auto path to down if selected in auto menu
+//            checkPoint1 = PoseStorage.checkPoint1BL;
+//            checkPoint2 = PoseStorage.checkPoint2BL;
+//        }
+
         SampleMecanumDrive bot = new SampleMecanumDrive(hardwareMap);
-
-        //tells bot where it is on the field
-        bot.setPoseEstimate(startPoseRL);
 
         //important variables for auto - set to random values
         String propPosition = "LEFT";
         int aprilTagID = 5;
 
         init_classes(); //initiates robot functions
-        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop - red only
+        vision.init_prop_detection(hardwareMap, true); //sets camera to start looking for prop
 
-        //TEST
-        TrajectorySequence Left_Spike_Score = bot.trajectorySequenceBuilder(startPoseRL)
+        bot.setPoseEstimate(startPoseRL);
+        PoseStorage.currentPose = startPoseRL;
+
+        //TODO
+        TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(startPoseRL)
+//close claw
                 .addSpatialMarker(startPoseRL.vec(),() ->{
-                    //System.out.println(" ");
-                    //System.out.println("CLOSE CLAWS");
+//                    System.out.println(" ");
+//                    System.out.println("CLOSE CLAWS");
                     intake.closeClaws(true);
-                    telemetry.addLine("CLOSE CLAWS");
-                    telemetry.update();
-
+                    intake.wrist_up();
                 })
 
                 //score spike
-                .lineToLinearHeading(LeftSpikePose)
+                .lineToLinearHeading(leftSpikePose)
                 .addDisplacementMarker(30,() ->{
 //                    System.out.println(" ");
 //                    System.out.println("WRIST DOWN");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("WRIST DOWN");
-                    telemetry.update();
                     intake.wrist_down();
                 })
                 .waitSeconds(.1)
@@ -64,36 +87,32 @@ public class Red_Left_Auto extends AutoBase {
                 .addDisplacementMarker(45,() ->{
 //                    System.out.println(" ");
 //                    System.out.println("OPEN LEFT CLAW");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("OPEN LEFT CLAW");
-                    telemetry.update();
-                    intake.openClawV2(true,true);
+                    intake.openClawV2(true,false);
                 })
                 .waitSeconds(.7) //wait to score spike
                 .back(2) //move a bit so we don't pickup pixel again
                 .waitSeconds(.1)
+                .turn(1e-6)
+                .addDisplacementMarker(()->{
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
                 .build();
-
-        //TEST
-        TrajectorySequence Middle_Spike_Score = bot.trajectorySequenceBuilder(startPoseRL)
-                //close claw
-                .addSpatialMarker(startPoseRL.vec(),() ->{
+        //TODO
+        TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(startPoseRL)
+//close claw
+                .addTemporalMarker(0,() ->{
 //                    System.out.println(" ");
 //                    System.out.println("CLOSE CLAWS");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("CLOSE CLAWS");
-                    telemetry.update();
                     intake.closeClaws(true);
+                    intake.wrist_up();
                 })
 
                 //score spike
-                .lineToLinearHeading(MiddleSpikePose)
+                .lineToLinearHeading(middleSpikePose)
                 .addDisplacementMarker(40,()->{
 //                    System.out.println(" ");
 //                    System.out.println("WRIST DOWN");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("WRIST DOWN");
-                    telemetry.update();
                     intake.wrist_down();
                 })
 
@@ -103,37 +122,33 @@ public class Red_Left_Auto extends AutoBase {
                 .addDisplacementMarker(50,() ->{
 //                    System.out.println(" ");
 //                    System.out.println("OPEN LEFT CLAW");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("OPEN LEFT CLAW");
-                    telemetry.update();
-                    intake.openClawV2(true,true);
+                    intake.openClawV2(true,false);
                 })
                 .waitSeconds(1)
 
                 .back(4)
-                .waitSeconds(.1)
+                .addDisplacementMarker(()->{
+//                    System.out.println(" ");
+//                    System.out.println("WRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
                 .build();
-
-        //TEST
-        TrajectorySequence Right_Spike_Score = bot.trajectorySequenceBuilder(startPoseRL)
-                //close claw
-                .addSpatialMarker(startPoseRL.vec(),() ->{
+        //TODO
+        TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(startPoseRL)
+                .addDisplacementMarker(() ->{
 //                    System.out.println(" ");
 //                    System.out.println("CLOSE CLAWS");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("CLOSE CLAWS");
-                    telemetry.update();
+                    intake.wrist_up();
                     intake.closeClaws(true);
                 })
 
                 //score spike
-                .lineToLinearHeading(RightSpikePose)
+                .lineToLinearHeading(rightSpikePose)
                 .addDisplacementMarker(30,()->{
 //                    System.out.println(" ");
 //                    System.out.println("WRIST DOWN");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("WRIST DOWN");
-                    telemetry.update();
                     intake.wrist_down();
                 })
 
@@ -143,47 +158,31 @@ public class Red_Left_Auto extends AutoBase {
                 .addDisplacementMarker(35,() ->{
 //                    System.out.println(" ");
 //                    System.out.println("OPEN LEFT CLAW");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("OPEN LEFT CLAW");
-                    telemetry.update();
-                    intake.openClawV2(true,true);
+                    intake.openClawV2(true,false);
                 })
                 .waitSeconds(1)
 
                 .back(7)
                 .waitSeconds(.1)
-
                 .build();
 
-        //TEST
+        //TODO
         TrajectorySequence CheckPoint1 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                .lineToLinearHeading(checkpoint1)
-                .addDisplacementMarker(10,()->{
-                    telemetry.addLine(" ");
-                    telemetry.addLine("GOING TO CHECKPOINT 1");
-                    telemetry.update();
-                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(checkPoint1)
                 .build();
 
-        //TEST
+        //TODO
         TrajectorySequence CheckPoint2 = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                .lineToLinearHeading(checkpoint2)
-                .addDisplacementMarker(10,()->{
-                    telemetry.addLine(" ");
-                    telemetry.addLine("GOING TO CHECKPOINT 2");
-                    telemetry.update();
-                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(checkPoint2)
                 .build();
-        //TEST
+        //TODO
         TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                //score on left Area of board
-                .lineToLinearHeading(LeftBoardPose)
-                .addSpatialMarker(checkpoint2.vec(),()->{
+                .lineToLinearHeading(leftBoardPose)
+                .addDisplacementMarker(()->{
 //                    System.out.println(" ");
 //                    System.out.println("ARM UP");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("ARM UP");
-                    telemetry.update();
                     arm.up();
                 })
                 .waitSeconds(.7)
@@ -191,49 +190,41 @@ public class Red_Left_Auto extends AutoBase {
                 .addDisplacementMarker(()->{
 //                    System.out.println(" ");
 //                    System.out.println("OPEN RIGHT CLAW");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("OPEN RIGHT CLAW");
-                    telemetry.update();
-                    intake.openClawV2(true,false);
+                    intake.openClawV2(true,true);
                 })
                 .waitSeconds(.7)
                 .forward(5)
+                .waitSeconds(.1)
+                .build();
+        //TODO
+        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+                //score on Middle Area of board
+                .lineToLinearHeading(middleBoardPose)
+                .addDisplacementMarker(()->{
+                    //System.out.println("ARM UP");
+                    arm.up();
+                })
+                .waitSeconds(.7)
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println(" ");
+//                    System.out.println("OPEN RIGHT CLAW");
+                    intake.openClawV2(true,true);
+                })
+                .waitSeconds(.7)
+                .forward(5)
+                .addDisplacementMarker(()->{
+                    arm.down();
+                })
                 .waitSeconds(.1)
                 .build();
 
-        //TODO
-        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                .lineToLinearHeading(MiddleBoardPose)
-                .addSpatialMarker(checkpoint2.vec(),()->{
-                    //System.out.println("ARM UP");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("ARM UP");
-                    telemetry.update();
-                    arm.up();
-                })
-                .waitSeconds(.7)
-                .back(5)
-                .addDisplacementMarker(()->{
-//                    System.out.println(" ");
-//                    System.out.println("OPEN RIGHT CLAW");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("OPEN RIGHT CLAW");
-                    telemetry.update();
-                    intake.openClawV2(true,false);
-                })
-                .waitSeconds(.7)
-                .forward(5)
-                .waitSeconds(.1)
-                .build();
-        //TODO
+        //TODO -scores on the left side of the board
         TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 //score on left Area of board
-                .lineToLinearHeading(RightBoardPose)
-                .addSpatialMarker(checkpoint2.vec(),()->{
+                .lineToLinearHeading(rightBoardPose)
+                .addDisplacementMarker(()->{
                     //System.out.println("ARM UP");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("ARM UP");
-                    telemetry.update();
                     arm.up();
                 })
                 .waitSeconds(.1)
@@ -241,10 +232,7 @@ public class Red_Left_Auto extends AutoBase {
                 .addDisplacementMarker(165,()->{
 //                    System.out.println(" ");
 //                    System.out.println("OPEN RIGHT CLAW");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("OPEN RIGHT CLAW");
-                    telemetry.update();
-                    intake.openClawV2(true, false);
+                    intake.openClawV2(true,true);
                 })
                 .waitSeconds(.7)
                 .forward(5)
@@ -252,71 +240,148 @@ public class Red_Left_Auto extends AutoBase {
                 .build();
 
         //TODO
-//        TrajectorySequence Pixel_Stack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+//        TrajectorySequence thirdStack = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
 //                .build();
 
         //TODO
         TrajectorySequence Park = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
-                .lineToLinearHeading(checkpoint2)
-                .addDisplacementMarker(()->{
-//                    System.out.println(" ");
-//                    System.out.println("ARM DOWN");
-//                    System.out.println("CLOSE CLAWS");
-                    telemetry.addLine(" ");
-                    telemetry.addLine("ARM DOWN");
-                    telemetry.addLine("CLOSE CLAWS");
-                    telemetry.update();
-                    arm.down();
-                    intake.closeClaws(true);
-                })
+                .waitSeconds(.01)
+                .splineToLinearHeading(new Pose2d(ParkSpot.getX() - 16,ParkSpot.getY()),ParkSpot.getHeading())
                 .waitSeconds(.1)
                 .lineToLinearHeading(ParkSpot)
                 .build();
 
+        while(!opModeIsActive()) {
+            //gets propPosition and needed april tag from vision class
+            propPosition = vision.getPropPosition();
+            aprilTagID = vision.get_Apriltag_id(propPosition, false);
 
-        waitForStart();
+            //telemetry + Auto Menu
+            telemetry.addData("Detected Prop Position: ", propPosition);
+            telemetry.addData("Required April Tag: ", aprilTagID);
 
-        //***************AUTO CODE STARTS***************
+            telemetry.update(); //keep updating drivers with bot's detect prop, required tag, and auto menu
+        }
+        waitForStart(); //**loops through code above until robot starts***************************
 
-        //gets propPosition and needed april tag from vision class
-        propPosition = vision.getPropPosition();
-        aprilTagID = vision.get_Apriltag_id(propPosition,false);
+        if(isStopRequested()) return;
 
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
-                bot.followTrajectorySequence(Left_Spike_Score);
+                currentState = State.LEFT_SPIKE_SCORE;
+                bot.followTrajectorySequenceAsync(LeftSpikeScore);
                 break;
             case "MIDDLE":
-                bot.followTrajectorySequence(Middle_Spike_Score);
+                currentState = State.MIDDLE_SPIKE_SCORE;
+                bot.followTrajectorySequenceAsync(MiddleSpikeScore);
                 break;
             case "RIGHT":
-                bot.followTrajectorySequence(Right_Spike_Score);
+                currentState = State.RIGHT_SPIKE_SCORE;
+                bot.followTrajectorySequenceAsync(RightSpikeScore);
                 break;
         }
 
-        //go to checkpoint 1
-        bot.followTrajectorySequence(CheckPoint1);
+        while(opModeIsActive()){
+            //FSM Logic
+            switch (currentState){
+                case LEFT_SPIKE_SCORE:
+                case MIDDLE_SPIKE_SCORE:
+                case RIGHT_SPIKE_SCORE:
+                    // Check if the drive class isn't busy
+                    // `isBusy() == true` while it's following the trajectory
+                    // Once `isBusy() == false`, the trajectory follower signals that it is finished
+                    // We move on to the next state
+                    // Make sure we use the async follow function
+                    if(!bot.isBusy()){
+                        currentState = State.CHECKPOINT1;
+                        bot.followTrajectorySequenceAsync(CheckPoint1);
+                    }
+                    break;
+                case CHECKPOINT2:
+                    if(!bot.isBusy()){
+                        switch(propPosition){
+                        case "LEFT":
+                            currentState = State.LEFT_BOARD_SCORE;
+                            bot.followTrajectorySequenceAsync(LeftBoardScore);
+                            break;
+                        case "RIGHT":
+                            currentState = State.RIGHT_BOARD_SCORE;
+                            bot.followTrajectorySequenceAsync(RightBoardScore);
+                            break;
+                        default:
+                            currentState = State.MIDDLE_BOARD_SCORE;
+                            bot.followTrajectorySequenceAsync(MiddleBoardScore);
+                            break;
+                    }
 
-        //go to checkpoint 2
-        bot.followTrajectorySequence(CheckPoint2);
+//                        currentState = State.CHECKPOINT1;
+//                        bot.followTrajectorySequenceAsync(CheckPoint1);
+                        //currentState = State.IDLE;
+                    }
+                    break;
+                case CHECKPOINT1:
+                    if(!bot.isBusy()){
+                        currentState = State.CHECKPOINT2;
+                        bot.followTrajectorySequenceAsync(CheckPoint2);
+                        //Done - switch to correct board score
+//                        switch(propPosition){
+//                            case "LEFT":
+//                                currentState = State.LEFT_BOARD_SCORE;
+//                                bot.followTrajectorySequenceAsync(LeftBoardScore);
+//                                break;
+//                            case "RIGHT":
+//                                currentState = State.RIGHT_BOARD_SCORE;
+//                                bot.followTrajectorySequenceAsync(RightBoardScore);
+//                                break;
+//                            default:
+//                                currentState = State.MIDDLE_BOARD_SCORE;
+//                                bot.followTrajectorySequenceAsync(MiddleBoardScore);
+//                                break;
+//                        }
+                    }
+                    break;
+                case LEFT_BOARD_SCORE:
+                case MIDDLE_BOARD_SCORE:
+                case RIGHT_BOARD_SCORE:
+                    if(!bot.isBusy()){
+                        currentState = State.PARK;
+                        bot.followTrajectorySequenceAsync(Park);
+                    }
+                    break;
+                case PARK:
+                    if(!bot.isBusy()){
+                        currentState = State.IDLE;
+                    }
+                    break;
+                case IDLE:
+                    //Do nothing in IDLE except save position
+                    //current state does not change once in IDLE
+                    //This concludes the autonomous program
+                    break;
+            }
 
-        //score pixel on board based on prop Pose
-        switch(aprilTagID){
-            case 4:
-                bot.followTrajectorySequence(LeftBoardScore);
-                break;
-            case 5:
-                bot.followTrajectorySequence(MiddleBoardScore);
-                break;
-            case 6:
-                bot.followTrajectorySequence(RightBoardScore);
-                break;
+            //RoadRunner FSM Logic Control
+            bot.update();
+
+            //PID arm control
+            //arm.update();
+
+            //read pose
+            Pose2d poseEstimate = bot.getPoseEstimate();
+
+            //continuously write pose to 'PoseStorage'
+            PoseStorage.currentPose = poseEstimate;
+
+            //telemetry data
+            telemetry.addData("Detected Prop Position: ", propPosition);
+            telemetry.addData("Corresponding April Tag:",aprilTagID);
+            telemetry.addData("Current Objective: ",currentState);
+            telemetry.addData("X: ",poseEstimate.getX());
+            telemetry.addData("Y: ",poseEstimate.getY());
+            telemetry.addData("Heading: ",poseEstimate.getHeading());
+            telemetry.update();
         }
-
-        //park bot
-        bot.followTrajectorySequence(Park);
-
 
     }
 }
