@@ -301,9 +301,9 @@ public class Blue_Right_Auto extends AutoBase {
                     break;
                 case CHECKPOINT2:
                     if(!bot.isBusy()){
-//                        currentState = State.CHECKPOINT1;
-//                        bot.followTrajectorySequenceAsync(CheckPoint1);
-                        currentState = State.IDLE;
+                        currentState = State.CHECKPOINT1;
+                        bot.followTrajectorySequenceAsync(CheckPoint1);
+                        //currentState = State.IDLE;
                     }
                     break;
                 case CHECKPOINT1:
