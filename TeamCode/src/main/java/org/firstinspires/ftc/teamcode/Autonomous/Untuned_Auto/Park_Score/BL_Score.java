@@ -94,7 +94,7 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.1)
                 .forward(18) //17
                 .waitSeconds(.1)
-                .turn(Math.toRadians(-85))
+                .turn(Math.toRadians(-83))
                 .addDisplacementMarker(()->{
                     intake.wrist_down();
                 })
@@ -110,17 +110,19 @@ public class BL_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.7)
 
                 //park
-                .turn(Math.toRadians(-11))
-                .waitSeconds(.1)
+//                .turn(Math.toRadians(-11))
+//                .waitSeconds(.1)
                 .back(5)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(1e-6))
                 .addDisplacementMarker(()->{
                     intake.closeClaws(true);
                     intake.wrist_up();
                 })
                 .waitSeconds(.1)
-                .strafeRight(25)
+                .strafeRight(20)
                 .waitSeconds(.1)
-                .back(22)
+                .back(20)
                 .build();
 
         //auto code here

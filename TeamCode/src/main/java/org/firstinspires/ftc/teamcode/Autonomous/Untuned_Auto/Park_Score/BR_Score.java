@@ -47,15 +47,19 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 .waitSeconds(.7)
 
                 //park
-                .turn(Math.toRadians(11))
-                .waitSeconds(.1)
+                //.turn(Math.toRadians(11)) //11
+                //.waitSeconds(.1)
                 .back(5)
+//                .waitSeconds(.1)
+//                .turn(Math.toRadians(11))
+                .waitSeconds(.1)
                 .addDisplacementMarker(()->{
                     intake.closeClaws(true);
                     intake.wrist_up();
                 })
                 .waitSeconds(.1)
-                .strafeLeft(21)
+                //.strafeLeft(21)
+                .back(5)
 //                .waitSeconds(.1)
 //                .back(22)
                 .build();
@@ -76,11 +80,11 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                     intake.openClawV2(true,false);
                     intake.wrist_down();
                 })
-                .addTemporalMarker(5, () -> {
+                .addTemporalMarker(7, () -> {
                     //intake.openClaw(true);
                     intake.closeClaws(true);
                 })
-                .addTemporalMarker(6, () ->{
+                .addTemporalMarker(9, () ->{
                     intake.wrist_up();
                 })
                 .back(14)
@@ -114,9 +118,9 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
                 })
                 .waitSeconds(.1)
                 .back(3)
-//                .addDisplacementMarker(()->{
-//                    intake.closeClaws(true);
-//                })
+                .addDisplacementMarker(()->{
+                    intake.wrist_up();
+                })
 //                .addDisplacementMarker(()->{
 //                    intake.closeClaws(true);
 //                    intake.wrist_up();
@@ -127,7 +131,7 @@ public class BR_Score extends org.firstinspires.ftc.teamcode.Autonomous.AutoBase
 //                .strafeRight(21)
 //                .waitSeconds(.1)
 //                .back(15)
-
+                .waitSeconds(5)
                 .build();
 
         //auto code here
