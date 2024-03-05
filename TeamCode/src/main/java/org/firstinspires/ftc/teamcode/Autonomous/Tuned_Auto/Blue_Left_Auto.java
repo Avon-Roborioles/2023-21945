@@ -180,11 +180,11 @@ public class Blue_Left_Auto extends AutoBase {
                 .lineToLinearHeading(checkPoint2)
                 .build();
         //TODO
-        TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence LeftBoardScore = bot.trajectorySequenceBuilder(LeftSpikeScore.end())
                 .lineToLinearHeading(leftBoardPose)
                 .addDisplacementMarker(()->{
                     //System.out.println("\nARM UP");
-                    arm.up();
+                    //arm.up();
                     intake.wrist_up();
                 })
                 .waitSeconds(.1)
@@ -198,17 +198,18 @@ public class Blue_Left_Auto extends AutoBase {
                 .addDisplacementMarker(()->{
                     //System.out.println("\nARM DOWN");
                     //System.out.println("\nCLOSE CLAWS");
-                    arm.down();
+                    //arm.down();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
+                .addDisplacementMarker(bot::updatePoseEstimate)
                 .build();
         //TODO
-        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence MiddleBoardScore = bot.trajectorySequenceBuilder(MiddleSpikeScore.end())
                 .splineToLinearHeading(middleBoardPose,middleBoardPose.getHeading())
                 .addDisplacementMarker(()->{
                     //System.out.println("\nARM UP");
-                    arm.up();
+                    //arm.up();
                     intake.wrist_up();
                 })
                 .waitSeconds(.1)
@@ -222,19 +223,20 @@ public class Blue_Left_Auto extends AutoBase {
                 .addDisplacementMarker(()->{
 //                    System.out.println("\nARM DOWN");
 //                    System.out.println("\nCLOSE CLAWS");
-                    arm.down();
+                    //arm.down();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
+                .addDisplacementMarker(bot::updatePoseEstimate)
                 .build();
 
         //TODO -scores on the left side of the board
-        TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
+        TrajectorySequence RightBoardScore = bot.trajectorySequenceBuilder(RightSpikeScore.end())
                 //score on board
                 .lineToLinearHeading(rightBoardPose)
                 .addDisplacementMarker(()->{
                     //System.out.println("\nARM UP");
-                    arm.up();
+                    //arm.up();
                 })
                 .waitSeconds(.1)
                 .back(5)
@@ -247,10 +249,11 @@ public class Blue_Left_Auto extends AutoBase {
                 .addDisplacementMarker(()->{
 //                    System.out.println("\nARM DOWN");
 //                    System.out.println("\nCLOSE CLAWS");
-                    arm.down();
+                    //arm.down();
                     intake.closeClaws(true);
                 })
                 .waitSeconds(.1)
+                .addDisplacementMarker(bot::updatePoseEstimate)
                 .build();
 
         //TODO
@@ -260,7 +263,11 @@ public class Blue_Left_Auto extends AutoBase {
         //TODO
         TrajectorySequence Park = bot.trajectorySequenceBuilder(bot.getPoseEstimate())
                 .waitSeconds(.01)
-                .splineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()),ParkSpot.getHeading())
+                //.splineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()),ParkSpot.getHeading())
+                .lineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()))
+//                .addDisplacementMarker(()->{
+//                    //arm.down();
+//                })
                 .waitSeconds(.1)
                 .lineToLinearHeading(ParkSpot)
                 .build();
@@ -297,6 +304,9 @@ public class Blue_Left_Auto extends AutoBase {
         }
 
         while(opModeIsActive()){
+            //UPDATES POSE ESTIMATE!!!
+            bot.updatePoseEstimate();
+
             //FSM Logic
             switch (currentState){
                 case LEFT_SPIKE_SCORE:
@@ -376,7 +386,7 @@ public class Blue_Left_Auto extends AutoBase {
             bot.update();
 
             //PID arm control
-            arm.update();
+            //arm.update();
 
             //read pose
             Pose2d poseEstimate = bot.getPoseEstimate();

@@ -45,9 +45,9 @@ public class PoseStorage {
     public static final Pose2d firstStackB = new Pose2d(52,-11, Math.toRadians(0));
     public static final Pose2d secondStackB = new Pose2d(52,-23, Math.toRadians(0));
     public static final Pose2d thirdStackB = new Pose2d(52,-35, Math.toRadians(0));
-    public static final Pose2d leftBoardPoseB = new Pose2d(-39,-40,Math.toRadians(0));
-    public static final Pose2d middleBoardPoseB = new Pose2d(-39,-34,Math.toRadians(0));
-    public static final Pose2d rightBoardPoseB = new Pose2d(-39,-28,Math.toRadians(0));
+    public static final Pose2d leftBoardPoseB = new Pose2d(-45,-34,Math.toRadians(-12));
+    public static final Pose2d middleBoardPoseB = new Pose2d(-45,-28,Math.toRadians(-12));
+    public static final Pose2d rightBoardPoseB = new Pose2d(-45,-22,Math.toRadians(-12));
 
 
     //Blue Left
@@ -57,7 +57,7 @@ public class PoseStorage {
     public static final Pose2d rightSpikePoseBL = new Pose2d(-15,-34,Math.toRadians(0));
     public static final Pose2d checkPoint1BL = new Pose2d(-16,-58.5,Math.toRadians(0));
     public static final Pose2d checkPoint2BL = new Pose2d(34,-58.5,Math.toRadians(0));
-    public static final Pose2d parkSpotBL = new Pose2d(-57,-59,Math.toRadians(0));
+    public static final Pose2d parkSpotBL = new Pose2d(-57,-59,Math.toRadians(10));
 
 
     //Blue Right
@@ -65,8 +65,8 @@ public class PoseStorage {
     public static final Pose2d leftSpikePoseBR = new Pose2d(37,-33,Math.toRadians(-180));
     public static final Pose2d middleSpikePoseBR = new Pose2d(37,-11,Math.toRadians(-90-1e-6));
     public static final Pose2d rightSpikePoseBR = new Pose2d(45,-30,Math.toRadians(0));
-    public static final Pose2d checkPoint1BR = new Pose2d(-16,-11,Math.toRadians(0));
-    public static final Pose2d checkPoint2BR = new Pose2d(34,-11,Math.toRadians(0));
-    public static final Pose2d parkSpotBR = new Pose2d(-57,-11.5,Math.toRadians(0));
+    public static final Pose2d checkPoint1BR = new Pose2d(-16,0,Math.toRadians(-12)); //x: -16
+    public static final Pose2d checkPoint2BR = new Pose2d(34,-6,Math.toRadians(-12));
+    public static final Pose2d parkSpotBR = new Pose2d(-57,6,Math.toRadians(-24));
 
 }
