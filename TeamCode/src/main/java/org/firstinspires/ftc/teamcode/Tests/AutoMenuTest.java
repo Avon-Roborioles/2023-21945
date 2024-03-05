@@ -14,27 +14,50 @@ public class AutoMenuTest extends LinearOpMode {
     boolean BoardScore = true;
     AutoPath selectedPath = AutoPath.UP;
 
-    Gamepad gamepad = new Gamepad();
+    boolean allow_press_u = true;
+    boolean allow_press_d = true;
 
-    @Override
-    public void runOpMode() throws InterruptedException {
+    public void runMenu(Gamepad gamepad1) {
+        boolean dpad_up = gamepad1.dpad_up;
+        boolean dpad_down = gamepad1.dpad_down;
 
-        boolean dpad_up = gamepad.dpad_up;
-        boolean dpad_down = gamepad.dpad_down;
 
-        if (dpad_up) {
+
+        if (dpad_up && allow_press_u) {
             if (selectedPath == AutoPath.UP) {
                 selectedPath = AutoPath.DOWN;
             } else {
                 selectedPath = AutoPath.UP;
             }
+            allow_press_u = false;
         }
-        if (dpad_down) {
+        else if (!dpad_up) {
+            allow_press_u = true;
+        }
+
+        if (dpad_down && allow_press_d) {
             if (BoardScore) {
                 BoardScore = false;
             } else {
                 BoardScore = true;
             }
+            allow_press_d = false;
+        }
+        else if (!dpad_down) {
+            allow_press_d = true;
+        }
+    }
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        waitForStart();
+
+        while(opModeIsActive()) {
+            runMenu(gamepad1);
+            getTelemetry(telemetry);
+
+            //getTelemetry(telemetry);
+            telemetry.update();
         }
     }
 
@@ -45,7 +68,6 @@ public class AutoMenuTest extends LinearOpMode {
         telemetry.addLine(" ");
         telemetry.addLine("Select Board Scoring by Toggling the D-pad Down Button");
         telemetry.addData("Selected Board Score Status: ", BoardScore);
-        telemetry.update();
     }
 
 
