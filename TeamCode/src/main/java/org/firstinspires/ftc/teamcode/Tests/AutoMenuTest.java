@@ -11,6 +11,7 @@ public class AutoMenuTest extends LinearOpMode {
         UP,
         DOWN
     }
+    
     boolean BoardScore = true;
     AutoPath selectedPath = AutoPath.UP;
 
@@ -20,8 +21,6 @@ public class AutoMenuTest extends LinearOpMode {
     public void runMenu(Gamepad gamepad1) {
         boolean dpad_up = gamepad1.dpad_up;
         boolean dpad_down = gamepad1.dpad_down;
-
-
 
         if (dpad_up && allow_press_u) {
             if (selectedPath == AutoPath.UP) {
