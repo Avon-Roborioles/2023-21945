@@ -11,7 +11,7 @@ public class AutoMenuTest extends LinearOpMode {
         UP,
         DOWN
     }
-    
+
     boolean BoardScore = true;
     AutoPath selectedPath = AutoPath.UP;
 
@@ -60,7 +60,6 @@ public class AutoMenuTest extends LinearOpMode {
         }
     }
 
-
     public void getTelemetry(Telemetry telemetry) {
         telemetry.addLine("Select the Auto Path by Toggling the D-pad Up Button");
         telemetry.addData("Current Auto Path Selected: ", selectedPath);
@@ -68,6 +67,4 @@ public class AutoMenuTest extends LinearOpMode {
         telemetry.addLine("Select Board Scoring by Toggling the D-pad Down Button");
         telemetry.addData("Selected Board Score Status: ", BoardScore);
     }
-
-
 }

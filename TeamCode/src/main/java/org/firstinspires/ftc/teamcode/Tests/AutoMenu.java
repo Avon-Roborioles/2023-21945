@@ -4,10 +4,11 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
-public class AutoMenu extends LinearOpMode {
+public class AutoMenu extends OpMode {
     public enum AutoPath {
         UP,
         DOWN
@@ -15,19 +16,22 @@ public class AutoMenu extends LinearOpMode {
     AutoPath selectedPath = AutoPath.UP;
     boolean BoardScore = true;
 
-    GamepadEx gamepad = new GamepadEx(gamepad1);
-
-    //controls for auto path
-    ToggleButtonReader d_up = new ToggleButtonReader(
-            gamepad, GamepadKeys.Button.DPAD_UP
-    );
-
-    ToggleButtonReader d_down = new ToggleButtonReader(
-            gamepad, GamepadKeys.Button.DPAD_DOWN
-    );
-
+    ToggleButtonReader d_up,d_down;
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void init() {
+        GamepadEx gamepad = new GamepadEx(gamepad1);
+
+        //controls for auto path
+         d_up = new ToggleButtonReader(
+                gamepad, GamepadKeys.Button.DPAD_UP
+        );
+
+         d_down = new ToggleButtonReader(
+                gamepad, GamepadKeys.Button.DPAD_DOWN
+        );
+    }
+    @Override
+    public void loop() {
         //menu code
         if(d_up.getState()){ //Auto Path selection
             selectedPath = AutoPath.UP;
@@ -48,14 +52,5 @@ public class AutoMenu extends LinearOpMode {
         //updates
         d_up.readValue();
         d_down.readValue();
-
-        waitForStart(); //loops though everything above
-
-        while(opModeIsActive()){
-            //display final readings
-            telemetry.addData("Selected Path: ", selectedPath);
-            telemetry.addData("Scoring on Board?: ", BoardScore);
-            telemetry.update();
-        }
     }
 }
