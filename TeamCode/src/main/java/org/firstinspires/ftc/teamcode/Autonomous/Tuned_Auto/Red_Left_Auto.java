@@ -251,20 +251,13 @@ public class Red_Left_Auto extends AutoBase {
                 .lineToLinearHeading(ParkSpot)
                 .build();
 
-        while(!opModeIsActive()) {
-            //gets propPosition and needed april tag from vision class
-            propPosition = vision.getPropPosition();
-            aprilTagID = vision.get_Apriltag_id(propPosition, false);
 
-            //telemetry + Auto Menu
-            telemetry.addData("Detected Prop Position: ", propPosition);
-            telemetry.addData("Required April Tag: ", aprilTagID);
-
-            telemetry.update(); //keep updating drivers with bot's detect prop, required tag, and auto menu
-        }
         waitForStart(); //**loops through code above until robot starts***************************
 
         if(isStopRequested()) return;
+
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition, true);
 
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
