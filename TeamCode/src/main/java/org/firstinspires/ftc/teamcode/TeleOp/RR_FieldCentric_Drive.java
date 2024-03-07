@@ -18,7 +18,7 @@ public class RR_FieldCentric_Drive extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drivetrain = new SampleMecanumDrive(hardwareMap);
-        drivetrain.setPoseEstimate(PoseStorage.startPoseRR);
+        drivetrain.setPoseEstimate(PoseStorage.startPoseBR); //TODO - change starter position
 
         waitForStart();
 
@@ -40,6 +40,13 @@ public class RR_FieldCentric_Drive extends LinearOpMode{
                             -gamepad1.right_stick_x
                     )
             );
+
+            //telemetry
+            telemetry.addData("X: ", poseEstimate.getX());
+            telemetry.addData("Y: ", poseEstimate.getY());
+            telemetry.addData("Heading: ", poseEstimate.getHeading());
+
+            telemetry.update();
 
         }
     }

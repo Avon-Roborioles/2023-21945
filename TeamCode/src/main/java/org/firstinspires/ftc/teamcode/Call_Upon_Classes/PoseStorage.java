@@ -45,9 +45,9 @@ public class PoseStorage {
     public static final Pose2d firstStackB = new Pose2d(52,-11, Math.toRadians(0));
     public static final Pose2d secondStackB = new Pose2d(52,-23, Math.toRadians(0));
     public static final Pose2d thirdStackB = new Pose2d(52,-35, Math.toRadians(0));
-    public static final Pose2d leftBoardPoseB = new Pose2d(-45,-34,Math.toRadians(-12));
-    public static final Pose2d middleBoardPoseB = new Pose2d(-45,-28,Math.toRadians(-12));
-    public static final Pose2d rightBoardPoseB = new Pose2d(-45,-22,Math.toRadians(-12));
+    public static final Pose2d leftBoardPoseB = new Pose2d(-45,-30,Math.toRadians(-12));
+    public static final Pose2d middleBoardPoseB = new Pose2d(-45,-24,Math.toRadians(-12));
+    public static final Pose2d rightBoardPoseB = new Pose2d(-45,-18,Math.toRadians(-12));
 
 
     //Blue Left

@@ -378,6 +378,8 @@ public class Blue_Right_Auto extends AutoBase {
 
         if(isStopRequested()) return;
 
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition, true);
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
             case "LEFT":
@@ -463,7 +465,7 @@ public class Blue_Right_Auto extends AutoBase {
             //RoadRunner FSM Logic Control
             bot.update();
 
-            //PID arm control
+            //TODO - PID arm control - Need to retune arm
             //arm.update();
 
             //read pose
