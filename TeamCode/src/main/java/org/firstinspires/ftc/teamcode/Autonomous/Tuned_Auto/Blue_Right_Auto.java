@@ -400,67 +400,6 @@ public class Blue_Right_Auto extends AutoBase {
         }
 
         while(opModeIsActive()){
-            //FSM Logic
-//            switch (currentState){
-//                case LEFT_SPIKE_SCORE:
-//                case MIDDLE_SPIKE_SCORE:
-//                case RIGHT_SPIKE_SCORE:
-//                    // Check if the drive class isn't busy
-//                    // `isBusy() == true` while it's following the trajectory
-//                    // Once `isBusy() == false`, the trajectory follower signals that it is finished
-//                    // We move on to the next state
-//                    // Make sure we use the async follow function
-//                    if(!bot.isBusy()){
-//                        currentState = State.CHECKPOINT2;
-//                        bot.followTrajectorySequenceAsync(CheckPoint2);
-//                    }
-//                    break;
-//                case CHECKPOINT2:
-//                    if(!bot.isBusy()){
-//                        currentState = State.CHECKPOINT1;
-//                        bot.followTrajectorySequenceAsync(CheckPoint1);
-//                        //currentState = State.IDLE;
-//                    }
-//                    break;
-//                case CHECKPOINT1:
-//                    if(!bot.isBusy()){
-//                        //Done - switch to correct board score
-//                        switch(propPosition){
-//                            case "LEFT":
-//                                currentState = State.LEFT_BOARD_SCORE;
-//                                bot.followTrajectorySequenceAsync(LeftBoardScore);
-//
-//                                break;
-//                            case "RIGHT":
-//                                currentState = State.RIGHT_BOARD_SCORE;
-//                                bot.followTrajectorySequenceAsync(RightBoardScore);
-//                                break;
-//                            default:
-//                                currentState = State.MIDDLE_BOARD_SCORE;
-//                                bot.followTrajectorySequenceAsync(MiddleBoardScore);
-//                                break;
-//                        }
-//                    }
-//                    break;
-//                case LEFT_BOARD_SCORE:
-//                case MIDDLE_BOARD_SCORE:
-//                case RIGHT_BOARD_SCORE:
-//                    if(!bot.isBusy()){
-//                        currentState = State.PARK;
-//                        bot.followTrajectorySequenceAsync(Park);
-//                    }
-//                    break;
-//                case PARK:
-//                    if(!bot.isBusy()){
-//                        currentState = State.IDLE;
-//                    }
-//                    break;
-//                case IDLE:
-//                    //Do nothing in IDLE except save position
-//                    //current state does not change once in IDLE
-//                    //This concludes the autonomous program
-//                    break;
-//            }
 
             //RoadRunner FSM Logic Control
             bot.update();

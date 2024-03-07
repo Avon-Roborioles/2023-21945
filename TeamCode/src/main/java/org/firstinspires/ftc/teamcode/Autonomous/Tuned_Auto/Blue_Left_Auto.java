@@ -67,33 +67,191 @@ public class Blue_Left_Auto extends AutoBase {
 
         //TODO
         TrajectorySequence LeftSpikeScore = bot.trajectorySequenceBuilder(startPoseBL)
+//score purple pixel on spike mark
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(leftSpikePose)
+                .waitSeconds(.1)
+                .back(9)
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
+                })
+                .waitSeconds(.7)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
+                })
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
 
+                //score on board
+                .lineToLinearHeading(leftBoardPose)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM UP");
+//                })
+                .waitSeconds(.1)
+                .back(5)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nOPEN LEFT CLAW");
+//                })
+                .waitSeconds(2)
+                .forward(5)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+//                })
+                .waitSeconds(.1)
+
+                //TODO - Add Stacked Pixel Auto
+
+                //park
+                .splineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()),ParkSpot.getHeading())
+                .waitSeconds(.1)
+                .lineToLinearHeading(ParkSpot)
                 .build();
         //TODO
         TrajectorySequence MiddleSpikeScore = bot.trajectorySequenceBuilder(startPoseBL)
+                //score purple pixel on spike mark
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(middleSpikePose)
+                .waitSeconds(.1)
+                .forward(2)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
+                })
+                .waitSeconds(.7)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
+                })
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
 
+                .waitSeconds(.01)
+                .strafeRight(11)
+                .waitSeconds(.01)
+
+                //score on board
+                .splineToLinearHeading(middleBoardPose,middleBoardPose.getHeading())
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM UP");
+//                })
+                .waitSeconds(.1)
+                .back(5)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nOPEN LEFT CLAW");
+//                })
+                .waitSeconds(2)
+                .forward(5)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+//                })
+                .waitSeconds(.1)
+
+                //TODO - Add Stacked Pixel Auto
+
+                //park
+                .splineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()),ParkSpot.getHeading())
+                .waitSeconds(.1)
+                .lineToLinearHeading(ParkSpot)
                 .build();
 
         //TODO
         TrajectorySequence RightSpikeScore = bot.trajectorySequenceBuilder(startPoseBL)
+//score purple pixel on spike mark
+                .addTemporalMarker(0,()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
+                .lineToLinearHeading(rightSpikePose)
+                .waitSeconds(.1)
+                .forward(7)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST DOWN");
+                    intake.wrist_down();
+                })
+                .waitSeconds(.01)
+                .back(4)
+                .waitSeconds(.1)
+                .turn(Math.toRadians(-1e-6))
+                .addDisplacementMarker(()->{
+                    //System.out.println("\nOPEN RIGHT CLAW");
+                    intake.openClawV2(true,false);
+                })
+                .waitSeconds(1)
+                .back(5)
+                .addDisplacementMarker(()->{
+//                    System.out.println("\nWRIST UP");
+//                    System.out.println("CLOSE CLAWS");
+                    intake.wrist_up();
+                    intake.closeClaws(true);
+                })
+                .waitSeconds(.1)
 
+                //score on board
+                .lineToLinearHeading(rightBoardPose)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM UP");
+//                })
+                .waitSeconds(.1)
+                .back(5)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nOPEN LEFT CLAW");
+//                })
+                .waitSeconds(2)
+                .forward(5)
+//                .addDisplacementMarker(()->{
+//                    System.out.println("\nARM DOWN");
+//                    System.out.println("\nCLOSE CLAWS");
+//                })
+                .waitSeconds(.1)
+
+                //TODO - Add Stacked Pixel Auto
+
+                //park
+                .splineToLinearHeading(new Pose2d(ParkSpot.getX() + 16,ParkSpot.getY()),ParkSpot.getHeading())
+                .waitSeconds(.1)
+                .lineToLinearHeading(ParkSpot)
                 .build();
 
 
-        while(!opModeIsActive()) {
-            //gets propPosition and needed april tag from vision class
-            propPosition = vision.getPropPosition();
-            aprilTagID = vision.get_Apriltag_id(propPosition, true);
 
-            //telemetry + Auto Menu
-            telemetry.addData("Detected Prop Position: ", propPosition);
-            telemetry.addData("Required April Tag: ", aprilTagID);
-
-            telemetry.update(); //keep updating drivers with bot's detect prop, required tag, and auto menu
-        }
         waitForStart(); //**loops through code above until robot starts***************************
 
         if(isStopRequested()) return;
+
+        propPosition = vision.getPropPosition();
+        aprilTagID = vision.get_Apriltag_id(propPosition, true);
 
         //scores the purple preload pixel based on vision reading
         switch(propPosition){
