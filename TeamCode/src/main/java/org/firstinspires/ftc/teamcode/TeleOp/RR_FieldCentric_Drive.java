@@ -25,38 +25,43 @@ public class RR_FieldCentric_Drive extends LinearOpMode{
         Rev2mDistanceSensor distanceSensor = hardwareMap.get(Rev2mDistanceSensor.class,"distance_sensor");
 
         double powerScale = 1.0;
+        double distance = 0;
 
         waitForStart();
 
         while(opModeIsActive()){
             drivetrain.update();
             Pose2d poseEstimate = drivetrain.getPoseEstimate();
-            double distance = distanceSensor.getDistance(DistanceUnit.INCH);
+            distance = distanceSensor.getDistance(DistanceUnit.INCH);
 
             Vector2d input = new Vector2d(gamepad1.left_stick_x, -gamepad1.left_stick_y).rotated(-poseEstimate.getHeading());
 
-            double distanceFromWall = 0;
 
-            if(drivetrain.getPoseEstimate().getX() > 0){
-                powerScale = .25;
+            if(gamepad1.right_trigger > .3) {
+                powerScale = 1;
             } else {
-                powerScale = .9;
-            }
+                if (distance <= 35) {
+                    powerScale = .1;
+                } else {
+                    powerScale = 1;
+                }
 
-            if(gamepad1.a){
-                drivetrain.setPoseEstimate(new Pose2d(0,0,Math.toRadians(90)));
+                if (gamepad1.a) {
+                    drivetrain.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(90)));
+                }
             }
-
 
     // Pass in the rotated input + right stick value for rotation
     // Rotation is not part of the rotated input thus must be passed in separately
             drivetrain.setWeightedDrivePower(
                     new Pose2d(input.getX() * powerScale, input.getY() * powerScale, -gamepad1.right_stick_x));
 
+            String distanceResult = distance + " Inches";
+
             telemetry.addData("X Value:", drivetrain.getPoseEstimate().getX());
             telemetry.addData("Y Value:", drivetrain.getPoseEstimate().getY());
             telemetry.addData("Heading:", drivetrain.getPoseEstimate().getHeading());
-            telemetry.addData("Distance Sensor Reading:", distance);
+            telemetry.addData("Distance Sensor Reading:", distanceResult);
 
             telemetry.update();
         }
